@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- We only include this to explicitly loosen the CSP of various packager environments. It does not provide any security. -->
   <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: blob:">
   <title>Guarp&apos;sGunGame</title>
   <style>
@@ -67,7 +68,7 @@
     }
     .progress-bar-outer {
       border: 1px solid currentColor;
-      height: 100px;
+      height: 10px;
       width: 200px;
       max-width: 200px;
     }
