@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cici最帅了</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            background: white url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='100'><text x='0' y='40' font-family='Arial' font-size='40' fill='black'>Cici最帅了</text></svg>") repeat-x;
+            animation: slide 5s linear infinite;
+        }
+
+        @keyframes slide {
+            from {
+                background-position: 100% 0;
+            }
+            to {
+                background-position: -100% 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.documentElement.requestFullscreen();
+    </script>
+</body>
+</html>
