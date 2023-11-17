@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <title>高手玩家的电脑</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #uploadContainer {
+            margin: 20px;
+        }
+
+        #uploadImage {
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #viewImage {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #viewImage:hover {
+            background-color: #0056b3;
+        }
+
+        #loadingIndicator {
+            display: none;
+        }
+
+        #loadingIndicator img {
+            width: 100px;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="uploadContainer">
+        <input type="file" id="uploadImage" accept="image/*" />
+        <br>
+        请注意: 首次生成时间较长, 科学上网以加速生成时间
+        <br>
+        如果处理时间过长(>30s), 请手动刷新网页重新上传
+    </div>
+    <div id="loadingIndicator">
+        <img src="https://guarp.github.io/loading.gif" alt="加载中...">
+        <br>
+        正在处理图片...
+    </div>
+    <button id="viewImage">查看图片</button>
+
+    <script>
+        document.getElementById('uploadImage').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('uploadContainer').style.display = 'none';
+            document.getElementById('loadingIndicator').style.display = 'block';
+
+            const overlayImg = new Image();
+            overlayImg.crossOrigin = 'Anonymous';
+            overlayImg.src = 'https://guarp.github.io/sjmh.png';
+
+            const img = new Image();
+            img.onload = function () {
+                const targetWidth = 3968;
+                const targetHeight = 2976;
+                const canvas = document.createElement('canvas');
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                const ctx = canvas.getContext('2d');
+
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    width *= 684 / height;
+                    height = 684;
+                } else {
+                    height *= 910 / width;
+                    width = 910;
+                }
+
+                const posX = (targetWidth - width) / 2 - 280; 
+                const posY = (targetHeight - height) / 2 + 35;
+                ctx.drawImage(img, posX, posY, width, height);
+
+                overlayImg.onload = function () {
+                    ctx.drawImage(overlayImg, 0, 0, targetWidth, targetHeight);
+
+                    canvas.toBlob(function (blob) {
+                        const viewButton = document.getElementById('viewImage');
+                        const loadingIndicator = document.getElementById('loadingIndicator');
+
+                        loadingIndicator.style.display = 'none';
+                        viewButton.style.display = 'block';
+
+                        viewButton.onclick = function () {
+                            const url = URL.createObjectURL(blob);
+                            window.open(url, '_blank').focus();
+                        };
+                    }, 'image/png');
+                };
+            };
+
+            img.src = URL.createObjectURL(file);
+        });
+    </script>
+</body>
+</html>
