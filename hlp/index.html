@@ -50,6 +50,19 @@
             height: auto;
             margin-top: 20px;
         }
+        #progressBar {
+            width: 100%;
+            background-color: #ddd;
+        }
+
+        #progressBar div {
+            height: 20px;
+            width: 0%;
+            background-color: #4CAF50;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -65,64 +78,95 @@
         <br>
         正在处理图片...
     </div>
+    <div id="progressBar"><div>0%</div></div>
     <button id="viewImage">查看图片</button>
 
     <script>
+        progressBar.style.display = 'none';
         document.getElementById('uploadImage').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (!file) return;
+    const file = e.target.files[0];
+    if (!file) return;
+    progressBar.style.display = 'block';
+    document.getElementById('uploadContainer').style.display = 'none';
+    document.getElementById('loadingIndicator').style.display = 'block';
+    document.getElementById('progressBar').style.display = 'block';
 
-            document.getElementById('uploadContainer').style.display = 'none';
-            document.getElementById('loadingIndicator').style.display = 'block';
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'https://guarp.github.io/sjmh.png', true);
+    xhr.responseType = 'blob';
 
-            const overlayImg = new Image();
-            overlayImg.crossOrigin = 'Anonymous';
-            overlayImg.src = 'https://guarp.github.io/sjmh.png';
+    xhr.onprogress = function(e) {
+        if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            document.getElementById('progressBar').firstChild.style.width = percentComplete + '%';
+            document.getElementById('progressBar').firstChild.textContent = percentComplete + '%';
+        }
+    };
 
-            const img = new Image();
-            img.onload = function () {
-                const targetWidth = 3968;
-                const targetHeight = 2976;
-                const canvas = document.createElement('canvas');
-                canvas.width = targetWidth;
-                canvas.height = targetHeight;
-                const ctx = canvas.getContext('2d');
+    xhr.onload = function() {
+        if (this.status === 200) {
+            const overlayBlob = new Blob([this.response]);
+            processImage(file, overlayBlob);
+        }
+    };
 
-                let width = img.width;
-                let height = img.height;
+    xhr.onerror = function() {
+        alert('图片加载失败');
+    };
 
-                if (width > height) {
-                    width *= 684 / height;
-                    height = 684;
-                } else {
-                    height *= 910 / width;
-                    width = 910;
-                }
+    xhr.send();
+});
 
-                const posX = (targetWidth - width) / 2 - 280; 
-                const posY = (targetHeight - height) / 2 + 35;
-                ctx.drawImage(img, posX, posY, width, height);
+function processImage(userFile, overlayBlob) {
+    const img = new Image();
+    img.onload = function () {
+        const targetWidth = 3968;
+        const targetHeight = 2976;
+        const canvas = document.createElement('canvas');
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+        const ctx = canvas.getContext('2d');
 
-                overlayImg.onload = function () {
-                    ctx.drawImage(overlayImg, 0, 0, targetWidth, targetHeight);
+        let width = img.width;
+        let height = img.height;
 
-                    canvas.toBlob(function (blob) {
-                        const viewButton = document.getElementById('viewImage');
-                        const loadingIndicator = document.getElementById('loadingIndicator');
+        if (width > height) {
+            width *= 684 / height;
+            height = 684;
+        } else {
+            height *= 910 / width;
+            width = 910;
+        }
 
-                        loadingIndicator.style.display = 'none';
-                        viewButton.style.display = 'block';
+        const posX = (targetWidth - width) / 2 - 280; 
+        const posY = (targetHeight - height) / 2 + 35;
+        ctx.drawImage(img, posX, posY, width, height);
 
-                        viewButton.onclick = function () {
-                            const url = URL.createObjectURL(blob);
-                            window.open(url, '_blank').focus();
-                        };
-                    }, 'image/png');
+        const overlayImg = new Image();
+        overlayImg.onload = function () {
+            ctx.drawImage(overlayImg, 0, 0, targetWidth, targetHeight);
+
+            canvas.toBlob(function (blob) {
+                const viewButton = document.getElementById('viewImage');
+                const loadingIndicator = document.getElementById('loadingIndicator');
+                const progressBar = document.getElementById('progressBar');
+
+                loadingIndicator.style.display = 'none';
+                progressBar.style.display = 'none';
+                viewButton.style.display = 'block';
+
+                viewButton.onclick = function () {
+                    const url = URL.createObjectURL(blob);
+                    window.open(url, '_blank').focus();
                 };
-            };
+            }, 'image/png');
+        };
+        overlayImg.src = URL.createObjectURL(overlayBlob);
+    };
 
-            img.src = URL.createObjectURL(file);
-        });
+    img.src = URL.createObjectURL(userFile);
+}
+
     </script>
 </body>
 </html>
