@@ -2,7 +2,7 @@
 <html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>高手玩家的电脑</title>
+    <title>局部换图-我嘞个豆</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -15,13 +15,6 @@
             margin: 20px;
         }
 
-        #uploadImage {
-            padding: 10px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-        }
 
         #viewImage {
             display: none;
@@ -63,16 +56,47 @@
             line-height: 20px;
             color: white;
         }
+        .custom-file-upload {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(255, 178, 238);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .custom-file-upload2 {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(233, 203, 54);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
+    <h1 text-align: center;>局部换图</h1>
+    <hr>
     <div id="uploadContainer">
-        <input type="file" id="uploadImage" accept="image/*" />
+        <label for="uploadImage" class="custom-file-upload">
+            高手玩家
+        </label>
+        　　　　　
+        <label for="uploadImage2" class="custom-file-upload2">
+            虚空茅厕
+        </label>
+        <input type="file" id="uploadImage" accept="image/*" style="display: none;"/>
+
+        <br>
+        <input type="file" id="uploadImage2" accept="image/*" style="display: none;"/>
+        <br><br>
+        单击按钮上传图片
         <br>
         请注意: 首次生成时间较长, 科学上网以加速生成时间
-        <br>
-        如果处理时间过长(>30s), 请手动刷新网页重新上传
     </div>
+    
     <div id="loadingIndicator">
         <img src="https://guarp.github.io/loading.gif" alt="加载中...">
         <br>
@@ -82,20 +106,16 @@
     <button id="viewImage">查看图片</button>
 
     <script>
-        progressBar.style.display = 'none';
-        document.getElementById('uploadImage').addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    progressBar.style.display = 'block';
+        function loadImage(userFile, overlayUrl, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) {
     document.getElementById('uploadContainer').style.display = 'none';
     document.getElementById('loadingIndicator').style.display = 'block';
     document.getElementById('progressBar').style.display = 'block';
 
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://guarp.github.io/sjmh.png', true);
+    xhr.open('GET', overlayUrl, true);
     xhr.responseType = 'blob';
 
-    xhr.onprogress = function(e) {
+    xhr.onprogress = function (e) {
         if (e.lengthComputable) {
             const percentComplete = Math.round((e.loaded / e.total) * 100);
             document.getElementById('progressBar').firstChild.style.width = percentComplete + '%';
@@ -103,25 +123,23 @@
         }
     };
 
-    xhr.onload = function() {
+    xhr.onload = function () {
         if (this.status === 200) {
             const overlayBlob = new Blob([this.response]);
-            processImage(file, overlayBlob);
+            processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees);
         }
     };
 
-    xhr.onerror = function() {
+    xhr.onerror = function () {
         alert('图片加载失败');
     };
 
     xhr.send();
-});
+}
 
-function processImage(userFile, overlayBlob) {
+function processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) {
     const img = new Image();
     img.onload = function () {
-        const targetWidth = 3968;
-        const targetHeight = 2976;
         const canvas = document.createElement('canvas');
         canvas.width = targetWidth;
         canvas.height = targetHeight;
@@ -131,16 +149,23 @@ function processImage(userFile, overlayBlob) {
         let height = img.height;
 
         if (width > height) {
-            width *= 684 / height;
-            height = 684;
+            width *= shortEdgeHeight / height;
+            height = shortEdgeHeight;
         } else {
-            height *= 910 / width;
-            width = 910;
+            height *= shortEdgeWidth / width;
+            width = shortEdgeWidth;
         }
 
-        const posX = (targetWidth - width) / 2 - 280; 
-        const posY = (targetHeight - height) / 2 + 35;
-        ctx.drawImage(img, posX, posY, width, height);
+        const posX = (targetWidth - width) / 2 + shiftX;
+        const posY = (targetHeight - height) / 2 + shiftY;
+
+        ctx.translate(posX + width / 2, posY + height / 2);
+        ctx.rotate(-rotationDegrees * Math.PI / 180);
+
+        ctx.drawImage(img, -width / 2, -height / 2, width, height);
+
+        ctx.rotate(rotationDegrees * Math.PI / 180);
+        ctx.translate(-posX - width / 2, -posY - height / 2);
 
         const overlayImg = new Image();
         overlayImg.onload = function () {
@@ -166,6 +191,15 @@ function processImage(userFile, overlayBlob) {
 
     img.src = URL.createObjectURL(userFile);
 }
+
+document.getElementById('progressBar').style.display = 'none';
+
+document.getElementById('uploadImage').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/sjmh.png', 3968, 2976, -280, 35, 605, 960, 1.7);
+});
+document.getElementById('uploadImage2').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/losn.png', 1080, 1906, 390, -700, 555, 400, 2);
+});
 
     </script>
 </body>
