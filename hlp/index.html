@@ -17,7 +17,7 @@
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://guarp.github.io/hlp/接">
+    <meta property="twitter:url" content="https://guarp.github.io/hlp/">
     <meta property="twitter:title" content="梦沃未来-局部换图">
     <meta property="twitter:description" content="你可以制作自己的高手玩家屏幕以及虚空茅厕">
     <meta property="twitter:image" content="https://guarp.github.io/hlp/ico.png">
@@ -74,6 +74,28 @@
             line-height: 20px;
             color: white;
         }
+
+        #browseImage {
+            display: none; /* 初始时隐藏 */
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: white; /* 文字颜色 */
+            background-color: #28a745; /* 按钮背景颜色，可以根据需要更改 */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+
+    /* 以下是居中所需的样式 */
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+        }
+
+        #browseImage:hover {
+        background-color: #218838; /* 鼠标悬停时的背景颜色 */
+        }
+
         .custom-file-upload {
             border: 1px solid #b89b9b;
             display: inline-block;
@@ -121,7 +143,13 @@
         正在处理图片...
     </div>
     <div id="progressBar"><div>0%</div></div>
-    <button id="viewImage">查看图片</button>
+    <button id="viewImage" style="display: none;">下载图片</button>
+    <button id="browseImage" style="display: none;">浏览图片</button>
+    <div id="imageContainer" style="margin-top: 20px; display: none;">
+        <img id="resultImage" src="" alt="生成的图片" style="max-width: 100%; height: auto;"/>
+    </div>
+
+    
 
     <script>
         function loadImage(userFile, overlayUrl, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) {
@@ -191,16 +219,31 @@ function processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, 
 
             canvas.toBlob(function (blob) {
                 const viewButton = document.getElementById('viewImage');
+                const browseButton = document.getElementById('browseImage');
+                const imageContainer = document.getElementById('imageContainer');
+                const resultImage = document.getElementById('resultImage');
                 const loadingIndicator = document.getElementById('loadingIndicator');
                 const progressBar = document.getElementById('progressBar');
 
                 loadingIndicator.style.display = 'none';
                 progressBar.style.display = 'none';
                 viewButton.style.display = 'block';
+                browseButton.style.display = 'block';
 
+                browseButton.onclick = function () {
+                    resultImage.src = URL.createObjectURL(blob);
+                    imageContainer.style.display = 'block';
+                };
+
+                viewButton.textContent = '下载图片';
                 viewButton.onclick = function () {
                     const url = URL.createObjectURL(blob);
-                    window.open(url, '_blank').focus();
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'processed_image.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
                 };
             }, 'image/png');
         };
@@ -209,6 +252,7 @@ function processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, 
 
     img.src = URL.createObjectURL(userFile);
 }
+
 
 document.getElementById('progressBar').style.display = 'none';
 
