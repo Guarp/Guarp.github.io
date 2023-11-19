@@ -121,6 +121,25 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+        #resizeOptions {
+            border: 2px solid #b89b9b; /* 边框颜色和宽度 */
+            padding: 10px;
+            margin-top: 20px;
+            background-color: rgb(142, 255, 223); /* 背景颜色 */
+            border-radius: 5px; /* 边框圆角 */
+            display: inline-block; /* 使边框紧贴内容 */
+        }
+
+        #resizeOptions label {
+            margin-left: 10px;
+            font-size: 14px;
+            }
+
+        #resizeOptions input[type="radio"] {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -130,20 +149,28 @@
         <label for="uploadImage" class="custom-file-upload">
             高手玩家
         </label>
-        　　　　　
+        　　　　
         <label for="uploadImage2" class="custom-file-upload2">
             虚空茅厕
         </label>
-        　　　　　
+        　　　　
         <label for="uploadImage3" class="custom-file-upload3">
-            萝莉王
+            萝莉の王
         </label>
         
+        <br><br>
+
+        <div id="resizeOptions">
+            <input type="radio" id="forceSize" name="resizeOption" value="forceSize">
+            <label for="forceSize">强制拉伸图片</label><br>
+            <input type="radio" id="alignShortEdge" name="resizeOption" value="alignShortEdge" checked>
+            <label for="alignShortEdge">对齐图片短边</label>
+        </div>
+
         <input type="file" id="uploadImage" accept="image/*" style="display: none;"/>
-        <br>
         <input type="file" id="uploadImage2" accept="image/*" style="display: none;"/>
-        <br>
         <input type="file" id="uploadImage3" accept="image/*" style="display: none;"/>
+        
         <br><br>
         单击按钮上传图片
         <br>
@@ -165,10 +192,11 @@
     
 
     <script>
-        function loadImage(userFile, overlayUrl, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) {
-    document.getElementById('uploadContainer').style.display = 'none';
-    document.getElementById('loadingIndicator').style.display = 'block';
-    document.getElementById('progressBar').style.display = 'block';
+    
+    function loadImage(userFile, overlayUrl, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) {
+        document.getElementById('uploadContainer').style.display = 'none';
+        document.getElementById('loadingIndicator').style.display = 'block';
+        document.getElementById('progressBar').style.display = 'block';
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', overlayUrl, true);
@@ -207,8 +235,20 @@ function processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, 
         let width = img.width;
         let height = img.height;
 
+        const resizeOption = document.querySelector('input[name="resizeOption"]:checked').value;
+
+        if (resizeOption === 'forceSize') {
         height = shortEdgeHeight;
         width = shortEdgeWidth;
+        } else {
+            if (width > height) {
+                width *= shortEdgeHeight / height;
+                height = shortEdgeHeight;
+            } else {
+                height *= shortEdgeWidth / width;
+                width = shortEdgeWidth;
+            }
+        }
 
         const posX = (targetWidth - width) / 2 + shiftX;
         const posY = (targetHeight - height) / 2 + shiftY;
@@ -263,7 +303,6 @@ function processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, 
 
 
 document.getElementById('progressBar').style.display = 'none';
-
 document.getElementById('uploadImage').addEventListener('change', function (e) {
     loadImage(e.target.files[0], 'https://guarp.github.io/hlp/sjmh.png', 3968, 2976, -280, 35, 605, 960, 1.7);
 });
