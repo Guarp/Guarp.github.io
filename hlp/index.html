@@ -2,7 +2,7 @@
 <html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>局部换图-梦沃大点兵v4.2</title>
+    <title>局部换图-梦沃大点兵v4.3</title>
     <meta charset="UTF-8">
     <meta name="description" content="你可以制作自己的梦沃高手的图">
     <meta name="keywords" content="制作, 图片, 梦沃, 高玩, 抠图, 局部, 换图">
@@ -28,11 +28,17 @@
             text-align: center;
             padding: 20px;
         }
-
         #uploadContainer {
             margin: 20px;
+            
         }
 
+        #buttonContainer {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            flex-wrap: wrap; /* 允许按钮换行 */
+            gap: 100px; /* 设置按钮之间的间距 */
+        }
 
         #viewImage {
             display: none;
@@ -163,25 +169,28 @@
     <h1 text-align: center;>局部换图之梦沃大点兵<br>V4.2</h1>
     <hr>
     <div id="uploadContainer">
-        <label for="uploadImage" class="custom-file-upload">
+        <div id="buttonContainer">
+            <label for="uploadImage" class="custom-file-upload">
             高手玩家
         </label>
-        　　　　
+        
         <label for="uploadImage2" class="custom-file-upload2">
             虚空茅厕
         </label>
-        　　　　
+        
         <label for="uploadImage3" class="custom-file-upload3">
             萝莉の王
         </label>
-        <br><br>
+        </div><div id="buttonContainer"> <!-- 其实是换行-->
         <label for="uploadImage4" class="custom-file-upload4">
             纹希看片
         </label>
-        　　　　
+        
         <label for="uploadImage5" class="custom-file-upload5">
             大牛尚钓
         </label>
+        </div>
+        
         <br><br>
 
         <div id="resizeOptions">
@@ -224,7 +233,14 @@
     
     function loadImage(userFile, overlayUrl, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) { 
 
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const loadingText = document.createElement('div'); // 创建一个新的div来显示文本
+
         document.getElementById('uploadContainer').style.display = 'none';
+        loadingIndicator.style.display = 'block';
+        loadingIndicator.innerHTML = ''; // 清空任何现有内容
+        loadingIndicator.appendChild(loadingText); // 添加新的文本div
+        loadingText.textContent = '正在连接...'; // 初始文本
         document.getElementById('loadingIndicator').style.display = 'block';
         document.getElementById('progressBar').style.display = 'block';
 
@@ -237,11 +253,13 @@
             const percentComplete = Math.round((e.loaded / e.total) * 100);
             document.getElementById('progressBar').firstChild.style.width = percentComplete + '%';
             document.getElementById('progressBar').firstChild.textContent = percentComplete + '%';
+            loadingText.textContent = '正在下载图片...';
         }
     };
 
     xhr.onload = function () {
         if (this.status === 200) {
+            loadingText.textContent = '下载已完成, 正在处理图片...';
             const overlayBlob = new Blob([this.response]);
             processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees);
         }
