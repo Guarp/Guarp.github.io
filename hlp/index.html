@@ -2,24 +2,23 @@
 <html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>局部换图-梦沃大点兵v3.0</title>
+    <title>局部换图-梦沃大点兵v4.0</title>
     <meta charset="UTF-8">
-    <meta name="description" content="你可以制作自己的高手玩家屏幕以及虚空茅厕">
-    <meta name="keywords" content="制作, 图片, 梦沃">
+    <meta name="description" content="你可以制作自己的梦沃高手的图">
+    <meta name="keywords" content="制作, 图片, 梦沃, 高玩, 抠图, 局部, 换图">
     <meta name="author" content="文西科技有限公司">
-
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://guarp.github.io/hlp/">
     <meta property="og:title" content="梦沃未来-局部换图">
-    <meta property="og:description" content="你可以制作自己的高手玩家屏幕以及虚空茅厕">
+    <meta property="og:description" content="你可以制作自己的梦沃高手的图">
     <meta property="og:image" content="https://guarp.github.io/hlp/ico.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://guarp.github.io/hlp/">
     <meta property="twitter:title" content="梦沃未来-局部换图">
-    <meta property="twitter:description" content="你可以制作自己的高手玩家屏幕以及虚空茅厕">
+    <meta property="twitter:description" content="你可以制作自己的梦沃高手的图">
     <meta property="twitter:image" content="https://guarp.github.io/hlp/ico.png">
     <style>
         body {
@@ -121,11 +120,29 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+        .custom-file-upload4 {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(54, 233, 167);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .custom-file-upload5 {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(54, 224, 233);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
         #resizeOptions {
             border: 2px solid #b89b9b; /* 边框颜色和宽度 */
             padding: 10px;
             margin-top: 20px;
-            background-color: rgb(142, 255, 223); /* 背景颜色 */
+            background-color: rgb(255, 255, 255); /* 背景颜色 */
             border-radius: 5px; /* 边框圆角 */
             display: inline-block; /* 使边框紧贴内容 */
         }
@@ -157,20 +174,29 @@
         <label for="uploadImage3" class="custom-file-upload3">
             萝莉の王
         </label>
-        
+        <br><br>
+        <label for="uploadImage4" class="custom-file-upload4">
+            纹希看片
+        </label>
+        　　　　
+        <label for="uploadImage5" class="custom-file-upload5">
+            大牛尚钓
+        </label>
         <br><br>
 
         <div id="resizeOptions">
-            <input type="radio" id="forceSize" name="resizeOption" value="forceSize">
+            <input type="radio" id="forceSize" name="resizeOption" value="forceSize" checked>
             <label for="forceSize">强制拉伸图片</label><br>
-            <input type="radio" id="alignShortEdge" name="resizeOption" value="alignShortEdge" checked>
+            <input type="radio" id="alignShortEdge" name="resizeOption" value="alignShortEdge">
             <label for="alignShortEdge">对齐图片短边</label>
         </div>
 
         <input type="file" id="uploadImage" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage2" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage3" accept="image/*" style="display: none;"/>
-        
+        <input type="file" id="uploadImage4" accept="image/*" style="display: none;"/>
+        <input type="file" id="uploadImage5" accept="image/*" style="display: none;"/>
+
         <br><br>
         单击按钮上传图片
         <br>
@@ -193,7 +219,8 @@
 
     <script>
     
-    function loadImage(userFile, overlayUrl, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) {
+    function loadImage(userFile, overlayUrl, targetWidth, targetHeight, shiftX, shiftY, shortEdgeHeight, shortEdgeWidth, rotationDegrees) { 
+
         document.getElementById('uploadContainer').style.display = 'none';
         document.getElementById('loadingIndicator').style.display = 'block';
         document.getElementById('progressBar').style.display = 'block';
@@ -307,12 +334,17 @@ document.getElementById('uploadImage').addEventListener('change', function (e) {
     loadImage(e.target.files[0], 'https://guarp.github.io/hlp/sjmh.png', 3968, 2976, -280, 35, 605, 960, 1.7);
 });
 document.getElementById('uploadImage2').addEventListener('change', function (e) {
-    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/losn.png', 1080, 1906, 390, -700, 555, 400, 2);
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/losn.png', 1080, 1906, 390, -750, 555, 400, 2);
 });
 document.getElementById('uploadImage3').addEventListener('change', function (e) {
     loadImage(e.target.files[0], 'https://guarp.github.io/hlp/llw.png', 3456, 4608, -350, 0, 588, 1050, -3);
 });
-
+document.getElementById('uploadImage4').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/wjkp.png', 600, 800, -97, -42, 160, 245, -4);
+});
+document.getElementById('uploadImage5').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/daniu.png', 433, 577, 0, 0, 577, 433, 0);
+});
     </script>
 </body>
 </html>
