@@ -2,7 +2,7 @@
 <html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>局部换图-梦沃大点兵v4.0</title>
+    <title>局部换图-梦沃大点兵v4.1</title>
     <meta charset="UTF-8">
     <meta name="description" content="你可以制作自己的梦沃高手的图">
     <meta name="keywords" content="制作, 图片, 梦沃, 高玩, 抠图, 局部, 换图">
@@ -160,7 +160,7 @@
     </style>
 </head>
 <body>
-    <h1 text-align: center;>局部换图</h1>
+    <h1 text-align: center;>局部换图之梦沃大点兵<br>V4.1</h1>
     <hr>
     <div id="uploadContainer">
         <label for="uploadImage" class="custom-file-upload">
@@ -189,6 +189,9 @@
             <label for="forceSize">强制拉伸图片</label><br>
             <input type="radio" id="alignShortEdge" name="resizeOption" value="alignShortEdge">
             <label for="alignShortEdge">对齐图片短边</label>
+            <br><br>
+            <input type="checkbox" id="mirrorImage" name="mirrorImage">
+            <label for="mirrorImage">镜像反转图片</label>
         </div>
 
         <input type="file" id="uploadImage" accept="image/*" style="display: none;"/>
@@ -283,7 +286,16 @@ function processImage(userFile, overlayBlob, targetWidth, targetHeight, shiftX, 
         ctx.translate(posX + width / 2, posY + height / 2);
         ctx.rotate(-rotationDegrees * Math.PI / 180);
 
+        const mirror = document.getElementById('mirrorImage').checked;
+        if (mirror) {
+            ctx.scale(-1, 1); // 水平镜像反转
+        }
+
         ctx.drawImage(img, -width / 2, -height / 2, width, height);
+
+        if (mirror) {
+            ctx.scale(-1, 1);
+        }
 
         ctx.rotate(rotationDegrees * Math.PI / 180);
         ctx.translate(-posX - width / 2, -posY - height / 2);
