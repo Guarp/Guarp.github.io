@@ -154,6 +154,15 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+        .custom-file-upload7 {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(212, 192, 137);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
         #resizeOptions {
             border: 2px solid #b89b9b; /* 边框颜色和宽度 */
             padding: 10px;
@@ -202,6 +211,10 @@
         <label for="uploadImage6" class="custom-file-upload6">
             唐王聚口
         </label>
+
+        <label for="uploadImage7" class="custom-file-upload7">
+            文明繁荣
+        </label>
         </div>
         
         <br><br>
@@ -222,6 +235,7 @@
         <input type="file" id="uploadImage4" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage5" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage6" accept="image/*" style="display: none;"/>
+        <input type="file" id="uploadImage7" accept="image/*" style="display: none;"/>
 
         <br><br>
         单击按钮上传图片
@@ -387,6 +401,9 @@ document.getElementById('uploadImage5').addEventListener('change', function (e) 
 });
 document.getElementById('uploadImage6').addEventListener('change', function (e) {
     loadImage(e.target.files[0], 'https://guarp.github.io/hlp/twdj.png', 1920, 1080, 588, -95, 350, 375, -19);
+});
+document.getElementById('uploadImage7').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/frzz.png', 1276, 1702, 10, -50, 1702, 1276, 0);
 });
     </script>
 </body>
