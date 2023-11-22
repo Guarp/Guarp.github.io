@@ -2,7 +2,7 @@
 <html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>局部换图-梦沃大点兵v4.3</title>
+    <title>局部换图-梦沃大点兵v5</title>
     <meta charset="UTF-8">
     <meta name="description" content="你可以制作自己的梦沃高手的图">
     <meta name="keywords" content="制作, 图片, 梦沃, 高玩, 抠图, 局部, 换图">
@@ -37,7 +37,7 @@
             display: flex;
             justify-content: center; /* 水平居中 */
             flex-wrap: wrap; /* 允许按钮换行 */
-            gap: 100px; /* 设置按钮之间的间距 */
+            gap: 50px; /* 设置按钮之间的间距 */
         }
 
         #viewImage {
@@ -145,6 +145,15 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+        .custom-file-upload6 {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(54, 114, 233);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
         #resizeOptions {
             border: 2px solid #b89b9b; /* 边框颜色和宽度 */
             padding: 10px;
@@ -166,7 +175,7 @@
     </style>
 </head>
 <body>
-    <h1 text-align: center;>局部换图之梦沃大点兵<br>V4.3</h1>
+    <h1 text-align: center;>局部换图之梦沃大点兵<br>V5</h1>
     <hr>
     <div id="uploadContainer">
         <div id="buttonContainer">
@@ -181,13 +190,17 @@
         <label for="uploadImage3" class="custom-file-upload3">
             萝莉の王
         </label>
-        </div><div id="buttonContainer"> <!-- 其实是换行-->
+        <!-- </div><div id="buttonContainer"> 其实是换行 -->
         <label for="uploadImage4" class="custom-file-upload4">
             纹希看片
         </label>
         
         <label for="uploadImage5" class="custom-file-upload5">
             大牛尚钓
+        </label>
+
+        <label for="uploadImage6" class="custom-file-upload6">
+            唐王聚口
         </label>
         </div>
         
@@ -208,6 +221,7 @@
         <input type="file" id="uploadImage3" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage4" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage5" accept="image/*" style="display: none;"/>
+        <input type="file" id="uploadImage6" accept="image/*" style="display: none;"/>
 
         <br><br>
         单击按钮上传图片
@@ -215,11 +229,7 @@
         请注意: 首次生成时间较长, 科学上网以加速生成时间
     </div>
     
-    <div id="loadingIndicator">
-        <img src="https://guarp.github.io/loading.gif" alt="加载中...">
-        <br>
-        正在加载图片...
-    </div>
+    <div id="loadingIndicator"></div>
     <div id="progressBar"><div>0%</div></div>
     <button id="viewImage" style="display: none;">下载图片</button>
     <button id="browseImage" style="display: none;">浏览图片</button>
@@ -374,6 +384,9 @@ document.getElementById('uploadImage4').addEventListener('change', function (e) 
 });
 document.getElementById('uploadImage5').addEventListener('change', function (e) {
     loadImage(e.target.files[0], 'https://guarp.github.io/hlp/daniu.png', 433, 577, 0, 0, 577, 433, 0);
+});
+document.getElementById('uploadImage6').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/twdj.png', 1920, 1080, 588, -95, 350, 375, -19);
 });
     </script>
 </body>
