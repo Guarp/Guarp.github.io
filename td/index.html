@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>梦沃大点兵-旋转块</title>
+    <title>梦沃大点兵-旋转块v2</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #000000;
+            background-color: #f4f4f4;;
         }
 
         #controls {
@@ -19,27 +19,10 @@
             margin-bottom: 20px;
         }
 
-        .scbutton {
-            display: inline-block;
+        .upbutton{
+            display: block;
             padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #1cba00;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .scbutton:hover {
-            background-color: rgb(0, 121, 8);
-        }
-
-        .upbutton {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 5px;
+            margin: 5px auto;
             font-size: 16px;
             cursor: pointer;
             background-color: #008CBA;
@@ -49,8 +32,32 @@
             transition: background-color 0.3s ease;
         }
 
-        .upbutton:hover {
-            background-color: #005f73;
+        .shape-option {
+            display: block;
+            padding: 10px 20px;
+            margin: 5px auto;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ff9c9c;
+            color: white;
+            border: none;
+            border-radius: 100px;
+            transition: background-color 0.3s ease;
+        }
+
+        .upbutton:hover{
+            background-color: #00829d;
+        }
+
+        .shape-option:hover {
+            background-color: rgb(186, 87, 87);
+        }
+
+        .shape-container {
+            margin: 10px 0;
+            border: 1px solid #803838;
+            border-radius: 5px;
+            padding: 10px;
         }
 
         #cube-container {
@@ -63,12 +70,22 @@
 </head>
 <body>
     <audio id="bgm" src="bgm.mp3" loop></audio>
-    <audio id="bgm" src="bgm.mp3" loop></audio>
     
     <div id="controls">
-        <h1 style="color: aliceblue;">梦沃大点兵之旋转( )块</h1>
+        <h1 style="color: rgb(0, 0, 0);">梦沃大点兵之旋转块<br>V2</h1>
+        <div class="shape-container">
+            <label class="shape-option">
+                <input type="radio" id="cube" name="shape" value="cube" checked> 立方体
+            </label>
+            <label class="shape-option">
+                <input type="radio" id="sphere" name="shape" value="sphere"> 球体
+            </label>
+        </div>
         <label for="image-upload" class="upbutton">选择图片</label>
         <input type="file" id="image-upload" accept="image/*" style="display: none;">
+    
+        背景颜色<input type="color" id="background-color-picker" value="#000000">
+    
     </div>
     
     <div id="cube-container"></div>
@@ -77,9 +94,8 @@
         var isImageUploaded = false;
         var container = document.getElementById('cube-container');
         var uploader = document.getElementById('image-upload');
-        var startBtn = document.getElementById('start-animation');
         var controls = document.getElementById('controls');
-
+        var colorPicker = document.getElementById('background-color-picker');
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
         camera.position.z = 2;
@@ -87,6 +103,7 @@
         var renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setSize(container.offsetWidth, container.offsetHeight);
         container.appendChild(renderer.domElement);
+        
 
         var textureLoader = new THREE.TextureLoader();
         var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
@@ -96,7 +113,8 @@
 
         function animate() {
             requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
+            // cube.rotation.x += 0.01;
+            
             cube.rotation.y += 0.01;
             renderer.render(scene, camera);
         }
@@ -108,10 +126,39 @@
         }
 
         window.addEventListener('resize', onWindowResize, false);
-        
+
+        var shape = "cube"; // 默认形状
+
+        document.querySelectorAll('input[name="shape"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                shape = this.value;
+
+                // 移除当前立方体或球体
+                scene.remove(cube);
+
+                // 创建新的立方体或球体
+                if (shape === "cube") {
+                    cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+                } else if (shape === "sphere") {
+                    cubeGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+                }
+                cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+                scene.add(cube);
+
+                // 如果已经上传了图片，则应用贴图
+                if (isImageUploaded) {
+                    textureLoader.load(isImageUploaded, function (texture) {
+                        cube.material.map = texture;
+                        cube.material.needsUpdate = true;
+                    });
+                }
+            });
+        });
+
         uploader.addEventListener('change', function (e) {
             var file = e.target.files[0];
             var url = URL.createObjectURL(file);
+            isImageUploaded = url;
 
             var img = new Image();
             img.onload = function () {
@@ -126,7 +173,9 @@
                 });
             };
             img.src = url;
-
+            var chosenColor = colorPicker.value;
+            renderer.setClearColor(chosenColor); // 更 新渲染器背景色
+            document.body.style.backgroundColor = chosenColor; // 更新网页背景色
             controls.style.display = 'none';
             container.style.display = 'block';
             onWindowResize();
@@ -136,9 +185,6 @@
         animate();
 
         var bgm = document.getElementById('bgm');
-
-        
-
     </script>
 </body>
 </html>
