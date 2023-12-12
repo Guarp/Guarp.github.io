@@ -2,7 +2,7 @@
 <html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>局部换图-梦沃大点兵v5</title>
+    <title>局部换图-梦沃大点兵v6</title>
     <meta charset="UTF-8">
     <meta name="description" content="你可以制作自己的梦沃高手的图">
     <meta name="keywords" content="制作, 图片, 梦沃, 高玩, 抠图, 局部, 换图">
@@ -163,6 +163,24 @@
             border-radius: 5px;
             margin-top: 20px;
         }
+        .custom-file-upload8 {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(97, 73, 255);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .custom-file-upload9 {
+            border: 1px solid #b89b9b;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            background-color: rgb(78, 96, 75);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
         #resizeOptions {
             border: 2px solid #b89b9b; /* 边框颜色和宽度 */
             padding: 10px;
@@ -184,7 +202,7 @@
     </style>
 </head>
 <body>
-    <h1 text-align: center;>局部换图之梦沃大点兵<br>V5</h1>
+    <h1 text-align: center;>局部换图之梦沃大点兵<br>V6</h1>
     <hr>
     <div id="uploadContainer">
         <div id="buttonContainer">
@@ -215,6 +233,14 @@
         <label for="uploadImage7" class="custom-file-upload7">
             文明繁荣
         </label>
+
+        <label for="uploadImage8" class="custom-file-upload8">
+            唐王蹲坑
+        </label>
+
+        <label for="uploadImage9" class="custom-file-upload9">
+            口罩兵王
+        </label>
         </div>
         
         <br><br>
@@ -236,6 +262,8 @@
         <input type="file" id="uploadImage5" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage6" accept="image/*" style="display: none;"/>
         <input type="file" id="uploadImage7" accept="image/*" style="display: none;"/>
+        <input type="file" id="uploadImage8" accept="image/*" style="display: none;"/>
+        <input type="file" id="uploadImage9" accept="image/*" style="display: none;"/>
 
         <br><br>
         单击按钮上传图片
@@ -405,6 +433,13 @@ document.getElementById('uploadImage6').addEventListener('change', function (e) 
 document.getElementById('uploadImage7').addEventListener('change', function (e) {
     loadImage(e.target.files[0], 'https://guarp.github.io/hlp/frzz.png', 1276, 1702, 10, -50, 1702, 1276, 0);
 });
+document.getElementById('uploadImage8').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/twdk.png', 1278, 1706, 0, 0, 1706, 1278, 0);
+});
+document.getElementById('uploadImage9').addEventListener('change', function (e) {
+    loadImage(e.target.files[0], 'https://guarp.github.io/hlp/kzbw.png', 1050, 1050, 65, -160, 211, 282, 0);
+});
+
     </script>
 </body>
 </html>
