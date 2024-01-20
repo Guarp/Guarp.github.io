@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>过激语言检测系统</title>
+    <style>
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    transition: background 1s;
+}
+
+.centered-text {
+    margin: 10px;
+    color: white;
+    font-size: 20px;
+}
+
+.blur-button {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 15px 30px;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    backdrop-filter: blur(5px);
+    transition: opacity 0.3s;
+    cursor: pointer;
+}
+
+.blur-button:hover {
+    opacity: 0.8;
+}
+
+.hidden {
+    display: none;
+}
+
+.centered-loader {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#progressBarContainer {
+    width: 50%;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#progressBar {
+    height: 20px;
+    background-color: #4caf50;
+    width: 0%;
+    transition: width 0.1s;
+}
+
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div id="timeDisplay" class="centered-text">系统自动存储外部声道时间：<span id="currentTime"></span></div>
+        <button id="startButton" class="blur-button">开始检测</button>
+        <div id="statusMessage" class="hidden centered-text" style="margin-top: 20px;color: #000;"></div>
+        <div id="loader" class="hidden centered-loader"></div>
+        <div id="progressBarContainer" class="hidden">
+            <div id="progressBar"></div>
+        </div>
+        <div id="result" class="hidden centered-text">识别结果</div>
+        <div id="finalMessage" class="hidden centered-text" style="color: #000;">未检测到激动情绪/过激言语</div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const startButton = document.getElementById('startButton');
+    const loader = document.getElementById('loader');
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    const progressBar = document.getElementById('progressBar');
+    const statusMessage = document.getElementById('statusMessage');
+    const result = document.getElementById('result');
+    const finalMessage = document.getElementById('finalMessage');
+    const timeDisplay = document.getElementById('currentTime');
+    const timeDisplayElement = document.getElementById('timeDisplay');
+
+    function updateCurrentTime() {
+        const now = new Date();
+        timeDisplay.textContent = `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+    }
+    setInterval(updateCurrentTime, 1000);
+
+    function checkLocalStorage() {
+        const lastCheckTime = localStorage.getItem('lastCheckTime');
+        if (lastCheckTime) {
+            const currentTime = new Date();
+            const lastTime = new Date(lastCheckTime);
+            const diff = (currentTime - lastTime) / (1000 * 60); // 换为
+
+            if (diff < 30) {
+
+                startButton.style.display = 'none';
+                finalMessage.textContent = '检测时间间隔不得小于30分钟';
+                timeDisplayElement.textContent = '上次检测结果：未检测到激动情绪/过激言语'
+                finalMessage.classList.remove('hidden');
+            }
+        }
+    }
+    checkLocalStorage();
+
+    startButton.addEventListener('click', function() {
+        timeDisplayElement.classList.add('hidden'); 
+        this.classList.add('hidden');
+        loader.classList.remove('hidden');
+        progressBarContainer.classList.remove('hidden');
+        statusMessage.classList.remove('hidden');
+
+        let progress = 0;
+        const interval = setInterval(function() {
+            progress += Math.floor(Math.random()*1.05);
+            progressBar.style.width = `${progress}%`;
+
+            let message = '';
+            if (progress < 20) {
+                message = '正在创建系统临时文件通道';
+            } else if (progress < 45) {
+                message = '正在读取';
+            } else if (progress < 55) {
+                message = '正在请求第三方语音识别模型库';
+            } else if (progress < 85) {
+                message = '正在调用库进行转换';
+            } else if (progress < 100) {
+                message = '正在比对中文语言模型库V23.11';
+            }
+            statusMessage.textContent = message;
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                loader.classList.add('hidden');
+                progressBarContainer.classList.add('hidden');
+                result.classList.remove('hidden');
+                finalMessage.classList.remove('hidden');
+                statusMessage.classList.add('hidden');
+                localStorage.setItem('lastCheckTime', new Date().toISOString());
+            }
+        }, 20);
+    });
+});
+
+    </script>
+</body>
+</html>
