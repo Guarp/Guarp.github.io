@@ -46,6 +46,16 @@ body, html {
     display: none;
 }
 
+.footer-text {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 10px; 
+    text-align: center;
+    font-size: 12px;
+    color: rgb(0, 0, 0);
+}
+
 .centered-loader {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -80,8 +90,10 @@ body, html {
 
 </head>
 <body>
+    
     <div class="container">
-        <div id="timeDisplay" class="centered-text">系统自动存储外部声道时间：<span id="currentTime"></span></div>
+        <h1>过激语言检测系统V0.1</h1>
+        <div id="timeDisplay" class="centered-text">系统自动存储外部声道时间：<span id="currentTime">正在获取。。。</span></div>
         <button id="startButton" class="blur-button">开始检测</button>
         <div id="statusMessage" class="hidden centered-text" style="margin-top: 20px;color: #000;"></div>
         <div id="loader" class="hidden centered-loader"></div>
@@ -90,6 +102,7 @@ body, html {
         </div>
         <div id="result" class="hidden centered-text">识别结果</div>
         <div id="finalMessage" class="hidden centered-text" style="color: #000;">未检测到激动情绪/过激言语</div>
+        <div id="footerText" class="footer-text">该功能暂处于测试阶段，请以正式版为准</div>
     </div>
     <script>
 document.addEventListener('DOMContentLoaded', function() {
