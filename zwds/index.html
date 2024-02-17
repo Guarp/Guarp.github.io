@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>666</title>
+    <script src="nlgl.js"></script>
+    <script>
+        let ming=[
+    ["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],
+    ["丑","寅","卯","辰","巳","午","未","申","酉","戌","亥","子"],
+    ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"],
+    ["亥","子","丑","寅","卯","辰","巳","午","未","申","酉","戌"],
+    ["戌","亥","子","丑","寅","卯","辰","巳","午","未","申","酉"],
+    ["酉","戌","亥","子","丑","寅","卯","辰","巳","午","未","申"],
+    ["申","酉","戌","亥","子","丑","寅","卯","辰","巳","午","未"],
+    ["未","申","酉","戌","亥","子","丑","寅","卯","辰","巳","午"],
+    ["午","未","申","酉","戌","亥","子","丑","寅","卯","辰","巳"],
+    ["巳","午","未","申","酉","戌","亥","子","丑","寅","卯","辰"],
+    ["辰","巳","午","未","申","酉","戌","亥","子","丑","寅","卯"],
+    ["卯","辰","巳","午","未","申","酉","戌","亥","子","丑","寅"]
+];
+let shen=[
+    ["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],
+    ["卯","辰","巳","午","未","申","酉","戌","亥","子","丑","寅"],
+    ["辰","巳","午","未","申","酉","戌","亥","子","丑","寅","卯"],
+    ["巳","午","未","申","酉","戌","亥","子","丑","寅","卯","辰"],
+    ["午","未","申","酉","戌","亥","子","丑","寅","卯","辰","巳"],
+    ["未","申","酉","戌","亥","子","丑","寅","卯","辰","巳","午"],
+    ["申","酉","戌","亥","子","丑","寅","卯","辰","巳","午","未"],
+    ["酉","戌","亥","子","丑","寅","卯","辰","巳","午","未","申"],
+    ["戌","亥","子","丑","寅","卯","辰","巳","午","未","申","酉"],
+    ["亥","子","丑","寅","卯","辰","巳","午","未","申","酉","戌"],
+    ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"],
+    ["丑","寅","卯","辰","巳","午","未","申","酉","戌","亥","子"]
+];
+    </script>
+    <style>
+        body {
+            /* text-align: center; */
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            height: 25vh; 
+            position: relative;
+        }
+        .box {
+            flex: 1;
+            display: block;
+            position: relative; /* 让 .box 支持绝对定位的子元素相对于它定位 */
+            border: 1px solid #000;
+            border-radius: 5px;
+            margin: 5px;
+    /* 移除了justify-content和align-items，因为它们对于 display: block 无效 */
+        }
+        .shengxiao {
+            color: blue;
+            position: absolute; /* 绝对定位 */
+            bottom: 0; /* 放置于底部 */
+            left: 0; /* 放置于左侧 */
+            margin: 10px;
+        }
+        .monthganzhi {
+            color: blue;
+            position: absolute; /* 绝对定位 */
+            bottom: 20px; /* 放置于底部 */
+            left: 0; /* 放置于左侧 */
+            margin: 10px;
+        }
+        input {
+            width: 100%;
+        }
+        #sexinput {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="box" data-index="3">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">巳</span>
+        </div>
+        <div class="box" data-index="4">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">午</span>
+        </div>
+        <div class="box" data-index="5">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">未</span>
+        </div>
+        <div class="box" data-index="6">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">申</span>
+        </div>
+    </div>
+    <div class="container">
+
+        <div class="box" data-index="2">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">辰</span>
+        </div>
+        <div class="box" style="border: 0px;"><p id="resultDisplay"></p></div>
+        <div class="box" style="border: 0px;"></div>
+        <div class="box" data-index="7">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">酉</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="box" data-index="1">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">卯</span>
+        </div>
+        <div class="box" style="border: 0px;">
+            <label style="background-color: cornflowerblue; border-radius: 5px;"><input type="radio" name="sex" value="1"></label>
+            <label style="background-color: palevioletred; border-radius: 5px;"><input type="radio" name="sex" value="-1" checked></label>
+            
+            <input type="text" id="yearInput" placeholder="输入年: 如2024" value="2024"><br>
+            <input type="text" id="monthInput" placeholder="输入月: 如6或06" value="2"><br>
+            <input type="text" id="dayInput" placeholder="输入日: 如18或30" value="17"><br>
+            <input type="text" id="timeInput" placeholder="输入时: 用24小时制" value="20"><br>
+            <button onclick="processAndDisplayYear()">go</button>
+        </div>
+        <div class="box" style="border: 0px;"></div>
+        <div class="box" data-index="8">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">戌</span>
+        </div>
+    </div>
+    <div class="container">
+        <div class="box" data-index="0">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">寅</span>
+        </div>
+        <div class="box" data-index="11">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">丑</span>
+        </div>
+        <div class="box" data-index="10">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">子</span>
+        </div>
+        <div class="box" data-index="9">
+            <span class="monthganzhi"></span>
+            <span class="shengxiao">亥</span>
+        </div>
+    </div>
+    <script>
+
+        const monthGZspans = document.querySelectorAll('.monthganzhi');
+        
+
+//↓性别选项↓
+        let sex = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            
+                const sexRadios = document.querySelectorAll('input[name="sex"]');
+
+                // 为每个单选按钮添加点击事件监听器
+                sexRadios.forEach(radio => {
+                   radio.addEventListener('click', function() {
+                       sex = this.value; // 更新sex变量的值
+                    });
+                });
+        });
+//性别选项
+        
+        const boxes = document.querySelectorAll('.box');
+        const yy=["阴","阳"];
+        const sx=["女","男"];
+        const jybd=["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+        const zcym=['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+        const wh_a=['戊','丁','丙','乙','甲','癸','壬','辛','庚','己'];
+        const wh_b=['甲','壬','庚','戊','丙'];
+        const ws_b=['甲','丙','戊','庚','壬'];
+
+        let wholeYearMg=[];
+
+        function start(inputYear,inputMonth,inputDay,inputTime) {
+            wholeYearMg=[];
+            let gz={};
+            let nongli=calendar.solar2lunar(inputYear, inputMonth, inputDay);//调用nlgl.js的函数拿到object
+            gz.yearst_tg=jybd.indexOf(nongli.gzYear[0]);//从jybd数组里找，字符转成数字
+            gz.yearst_dz=zcym.indexOf(nongli.gzYear[1]);//在zcym里找转
+            //年柱↑
+            gz.monst_tg=jybd.indexOf(wh_b[wh_a.indexOf(nongli.gzYear[0])%5]);//wha数组的格式是五个为一行，所以%5取余
+            gz.monst_dz=2;//一月地支默认为寅
+            gz.fstmon_tg=gz.monst_tg;//保存一月天干
+            
+            for(let i=2;i<nongli.lMonth+1;i++){//向前推到当前月
+                if(gz.monst_tg<9){
+                    gz.monst_tg++;
+                }else{
+                    gz.monst_tg=0;
+                }
+                if(gz.monst_dz<11){
+                    gz.monst_dz++;
+                }else{
+                    gz.monst_dz=0;
+                }
+            }
+            let j=gz.fstmon_tg;
+            let olistwym=[];
+            olistwym.push(jybd[j]);
+            for(let i=0;i<11;i++){
+                if(j<9){
+                    j++;
+                }else{
+                    j=0;
+                }
+                olistwym.push(jybd[j]);
+            }
+            wholeYearMg.push(...olistwym.slice(3,7),olistwym[2],olistwym[7],olistwym[1],olistwym[8],olistwym[0],olistwym[11],olistwym[10],olistwym[9]);
+
+
+            //月柱↑
+            gz.day_tg=((inputYear-1911-10)*5+Math.floor((inputYear-1911-10)/4)+daysBetweenDates(inputYear, inputMonth, inputDay)+1)%60;
+            gz.day_dz=gz.day_tg%12-1;
+            gz.day_tg=gz.day_tg%10-1;
+            if(gz.day_tg<0){gz.day_tg=9}
+            if(gz.day_dz<0){gz.day_dz=11}
+            //日柱↑
+            gz.time_tg=jybd.indexOf(ws_b[gz.day_tg%5]);
+            gz.timeed_tg=Math.floor(inputTime/2)%12;
+            gz.time_dz=0;
+
+            while(gz.time_dz<gz.timeed_tg){
+                if(gz.time_tg<9){
+                    gz.time_tg++;
+                }else{
+                    gz.time_tg=0;
+                }
+                if(gz.time_dz<11){
+                    gz.time_dz++;
+                }else{
+                    gz.time_dz=0;
+                }
+            }
+            //时柱↑
+            
+            gz.yysex=(inputYear-1)%2;
+            if(gz.yysex==0){gz.yysex=-1;}
+            gz.clock=gz.yysex*sex;
+            if(gz.yysex==-1){gz.yysex=0;}
+            if(sex==-1){sex=0;}
+
+            console.log(nongli);
+            gz.minggong=ming[gz.time_dz][nongli.lMonth-1];
+            gz.shengong=shen[gz.time_dz][nongli.lMonth-1];
+            return `年天干地支: ${jybd[gz.yearst_tg]+zcym[gz.yearst_dz]}\n月天干地支: ${jybd[gz.monst_tg]+zcym[gz.monst_dz]}\n日天干地支: ${jybd[gz.day_tg]+zcym[gz.day_dz]} \n时天干地支: ${jybd[gz.time_tg]+zcym[gz.time_dz]} \n${yy[gz.yysex]+sx[sex]} \n命宫位置: ${gz.minggong} \n身宫位置: ${gz.shengong}`;
+        }
+
+        function daysBetweenDates(inputYear, inputMonth, inputDay) {
+            // 创建起始日期为当年的1月1日
+            const startDate = new Date(inputYear, 0, 1); // 注意月份从0开始计数
+            // 创建结束日期为输入的年、月、日
+            const endDate = new Date(inputYear, inputMonth - 1, inputDay); // 同样注意月份从0开始计数
+            // 计算两个日期之间的毫秒差
+            const diffInMilliseconds = endDate - startDate;
+            // 将毫秒差转换为天数
+            const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+            return diffInDays;
+        }
+//↓启动计算
+        function processAndDisplayYear() {
+            function isPureNumber(str) {
+                const regex = /^\d+$/;
+                return regex.test(str);
+            }
+            let userInputyear = document.getElementById('yearInput').value;
+            let userInputmonth = document.getElementById('monthInput').value;
+            let userInputday = document.getElementById('dayInput').value;
+            let userInputtime = document.getElementById('timeInput').value;
+            if(isPureNumber(userInputyear+userInputmonth+userInputday+userInputtime)){
+                let result = start(userInputyear,userInputmonth,userInputday,userInputtime);
+                document.getElementById('resultDisplay').innerText = result;
+                if (wholeYearMg.length === monthGZspans.length) {
+                    monthGZspans.forEach((span, index) => {
+                    // 设置每个span的内容为数组对应项的值
+                    span.textContent = wholeYearMg[index];
+                    });
+                } else {
+                    console.error(`数组长度和span标签数量不匹配`);
+                    console.log(wholeYearMg)
+                }
+            }else{
+                alert("不合规输入!");
+            }
+        }
+        
+        
+    </script>
+</body>
+</html
