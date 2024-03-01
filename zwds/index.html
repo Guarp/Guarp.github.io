@@ -5,40 +5,117 @@
     <title>666</title>
     <script src="nlgl.js"></script>
     <script>
-        let ming=[
-    ["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],
-    ["丑","寅","卯","辰","巳","午","未","申","酉","戌","亥","子"],
-    ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"],
-    ["亥","子","丑","寅","卯","辰","巳","午","未","申","酉","戌"],
-    ["戌","亥","子","丑","寅","卯","辰","巳","午","未","申","酉"],
-    ["酉","戌","亥","子","丑","寅","卯","辰","巳","午","未","申"],
-    ["申","酉","戌","亥","子","丑","寅","卯","辰","巳","午","未"],
-    ["未","申","酉","戌","亥","子","丑","寅","卯","辰","巳","午"],
-    ["午","未","申","酉","戌","亥","子","丑","寅","卯","辰","巳"],
-    ["巳","午","未","申","酉","戌","亥","子","丑","寅","卯","辰"],
-    ["辰","巳","午","未","申","酉","戌","亥","子","丑","寅","卯"],
-    ["卯","辰","巳","午","未","申","酉","戌","亥","子","丑","寅"]
+        
+
+const wuxingju=[
+    [0, 4, 3, 1, 2],
+    [4, 3, 1, 2, 0],
+    [1, 2, 0, 4, 3],
+    [3, 1, 2, 0, 4],
+    [2, 0, 4, 3, 1],
+    [4, 3, 1, 2, 0]
 ];
-let shen=[
-    ["寅","卯","辰","巳","午","未","申","酉","戌","亥","子","丑"],
-    ["卯","辰","巳","午","未","申","酉","戌","亥","子","丑","寅"],
-    ["辰","巳","午","未","申","酉","戌","亥","子","丑","寅","卯"],
-    ["巳","午","未","申","酉","戌","亥","子","丑","寅","卯","辰"],
-    ["午","未","申","酉","戌","亥","子","丑","寅","卯","辰","巳"],
-    ["未","申","酉","戌","亥","子","丑","寅","卯","辰","巳","午"],
-    ["申","酉","戌","亥","子","丑","寅","卯","辰","巳","午","未"],
-    ["酉","戌","亥","子","丑","寅","卯","辰","巳","午","未","申"],
-    ["戌","亥","子","丑","寅","卯","辰","巳","午","未","申","酉"],
-    ["亥","子","丑","寅","卯","辰","巳","午","未","申","酉","戌"],
-    ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"],
-    ["丑","寅","卯","辰","巳","午","未","申","酉","戌","亥","子"]
+const wuxingju_str=["水二局", "木三局", "金四局", "土五局", "火六局"];
+const gongwei=["父母", "福德", "田宅", "官禄", "交友", "迁移", "疾厄", "财帛", "子女", "夫妻", "兄弟"]
+const ziweixing=[
+    [1, 4, 11, 6, 9], 
+    [2, 1, 4, 11, 6], 
+    [2, 2, 1, 4, 11], 
+    [3, 5, 2, 1, 4], 
+    [3, 2, 0, 2, 1], 
+    [4, 3, 5, 7, 2], 
+    [4, 6, 2, 0, 10], 
+    [5, 3, 3, 5, 7], 
+    [5, 4, 1, 2, 0], 
+    [6, 7, 7, 3, 5], 
+    [6, 4, 3, 8, 2], 
+    [7, 5, 4, 1, 3], 
+    [7, 8, 2, 6, 11],
+    [8, 5, 7, 3, 8], 
+    [8, 6, 4, 4, 1], 
+    [9, 9, 5, 9, 6], 
+    [9, 6, 3, 2, 3], 
+    [10, 7, 8, 7, 4],
+    [10, 10, 5, 4, 0], 
+    [11, 7, 6, 5, 9], 
+    [11, 8, 4, 10, 2], 
+    [0, 11, 9, 3, 7], 
+    [0, 8, 6, 8, 4], 
+    [1, 9, 7, 5, 5], 
+    [1, 0, 5, 6, 1], 
+    [2, 9, 10, 11, 10], 
+    [2, 10, 7, 4, 3], 
+    [3, 1, 8, 9, 8], 
+    [3, 10, 6, 6, 5], 
+    [4, 11, 11, 7, 6]
 ];
+
+yeargan_zhuxing=[
+    [2, 3, 1, 1, 7, 7, 9, 5, 8, 9], 
+    [3, 4, 2, 0, 8, 4, 8, 6, 6, 7], 
+    [5, 6, 4, 11, 9, 5, 0, 0, 4, 5], 
+    [6, 7, 5, 11, 9, 2, 11, 5, 2, 3], 
+    [5, 6, 4, 1, 7, 3, 3, 6, 0, 1], 
+    [6, 7, 5, 0, 8, 9, 2, 8, 8, 9], 
+    [8, 9, 7, 1, 7, 11, 6, 2, 6, 7], 
+    [9, 10, 8, 2, 6, 9, 5, 6, 4, 5], 
+    [11, 0, 10, 3, 5, 10, 6, 9, 2, 3], 
+    [0, 1, 11, 3, 5, 6, 5, 11, 0, 1]
+]
+yearzhi_zhuxing=[
+    [2, 1, 6, 6, 4, 10, 3, 9, 2, 10, 8, 5, 4, 9, 9, 5], 
+    [11, 2, 5, 7, 5, 9, 2, 8, 2, 10, 9, 1, 1, 6, 10, 6], 
+    [8, 3, 4, 8, 6, 8, 1, 7, 5, 1, 10, 9, 10, 3, 11, 7], 
+    [5, 4, 3, 9, 7, 7, 0, 6, 5, 1, 5, 5, 7, 0, 0, 8], 
+    [2, 5, 2, 10, 8, 6, 11, 5, 5, 1, 6, 1, 4, 9, 1, 9], 
+    [11, 6, 1, 11, 9, 5, 10, 4, 8, 4, 7, 9, 1, 6, 2, 10], 
+    [8, 7, 0, 0, 10, 4, 9, 3, 8, 4, 2, 5, 10, 3, 3, 11], 
+    [5, 8, 11, 1, 11, 3, 8, 2, 8, 4, 3, 1, 7, 0, 4, 0], 
+    [2, 9, 10, 2, 0, 2, 7, 1, 11, 7, 4, 9, 4, 9, 5, 1], 
+    [11, 10, 9, 3, 1, 1, 6, 0, 11, 7, 11, 5, 1, 6, 6, 2], 
+    [8, 11, 8, 4, 2, 0, 5, 11, 11, 7, 0, 1, 10, 3, 7, 3], 
+    [5, 0, 7, 5, 3, 11, 4, 10, 2, 10, 1, 9, 7, 0, 8, 4]
+]
+monthgan_zhuxing=[
+    [4, 10, 9, 1, 8, 5, 10, 2], 
+    [5, 9, 10, 2, 8, 8, 5, 0], 
+    [6, 8, 11, 3, 10, 2, 4, 10], 
+    [7, 7, 0, 4, 10, 11, 2, 8], 
+    [8, 6, 1, 5, 0, 5, 7, 6], 
+    [9, 5, 2, 6, 0, 8, 3, 4], 
+    [10, 4, 3, 7, 2, 2, 11, 2], 
+    [11, 3, 4, 8, 2, 11, 7, 0], 
+    [0, 2, 5, 9, 4, 5, 2, 10], 
+    [1, 1, 6, 10, 4, 8, 6, 8], 
+    [2, 0, 7, 11, 6, 2, 10, 6], 
+    [3, 11, 8, 0, 6, 11, 2, 4]
+]
+
+monthzhi_zhuxing=[
+    [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11], 
+    [4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3], 
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0], 
+    [3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2], 
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1], 
+    [10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
+    [3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2], 
+    [10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
+    [9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8], 
+    [10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 
+    [11, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 
+    [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 
+    [6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5], 
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1]
+]
+
+
+xing = [
+    ["紫微","天机","太阳","武曲","天同","廉贞","天府","太阴","贪狼","巨门","天相","天梁","七杀","破军","禄存","擎羊","陀罗","天魁","天钺","天官","天福","天厨","截路","空亡","天马","天空","天哭","天虚","龙池","凤阁","红鸾","天喜","孤辰","寡宿","蜚廉","破碎","华盖","咸池","天德","月德","天才","天寿","左辅","右弼","天刑","天姚","解神","天巫","天月","阴煞","文昌","文曲","火星","铃星","地劫","地空","台辅","封诰","三台","八座","恩光","天贵","天伤","天使","长生","沐浴","冠带","临官","帝旺","衰","病","死","墓","绝","胎","养","博士","力士","青龙","小耗","将军","奏书","飞廉","喜神","病符","大耗","伏兵","宫符","岁建","晦气","丧门","贯索","官符","小耗","大耗","龙德","白虎","天德","吊客","病符","将星","攀鞍","岁驿","息神","华盖","劫煞","灾煞","天煞","指背","咸池","月煞","亡神","化禄","化权","化科","化忌"],
+    ["大","大","大","大","大","大","大","大","大","大","大","大","大","大","甲","甲","甲","甲","甲","乙","乙","乙","丙","丙","甲","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","乙","甲","甲","乙","乙","乙","乙","乙","乙","甲","甲","甲","甲","甲","甲","乙","乙","乙","乙","乙","乙","丙","丙","丙","丙","丙","丙","丙","丙","丙","丙","丙","丙","丙","丙","*","*","*","*","*","*","*","*","*","*","*","*","丁","戊","戊","戊","戊","戊","戊","丁","戊","丁","戊","戊","丁","丁","丁","戊","丁","戊","戊","戊","戊","戊","戊","戊","标签","标签","标签","标签"]
+]
+
     </script>
     <style>
-        body {
-            /* text-align: center; */
-            padding: 20px;
-        }
         .container {
             display: flex;
             height: 25vh; 
@@ -54,18 +131,52 @@ let shen=[
     /* 移除了justify-content和align-items，因为它们对于 display: block 无效 */
         }
         .shengxiao {
-            color: blue;
+            font-size: larger;
+            color: rgb(0, 0, 0);
             position: absolute; /* 绝对定位 */
             bottom: 0; /* 放置于底部 */
             left: 0; /* 放置于左侧 */
-            margin: 10px;
+            margin: 1px;
+            font-weight: bold;
         }
         .monthganzhi {
-            color: blue;
+            font-size: larger;
+            color: rgb(0, 0, 0);
             position: absolute; /* 绝对定位 */
             bottom: 20px; /* 放置于底部 */
             left: 0; /* 放置于左侧 */
-            margin: 10px;
+            margin: 1px;
+            font-weight: bold;
+        }
+        .lefttop1 {
+            position: absolute;
+            top: 3px;
+            left: 0;
+            font-size: large;
+            writing-mode:vertical-lr;
+            max-height: 50px;
+            line-height: 100%
+            
+        }
+        .shengong-info {
+            font-size: small;
+            color: #ff0000;
+            position: absolute; /* 绝对定位 */
+            right: 0;
+            top:40%;
+            margin: 2px;
+            border: #ff0000 solid 1px;
+            border-radius: 5px;
+            padding-inline: 3px;
+            writing-mode:vertical-lr;
+        }
+        .bottom-info {
+            font-size: larger;
+            color: red;
+            position: absolute; /* 绝对定位 */
+            right: 39%;
+            bottom:0;
+            margin: 1px;
         }
         input {
             width: 100%;
@@ -76,84 +187,57 @@ let shen=[
     </style>
 </head>
 <body>
-    
     <div class="container">
-        <div class="box" data-index="3">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">巳</span>
-        </div>
-        <div class="box" data-index="4">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">午</span>
-        </div>
-        <div class="box" data-index="5">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">未</span>
-        </div>
-        <div class="box" data-index="6">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">申</span>
-        </div>
+        <div class="box" data-index="3"></div>
+        <div class="box" data-index="4"></div>
+        <div class="box" data-index="5"></div>
+        <div class="box" data-index="6"></div>
     </div>
     <div class="container">
 
-        <div class="box" data-index="2">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">辰</span>
-        </div>
+        <div class="box" data-index="2"></div>
         <div class="box" style="border: 0px;"><p id="resultDisplay"></p></div>
-        <div class="box" style="border: 0px;"></div>
-        <div class="box" data-index="7">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">酉</span>
-        </div>
+        <div class="box" style="border: 0px;"><p id="wuxingjuDisplay"></p></div>
+        <div class="box" data-index="7"></div>
     </div>
     <div class="container">
-        <div class="box" data-index="1">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">卯</span>
-        </div>
+        <div class="box" data-index="1"></div>
         <div class="box" style="border: 0px;">
             <label style="background-color: cornflowerblue; border-radius: 5px;"><input type="radio" name="sex" value="1"></label>
             <label style="background-color: palevioletred; border-radius: 5px;"><input type="radio" name="sex" value="-1" checked></label>
             
-            <input type="text" id="yearInput" placeholder="输入年: 如2024" value="2024"><br>
-            <input type="text" id="monthInput" placeholder="输入月: 如6或06" value="2"><br>
-            <input type="text" id="dayInput" placeholder="输入日: 如18或30" value="17"><br>
-            <input type="text" id="timeInput" placeholder="输入时: 用24小时制" value="20"><br>
+            <input type="text" id="yearInput" placeholder="输入年: 如2024"><br>
+            <input type="text" id="monthInput" placeholder="输入月: 如6或06"><br>
+            <input type="text" id="dayInput" placeholder="输入日: 如18或30"><br>
+            <input type="text" id="timeInput" placeholder="输入时: 用24小时制"><br>
             <button onclick="processAndDisplayYear()">go</button>
         </div>
         <div class="box" style="border: 0px;"></div>
-        <div class="box" data-index="8">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">戌</span>
-        </div>
+        <div class="box" data-index="8"></div>
     </div>
     <div class="container">
-        <div class="box" data-index="0">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">寅</span>
-        </div>
-        <div class="box" data-index="11">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">丑</span>
-        </div>
-        <div class="box" data-index="10">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">子</span>
-        </div>
-        <div class="box" data-index="9">
-            <span class="monthganzhi"></span>
-            <span class="shengxiao">亥</span>
-        </div>
+        <div class="box" data-index="0"></div>
+        <div class="box" data-index="11"></div>
+        <div class="box" data-index="10"></div>
+        <div class="box" data-index="9"></div>
     </div>
     <script>
 
+        let Yinput=document.getElementById("yearInput");
+        let Minput=document.getElementById("monthInput");
+        let Dinput=document.getElementById("dayInput");
+        let Tinput=document.getElementById("timeInput");
+        let currentDate=new Date();
+        Yinput.value=currentDate.getFullYear()*1;
+        Minput.value=currentDate.getMonth()+1;
+        Dinput.value=currentDate.getDate();
+        Tinput.value=currentDate.getHours()+1;
+        //自动填充当前年月日时↑
         const monthGZspans = document.querySelectorAll('.monthganzhi');
         
 
 //↓性别选项↓
-        let sex = 0;
+        let sex = -1;
         document.addEventListener('DOMContentLoaded', function() {
             
                 const sexRadios = document.querySelectorAll('input[name="sex"]');
@@ -177,80 +261,119 @@ let shen=[
         const ws_b=['甲','丙','戊','庚','壬'];
 
         let wholeYearMg=[];
-
+        let pan={};
         function start(inputYear,inputMonth,inputDay,inputTime) {
+
+            document.querySelectorAll('.box').forEach(clearElementContent);
+            createOriginalDZ();
+
             wholeYearMg=[];
-            let gz={};
-            let nongli=calendar.solar2lunar(inputYear, inputMonth, inputDay);//调用nlgl.js的函数拿到object
-            gz.yearst_tg=jybd.indexOf(nongli.gzYear[0]);//从jybd数组里找，字符转成数字
-            gz.yearst_dz=zcym.indexOf(nongli.gzYear[1]);//在zcym里找转
-            //年柱↑
-            gz.monst_tg=jybd.indexOf(wh_b[wh_a.indexOf(nongli.gzYear[0])%5]);//wha数组的格式是五个为一行，所以%5取余
-            gz.monst_dz=2;//一月地支默认为寅
-            gz.fstmon_tg=gz.monst_tg;//保存一月天干
             
-            for(let i=2;i<nongli.lMonth+1;i++){//向前推到当前月
-                if(gz.monst_tg<9){
-                    gz.monst_tg++;
-                }else{
-                    gz.monst_tg=0;
-                }
-                if(gz.monst_dz<11){
-                    gz.monst_dz++;
-                }else{
-                    gz.monst_dz=0;
-                }
+            let nongli=calendar.solar2lunar(inputYear, inputMonth, inputDay);//调用nlgl.js的函数拿到object
+            pan.yearst_tg=jybd.indexOf(nongli.gzYear[0]);//从jybd数组里找，字符转成数字
+            pan.yearst_dz=zcym.indexOf(nongli.gzYear[1]);//在zcym里找转
+            //年柱↑
+            pan.monst_tg=jybd.indexOf(wh_b[wh_a.indexOf(nongli.gzYear[0])%5]);//wha数组的格式是五个为一行，所以%5取余
+            pan.monst_dz=2;//一月地支默认为寅
+            pan.fstmon_tg=pan.monst_tg;//保存一月天干
+            
+            for(let i=2;i<nongli.lMonth+1;i++){
+                pan.monst_tg=(pan.monst_tg+1)%10;
+                pan.monst_dz=(pan.monst_dz+1)%12;
             }
-            let j=gz.fstmon_tg;
-            let olistwym=[];
-            olistwym.push(jybd[j]);
+            let j=pan.fstmon_tg;
+            wholeYearMg.push(jybd[j]);
             for(let i=0;i<11;i++){
-                if(j<9){
-                    j++;
-                }else{
-                    j=0;
-                }
-                olistwym.push(jybd[j]);
+                j=(j+1)%10;
+                wholeYearMg.push(jybd[j]);
             }
-            wholeYearMg.push(...olistwym.slice(3,7),olistwym[2],olistwym[7],olistwym[1],olistwym[8],olistwym[0],olistwym[11],olistwym[10],olistwym[9]);
-
-
             //月柱↑
-            gz.day_tg=((inputYear-1911-10)*5+Math.floor((inputYear-1911-10)/4)+daysBetweenDates(inputYear, inputMonth, inputDay)+1)%60;
-            gz.day_dz=gz.day_tg%12-1;
-            gz.day_tg=gz.day_tg%10-1;
-            if(gz.day_tg<0){gz.day_tg=9}
-            if(gz.day_dz<0){gz.day_dz=11}
+            pan.day_tg=((inputYear-1911-10)*5+Math.floor((inputYear-1911-10)/4)+daysBetweenDates(inputYear, inputMonth, inputDay))+1%60;
+            pan.day_dz=pan.day_tg%12-1;
+            pan.day_tg=pan.day_tg%10-1;
+            pan.day_tg=(pan.day_tg+9)%9;
+            pan.day_dz=(pan.day_dz+11)%11;
             //日柱↑
-            gz.time_tg=jybd.indexOf(ws_b[gz.day_tg%5]);
-            gz.timeed_tg=Math.floor(inputTime/2)%12;
-            gz.time_dz=0;
+            pan.time_tg=jybd.indexOf(ws_b[pan.day_tg%5]);
+            pan.timeed_tg=Math.floor(inputTime/2)%12;
+            pan.time_dz=0;
 
-            while(gz.time_dz<gz.timeed_tg){
-                if(gz.time_tg<9){
-                    gz.time_tg++;
-                }else{
-                    gz.time_tg=0;
-                }
-                if(gz.time_dz<11){
-                    gz.time_dz++;
-                }else{
-                    gz.time_dz=0;
-                }
+            for(let i=0;i<pan.timeed_tg;i++){
+                pan.time_tg=(pan.time_tg+1)%10;
+                pan.time_dz=(pan.time_dz+1)%12;
             }
             //时柱↑
             
-            gz.yysex=(inputYear-1)%2;
-            if(gz.yysex==0){gz.yysex=-1;}
-            gz.clock=gz.yysex*sex;
-            if(gz.yysex==-1){gz.yysex=0;}
+            pan.yysex=(inputYear-1)%2;
+            if(pan.yysex==0){pan.yysex=-1;}
+            if(sex==0){sex=-1;}
+            pan.clock=pan.yysex*sex;
+            if(pan.yysex==-1){pan.yysex=0;}
             if(sex==-1){sex=0;}
 
-            console.log(nongli);
-            gz.minggong=ming[gz.time_dz][nongli.lMonth-1];
-            gz.shengong=shen[gz.time_dz][nongli.lMonth-1];
-            return `年天干地支: ${jybd[gz.yearst_tg]+zcym[gz.yearst_dz]}\n月天干地支: ${jybd[gz.monst_tg]+zcym[gz.monst_dz]}\n日天干地支: ${jybd[gz.day_tg]+zcym[gz.day_dz]} \n时天干地支: ${jybd[gz.time_tg]+zcym[gz.time_dz]} \n${yy[gz.yysex]+sx[sex]} \n命宫位置: ${gz.minggong} \n身宫位置: ${gz.shengong}`;
+            pan.minggong=(11-(pan.time_dz+9)%12+nongli.lMonth-1)%12;
+            pan.shengong=((pan.time_tg+2)%12+nongli.lMonth-1)%12;
+            addInBox("命宫",pan.minggong,"bottom-info");
+            addInBox("身宫",pan.shengong,"shengong-info");
+            //命宫身宫↑
+            pan.wuxing_ju=wuxingju[Math.floor(pan.minggong/2)][pan.yearst_tg%5];//五行局算法
+            document.getElementById('wuxingjuDisplay').innerText=wuxingju_str[pan.wuxing_ju];//设置五行局显示文本
+            //五行局↑
+            for(let i=0;i<gongwei.length;i++){addInBox(gongwei[i],(pan.minggong+i+1)%12,"bottom-info");}
+            //另外11宫位↑
+            pan.xing=new Array(116);
+            pan.xing[0]=ziweixing[nongli.lDay-1][pan.wuxing_ju];
+            //紫微星↑
+            for(let i=0,j=[11,9,8,7,4];i<5;i++){
+                pan.xing[i+1]=(pan.xing[0]+j[i])%12;
+            }
+            //天机太阳武曲天同廉贞↑
+            pan.xing[6]=zcym.indexOf(zcym.slice().reverse()[(pan.xing[0]+7)%12]);
+            //天府星↑
+            for(let i=0,j=[1,2,3,4,5,6,10];i<7;i++){
+                pan.xing[7+i]=(pan.xing[6]+j[i])%12;
+            }
+            //天府诸星↑
+            for(let i=0;i<10;i++){
+                pan.xing[14+i]=yeargan_zhuxing[pan.yearst_tg][i];
+            }
+            //年干系诸星上↑
+            for(let i=0;i<16;i++){
+                pan.xing[24+i]=yearzhi_zhuxing[pan.yearst_dz][i];
+            }
+            pan.xing[40]=(pan.minggong+pan.yearst_dz)%12;
+            pan.xing[41]=(pan.shengong+pan.yearst_dz)%12;
+            //年支系诸星上↑
+            for(let i=0;i<8;i++){
+                pan.xing[42+i]=monthgan_zhuxing[nongli.lMonth-1][i];
+            }
+            //月干系诸星上↑
+            pan.xing[50]=monthzhi_zhuxing[0][pan.time_dz];
+            pan.xing[51]=monthzhi_zhuxing[1][pan.time_dz];
+            // switch(pan.yearst_dz%4){
+            //     case 0:{
+            //         pan.xing[52]=(pan.time_dz+2)%12;
+            //         pan.xing[53]=(pan.time_dz+10)%12;
+            //     }
+            //     case 1:{
+            //         pan.xing[52]=(pan.time_dz+3)%12;
+            //         pan.xing[53]=(pan.time_dz+10)%12;
+            //     }
+            //     case 2:{
+            //     }
+            // }
+            creatAllStarInBox();
+            
+            console.log(pan);
+            return `年天干地支: ${jybd[pan.yearst_tg]+zcym[pan.yearst_dz]}
+            月天干地支: ${jybd[pan.monst_tg]+zcym[pan.monst_dz]}
+            日天干地支: ${jybd[pan.day_tg]+zcym[pan.day_dz]}
+            时天干地支: ${jybd[pan.time_tg]+zcym[pan.time_dz]}
+            ${yy[pan.yysex]+sx[sex]}
+            `;
         }
+
+        
 
         function daysBetweenDates(inputYear, inputMonth, inputDay) {
             // 创建起始日期为当年的1月1日
@@ -261,7 +384,7 @@ let shen=[
             const diffInMilliseconds = endDate - startDate;
             // 将毫秒差转换为天数
             const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-            return diffInDays;
+            return Math.round(diffInDays);
         }
 //↓启动计算
         function processAndDisplayYear() {
@@ -276,21 +399,84 @@ let shen=[
             if(isPureNumber(userInputyear+userInputmonth+userInputday+userInputtime)){
                 let result = start(userInputyear,userInputmonth,userInputday,userInputtime);
                 document.getElementById('resultDisplay').innerText = result;
-                if (wholeYearMg.length === monthGZspans.length) {
-                    monthGZspans.forEach((span, index) => {
-                    // 设置每个span的内容为数组对应项的值
-                    span.textContent = wholeYearMg[index];
-                    });
-                } else {
-                    console.error(`数组长度和span标签数量不匹配`);
-                    console.log(wholeYearMg)
-                }
+                mapMonthGZToBoxes();
             }else{
                 alert("不合规输入!");
             }
         }
+function mapMonthGZToBoxes() {
+    for(let i=0;i<12;i++){
+        addInBox(wholeYearMg[i],(i+2)%12,'monthganzhi');
+        }
+    
+}
+function createOriginalDZ() {
+    for(let i=0;i<12;i++){
+            addInBox(zcym[(i+10)%12],i-2,'shengxiao');
+        }
+}
+function clearElementContent(element) {
+    if (element.hasAttribute('data-index')) {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+    }
+}
+function addInBox(text, position, className, Color) {  
+//最方便的一集
+    const textBox = document.querySelector(`.box[data-index="${(position+10)%12}"]`);
+    
+    if (textBox) {
+        const targetElement = textBox.querySelector(`.${className}`);
+        if (!targetElement) {
+            const textSpan = document.createElement('span');
+            textSpan.classList.add(className);
+            textBox.appendChild(textSpan);
+            const targetElement2 = textBox.querySelector(`.${className}`);
+            const span = document.createElement('span');
+            span.textContent = text;
+            span.style.color = Color;
+            targetElement2.appendChild(span);
+        }else{
+            const span = document.createElement('span');
+            span.textContent = text;
+            span.style.color = Color;
+            targetElement.appendChild(span);
+        }
+    }
+}
+function autoColor(star) {
+    switch (xing[1][xing[0].indexOf(star)]) {
+        case "大":
+            return "red";
+        case "甲":
+            return "black";
+        case "乙":
+            return "purple";
+        case "丙":
+            return "cornflowerblue";
+        case "丁":
+            return "darkgray";
+        case "戊":
+            return "mistyrose";
+        default:
+            return;
         
-        
+    }
+}
+
+function creatAllStarInBox(){
+    const order=["大","甲","乙","丙","丁","戊"];
+    for(let j=0;j<order.length;j++){//绘制顺序, 从大到小
+        for(let i=0;i<116;i++){
+            if(xing[1][i]==order[j]){
+                addInBox(xing[0][i],pan.xing[i],"lefttop1",autoColor(xing[0][i]));
+            }
+        }
+    }
+    
+}
+
     </script>
 </body>
-</html
+</html>
