@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>888</title>
+    <script src="nlgl.js"></script>
+    <script src="paipan.js"></script>
+    <style>
+        .select-box-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.select-box {
+  margin-right: 10px;
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.add-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.remove-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.query-btn {
+    background-color: forestgreen;
+    color: aliceblue;
+  width: 60px;
+  height: 30px;
+  border-radius: 10%;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+    </style>
+</head>
+<body>
+    开始日期：<input type="date" id="startDate" value="2023-01-01"><br>
+    结束日期：<input type="date" id="endDate" value="2024-12-31">
+    
+    
+<div id="selectBoxesContainer"></div>
+<div id="count"></div>
+<div id="log"></div>
+    
+    <script>
+let globalExpression = "";
+document.addEventListener('DOMContentLoaded', () => {
+  const selectBoxesContainer = document.getElementById('selectBoxesContainer');
+  
+  const optionsList1 = ["紫微","天机","太阳","武曲","天同","廉贞","天府","太阴","贪狼","巨门","天相","天梁","七杀","破军","禄存","擎羊","陀罗","天魁","天钺","天官","天福","天厨","截路","空亡","天马","天空","天哭","天虚","龙池","凤阁","红鸾","天喜","孤辰","寡宿","蜚廉","破碎","华盖","咸池","天德","月德","天才","天寿","左辅","右弼","天刑","天姚","解神","天巫","天月","阴煞","文昌","文曲"];
+  const optionsList2 = ["命宫", "父母", "福德", "田宅", "官禄", "交友", "迁移", "疾厄", "财帛", "子女", "夫妻", "兄弟"];
+  
+  function fillSelectBox(selectBox, optionsList) {
+    optionsList.forEach((option, index) => {
+      const optionElement = document.createElement('option');
+      optionElement.value = index; // 使用索引作为值以便构建表达式
+      optionElement.text = option;
+      selectBox.appendChild(optionElement);
+    });
+  }
+  
+  function createTextElement(text) {
+    const textElement = document.createElement('span');
+    textElement.textContent = text;
+    return textElement;
+  }
+  
+  function updateButtonsVisibility() {
+    const groups = document.querySelectorAll('.select-box-group');
+    groups.forEach((group, index) => {
+      const removeButton = group.querySelector('.remove-btn');
+      const addButton = group.querySelector('.add-btn');
+      const queryButton = group.querySelector('.query-btn');
+      if (index === groups.length - 1) {
+        addButton.style.display = '';
+        queryButton.style.display = '';
+      } else {
+        addButton.style.display = 'none';
+        queryButton.style.display = 'none';
+      }
+      if (groups.length === 1) {
+        removeButton.style.display = 'none';
+      } else {
+        removeButton.style.display = '';
+      }
+    });
+  }
+  
+  function createSelectBoxGroup() {
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'select-box-group';
+    
+    const selectBox1 = document.createElement('select');
+    selectBox1.className = 'select-box';
+    fillSelectBox(selectBox1, optionsList1);
+    
+    const selectBox2 = document.createElement('select');
+    selectBox2.className = 'select-box';
+    fillSelectBox(selectBox2, optionsList2);
+    
+    const addButton = document.createElement('button');
+    addButton.className = 'add-btn';
+    addButton.textContent = '+';
+    addButton.style.display = 'none'; // 默认隐藏，稍后更新显示状态
+    
+    const queryButton = document.createElement('button');
+    queryButton.className = 'query-btn';
+    queryButton.textContent = '查询';
+    queryButton.style.display = 'none'; // 默认隐藏，稍后更新显示状态
+
+    const removeButton = document.createElement('button');
+    removeButton.className = 'remove-btn';
+    removeButton.textContent = '-';
+    removeButton.addEventListener('click', function() {
+      groupDiv.remove();
+      updateButtonsVisibility();
+    });
+    
+    groupDiv.appendChild(selectBox1);
+    groupDiv.appendChild(createTextElement(' 在 '));
+    groupDiv.appendChild(selectBox2);
+    groupDiv.appendChild(createTextElement(' 中 '));
+    groupDiv.appendChild(removeButton);
+    groupDiv.appendChild(addButton);
+    groupDiv.appendChild(queryButton);
+    
+    
+    addButton.addEventListener('click', () => {
+      selectBoxesContainer.appendChild(createSelectBoxGroup());
+      updateButtonsVisibility();
+    });
+    queryButton.addEventListener('click', buildExpression);
+    
+    return groupDiv;
+  }
+  
+  function buildExpression() {
+    let expression = '';
+    const groups = document.querySelectorAll('.select-box-group');
+    groups.forEach(group => {
+      const select1 = group.querySelector('.select-box:first-child');
+      const select2 = group.querySelector('.select-box:nth-child(3)');
+      const option1 = select1.value;
+      const option2 = select2.value;
+      if (expression !== '') expression += ' && ';
+      expression += `pan.xing[${option1}]==(pan.minggong+${option2})%12`;
+    });
+    globalExpression = expression; // 更新全局变量
+    test();
+}
+
+  selectBoxesContainer.appendChild(createSelectBoxGroup());
+  updateButtonsVisibility(); // 初始调用来确保按钮的正确显示状态
+});
+        
+
+        
+
+        function daysBetweenDates(inputYear, inputMonth, inputDay) {
+            // 创建起始日期为当年的1月1日
+            const startDate = new Date(inputYear, 0, 1); // 注意月份从0开始计数
+            // 创建结束日期为输入的年、月、日
+            const endDate = new Date(inputYear, inputMonth - 1, inputDay); // 同样注意月份从0开始计数
+            // 计算两个日期之间的毫秒差
+            const diffInMilliseconds = endDate - startDate;
+            // 将毫秒差转换为天数
+            const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+            return Math.round(diffInDays);
+        }
+
+        function test() {
+    const startDate = new Date(document.getElementById('startDate').value);
+    const endDate = new Date(document.getElementById('endDate').value);
+    let c = 0;
+    let logContent = ""; // 用于收集日志信息
+
+    // 清空之前的日志
+    document.getElementById('log').innerHTML = "";
+    
+    for (let date = new Date(startDate); date <= endDate; date.setHours(date.getHours() + 1)) {
+        pan=paipan(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours());
+      if(eval(globalExpression)){
+        logContent += `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}时<br>`;
+        c++;
+      }
+    }
+    
+    // 更新页面上的日志和计数
+    document.getElementById('log').innerHTML = logContent;
+    document.getElementById('count').textContent = `一共${c}个小时 / ${c/2}个时辰`;
+}
+
+    </script>
+</body>
+</html>
