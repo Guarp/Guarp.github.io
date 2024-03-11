@@ -48,6 +48,28 @@
   cursor: pointer;
   margin-left: 10px;
 }
+.date-div {
+  margin: 10px;
+}
+.date-btn {
+  left:130px;
+  margin-left: 10px;
+  background-color: rgb(230, 230, 230);
+  color: rgb(0, 0, 0);
+  border: none;
+  transition: all 0.2s;
+  position: absolute;
+}
+.date-btn:hover {
+  padding-right: 20px;
+  background-color: rgb(255, 163, 49);
+  color: rgb(255, 255, 255);
+}
+.date-btn:active {
+  padding-right: 5px;
+  background-color: rgb(49, 118, 255);
+  color: rgb(255, 255, 255);
+}
 
     </style>
 </head>
@@ -188,25 +210,35 @@ document.addEventListener('DOMContentLoaded', () => {
             return Math.round(diffInDays);
         }
 
-        function test() {
+function test() {
     const startDate = new Date(document.getElementById('startDate').value);
     const endDate = new Date(document.getElementById('endDate').value);
     let c = 0;
-    let logContent = ""; // 用于收集日志信息
+    let logContainer = document.getElementById('log');
+    logContainer.innerHTML = ""; // 清空之前的日志
 
-    // 清空之前的日志
-    document.getElementById('log').innerHTML = "";
-    
     for (let date = new Date(startDate); date <= endDate; date.setHours(date.getHours() + 1)) {
-        pan=paipan(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours());
+      pan=paipan(date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours());
       if(eval(globalExpression)){
-        logContent += `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}时<br>`;
+        let dateStr = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}时`;
+        let logEntry = document.createElement('div');
+        logEntry.className = 'date-div';
+        let dateButton = document.createElement('button');
+        dateButton.className = 'date-btn';
+        let queryDate = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${String(date.getHours()).padStart(2, '0')}`;
+        dateButton.textContent = '查看';
+        dateButton.onclick = function() {
+          window.location.href = `./index.html?date=${queryDate}`;
+        };
+
+        logEntry.innerHTML = dateStr;
+        logEntry.appendChild(dateButton);
+        logContainer.appendChild(logEntry);
+
         c++;
       }
     }
-    
-    // 更新页面上的日志和计数
-    document.getElementById('log').innerHTML = logContent;
+
     document.getElementById('count').textContent = `一共${c}个小时 / ${c/2}个时辰`;
 }
 
