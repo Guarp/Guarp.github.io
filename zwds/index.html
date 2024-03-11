@@ -5,6 +5,7 @@
     <title>666</title>
     <script src="nlgl.js"></script>
     <script src="paipan.js"></script>
+    
     <style>
         .container {
             display: flex;
@@ -178,7 +179,7 @@
             let userInputday = document.getElementById('dayInput').value;
             let userInputtime = document.getElementById('timeInput').value;
             if(isPureNumber(userInputyear+userInputmonth+userInputday+userInputtime)){
-                start(userInputyear,userInputmonth,userInputday,userInputtime)
+                start(userInputyear,userInputmonth,userInputday,userInputtime,sex)
             }else{
                 alert("不合规输入!");
             }
@@ -291,7 +292,7 @@ function parseDateAndStart() {
         Dinput.value=parseInt(day);
         Tinput.value=parseInt(hour);
       // 执行start函数
-      start(year, month, day, hour);
+      start(year, month, day, hour, -1);
   }else{
     Yinput.value=currentDate.getFullYear()*1;
         Minput.value=currentDate.getMonth()+1;

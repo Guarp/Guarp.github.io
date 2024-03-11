@@ -7,7 +7,28 @@
     <script src="paipan.js"></script>
     <script src="xlsx.full.min.js"></script>
     <style>
+        body {
+        background-color: rgb(255, 246, 220);
+      }
         .select-box-group {
+          background-color: rgb(255, 250, 250);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          width: 365px;
+          height: 40px;
+          border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.reverse-box-group {
+  background-color: rgb(51, 51, 50);
+  color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          width: 365px;
+          height: 40px;
+          border-radius: 5px;
   display: flex;
   align-items: center;
   margin-bottom: 10px;
@@ -55,8 +76,9 @@
 .date-btn {
   left:140px;
   margin-left: 10px;
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border: none;
   transition: all 0.2s;
   position: absolute;
@@ -64,6 +86,7 @@
 .date-btn:hover {
   padding-right: 20px;
   background-color: rgb(255, 163, 49);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   color: rgb(255, 255, 255);
 }
 .date-btn:active {
@@ -91,6 +114,7 @@
 <body>
     开始日期：<input type="date" id="startDate" value="2023-01-01">
     <a href="./index.html" style="margin-left: 20px;font-size: larger; background-color:dodgerblue;padding: 10px;color:brown;text-decoration:none;">正算</a>
+    <a href="./bianli.html" style="margin-left: 5px;font-size: larger; background-color:rgb(28, 14, 100);padding: 10px;color:rgb(255, 255, 255);text-decoration:none;">重置</a>
     <br>
     结束日期：<input type="date" id="endDate" value="2024-12-31">
     <button id="exc-btn" onclick="exportToExcel()" style="display: none;">导出到XLSX</button>
@@ -107,6 +131,58 @@ document.addEventListener('DOMContentLoaded', () => {
   const optionsList1 = ["紫微","天机","太阳","武曲","天同","廉贞","天府","太阴","贪狼","巨门","天相","天梁","七杀","破军","禄存","擎羊","陀罗","天魁","天钺","天官","天福","天厨","截路","空亡","天马","天空","天哭","天虚","龙池","凤阁","红鸾","天喜","孤辰","寡宿","蜚廉","破碎","华盖","咸池","天德","月德","天才","天寿","左辅","右弼","天刑","天姚","解神","天巫","天月","阴煞","文昌","文曲"];
   const optionsList2 = ["命宫", "父母", "福德", "田宅", "官禄", "交友", "迁移", "疾厄", "财帛", "子女", "夫妻", "兄弟"];
   
+  function createSelectBox(optionsList) {
+        const selectBox = document.createElement('select');
+        selectBox.className = 'select-box';
+        optionsList.forEach((option, index) => {
+            const optionElement = document.createElement('option');
+            optionElement.value = index;
+            optionElement.text = option;
+            selectBox.appendChild(optionElement);
+        });
+        return selectBox;
+    }
+
+    function createButton(text, className, onClick) {
+        const button = document.createElement('button');
+        button.textContent = text;
+        button.className = className;
+        button.addEventListener('click', onClick);
+        return button;
+    }
+
+    function createSelectBoxGroup(isReverse = false, allowRemove = true) {
+    const groupDiv = document.createElement('div');
+    groupDiv.className = isReverse ? 'reverse-box-group' : 'select-box-group';
+    groupDiv.dataset.isReverse = isReverse; // 标记是否为反选组
+
+    const selectBox1 = createSelectBox(optionsList1);
+    const selectBox2 = createSelectBox(optionsList2);
+
+    // 创建减号按钮，可能会根据组的数量显示或隐藏
+    const removeButton = createButton('-', 'remove-btn', function() {
+        groupDiv.remove();
+        updateButtonsVisibility();
+    });
+    if (!allowRemove) {
+        removeButton.style.visibility = 'hidden'; // 对于第一个组，隐藏删除按钮
+    }
+
+    groupDiv.appendChild(selectBox1);
+    groupDiv.appendChild(createTextElement(isReverse ? ' 不在 ' : ' 　在 '));
+    groupDiv.appendChild(selectBox2);
+    groupDiv.appendChild(createTextElement(' 中 '));
+    groupDiv.appendChild(removeButton);
+
+    return groupDiv;
+}
+
+    function addGroup(isReverse = false) {
+        const newGroup = createSelectBoxGroup(isReverse);
+        selectBoxesContainer.appendChild(newGroup);
+        updateButtonsVisibility();
+    }
+
   function fillSelectBox(selectBox, optionsList) {
     optionsList.forEach((option, index) => {
       const optionElement = document.createElement('option');
@@ -123,107 +199,75 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   function updateButtonsVisibility() {
-    const groups = document.querySelectorAll('.select-box-group');
-    groups.forEach((group, index) => {
-      const removeButton = group.querySelector('.remove-btn');
-      const addButton = group.querySelector('.add-btn');
-      const queryButton = group.querySelector('.query-btn');
-      if (index === groups.length - 1) {
-        addButton.style.display = '';
-        queryButton.style.display = '';
-      } else {
-        addButton.style.display = 'none';
-        queryButton.style.display = 'none';
-      }
-      if (groups.length === 1) {
-        removeButton.style.display = 'none';
-      } else {
-        removeButton.style.display = '';
-      }
-    });
-  }
-  
-  function createSelectBoxGroup() {
-    const groupDiv = document.createElement('div');
-    groupDiv.className = 'select-box-group';
+    const allGroups = document.querySelectorAll('.select-box-group, .reverse-box-group');
+    const normalGroups = document.querySelectorAll('.select-box-group');
+    const reverseGroups = document.querySelectorAll('.reverse-box-group');
     
-    const selectBox1 = document.createElement('select');
-    selectBox1.className = 'select-box';
-    fillSelectBox(selectBox1, optionsList1);
-    
-    const selectBox2 = document.createElement('select');
-    selectBox2.className = 'select-box';
-    fillSelectBox(selectBox2, optionsList2);
-    
-    const addButton = document.createElement('button');
-    addButton.className = 'add-btn';
-    addButton.textContent = '+';
-    addButton.style.display = 'none'; // 默认隐藏，稍后更新显示状态
-    
-    const queryButton = document.createElement('button');
-    queryButton.className = 'query-btn';
-    queryButton.textContent = '查询';
-    queryButton.style.display = 'none'; // 默认隐藏，稍后更新显示状态
+    // 移除现有的加号和查询按钮
+    document.querySelectorAll('.add-btn, .query-btn').forEach(btn => btn.remove());
 
-    const removeButton = document.createElement('button');
-    removeButton.className = 'remove-btn';
-    removeButton.textContent = '-';
-    removeButton.addEventListener('click', function() {
-      groupDiv.remove();
-      updateButtonsVisibility();
+    // 为最后一个普通组和最后一个反选组添加加号按钮
+    [normalGroups[normalGroups.length - 1], reverseGroups[reverseGroups.length - 1]].forEach(lastGroup => {
+        if (lastGroup) { // 检查是否存在
+            const isReverse = lastGroup.dataset.isReverse === 'true';
+            const addButton = createButton('+', 'add-btn', () => {
+                selectBoxesContainer.appendChild(createSelectBoxGroup(isReverse));
+                updateButtonsVisibility();
+            });
+            lastGroup.appendChild(addButton);
+        }
     });
-    
-    groupDiv.appendChild(selectBox1);
-    groupDiv.appendChild(createTextElement(' 在 '));
-    groupDiv.appendChild(selectBox2);
-    groupDiv.appendChild(createTextElement(' 中 '));
-    groupDiv.appendChild(removeButton);
-    groupDiv.appendChild(addButton);
-    groupDiv.appendChild(queryButton);
-    
-    
-    addButton.addEventListener('click', () => {
-      selectBoxesContainer.appendChild(createSelectBoxGroup());
-      updateButtonsVisibility();
+
+    // 添加查询按钮到最后一个组
+    if (allGroups.length > 0) {
+        const queryButton = createButton('查询', 'query-btn', buildExpression);
+        allGroups[allGroups.length - 1].appendChild(queryButton);
+    }
+
+    // 更新减号按钮的可见性
+    allGroups.forEach(group => {
+        const removeButton = group.querySelector('.remove-btn');
+        if (allGroups.length > 1) { // 保证至少有一个普通组和一个反选组
+            removeButton.style.visibility = '';
+        } else {
+            removeButton.style.visibility = 'hidden';
+        }
     });
-    queryButton.addEventListener('click', buildExpression);
-    
-    return groupDiv;
-  }
+}
+  
+  
   
   function buildExpression() {
     let expression = '';
-    const groups = document.querySelectorAll('.select-box-group');
-    groups.forEach(group => {
-      const select1 = group.querySelector('.select-box:first-child');
-      const select2 = group.querySelector('.select-box:nth-child(3)');
-      const option1 = select1.value;
-      const option2 = select2.value;
-      if (expression !== '') expression += ' && ';
-      expression += `pan.xing[${option1}]==(pan.minggong+${option2})%12`;
+    const groups = document.querySelectorAll('.select-box-group, .reverse-box-group');
+
+    groups.forEach((group, index) => {
+        const isReverse = group.classList.contains('reverse-box-group');
+        const select1 = group.querySelector('.select-box:first-child');
+        const select2 = group.querySelector('.select-box:nth-child(3)');
+        const option1 = select1.value;
+        const option2 = select2.value;
+        
+        if (index !== 0) {
+            expression += ' && ';
+        }
+        
+        if (isReverse) {
+            expression += `pan.xing[${option1}]!=(pan.minggong+${option2})%12`;
+        } else {
+            expression += `pan.xing[${option1}]==(pan.minggong+${option2})%12`;
+        }
     });
-    globalExpression = expression; // 更新全局变量
+
+    globalExpression = expression;
     test();
 }
 
-  selectBoxesContainer.appendChild(createSelectBoxGroup());
+selectBoxesContainer.appendChild(createSelectBoxGroup(false)); // Normal group
+    selectBoxesContainer.appendChild(createSelectBoxGroup(true)); // Reverse group
   updateButtonsVisibility(); // 初始调用来确保按钮的正确显示状态
 });
         
-
-        
-
-        function daysBetweenDates(inputYear, inputMonth, inputDay) {
-            // 创建起始日期为当年的1月1日
-            const startDate = new Date(inputYear, 0, 1); // 注意月份从0开始计数
-            // 创建结束日期为输入的年、月、日
-            const endDate = new Date(inputYear, inputMonth - 1, inputDay); // 同样注意月份从0开始计数
-            // 计算两个日期之间的毫秒差
-            const diffInMilliseconds = endDate - startDate;
-            // 将毫秒差转换为天数
-            const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
-            return Math.round(diffInDays);
-        }
 
 function test() {
     const startDate = new Date(document.getElementById('startDate').value);
@@ -254,7 +298,7 @@ function test() {
       }
     }
 
-    document.getElementById('count').textContent = `一共${c}个小时 / ${c/2}个时辰`;
+    document.getElementById('count').textContent = `一共${c}个小时`;
 
     let exc = document.getElementById('exc-btn');
     if(c>0){
