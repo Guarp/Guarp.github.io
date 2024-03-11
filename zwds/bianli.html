@@ -243,7 +243,7 @@ function test() {
         let queryDate = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}${String(date.getHours()).padStart(2, '0')}`;
         dateButton.textContent = '查看';
         dateButton.onclick = function() {
-          window.location.href = `./index.html?date=${queryDate}`;
+          window.open(`./index.html?date=${queryDate}`);
         };
 
         logEntry.innerHTML = dateStr;
@@ -288,7 +288,7 @@ function exportToExcel() {
     XLSX.utils.book_append_sheet(wb, ws, "Log");
 
     // 导出工作簿
-    XLSX.writeFile(wb, `${String(currentDate.getFullYear())}-${String(currentDate.getMonth())}-${String(currentDate.getDate())}-${String(currentDate.getHours())}-${String(currentDate.getMinutes())}.xlsx`);
+    XLSX.writeFile(wb, `${String(currentDate.getFullYear())}-${String(currentDate.getMonth())}-${String(currentDate.getDate())}_${String(currentDate.getHours())}-${String(currentDate.getMinutes())}-${String(currentDate.getSeconds())}.xlsx`);
 }
     </script>
 </body>
