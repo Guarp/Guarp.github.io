@@ -35,7 +35,7 @@
   margin-top: 10px;
 }
 
-.light-blue-box-group {
+.same-box-group {
   background-color: rgb(173, 216, 230); /* 淡蓝色 */
   color: black;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -142,7 +142,7 @@ let globalExpression = "";
 document.addEventListener('DOMContentLoaded', () => {
   const selectBoxesContainer = document.getElementById('selectBoxesContainer');
   
-  const optionsList1 = ["紫微","天机","太阳","武曲","天同","廉贞","天府","太阴","贪狼","巨门","天相","天梁","七杀","破军","禄存","擎羊","陀罗","天魁","天钺","天官","天福","天厨","截路","空亡","天马","天空","天哭","天虚","龙池","凤阁","红鸾","天喜","孤辰","寡宿","蜚廉","破碎","华盖","咸池","天德","月德","天才","天寿","左辅","右弼","天刑","天姚","解神","天巫","天月","阴煞","文昌","文曲"];
+  const optionsList1 = ["紫微","天机","太阳","武曲","天同","廉贞","天府","太阴","贪狼","巨门","天相","天梁","七杀","破军","禄存","擎羊","陀罗","天魁","天钺","天官","天福","天厨","截路","空亡","天马","天空","天哭","天虚","龙池","凤阁","红鸾","天喜","孤辰","寡宿","蜚廉","破碎","华盖","咸池","天德","月德","天才","天寿","左辅","右弼","天刑","天姚","解神","天巫","天月","阴煞","文昌","文曲","火星","铃星","地劫","地空","台辅","封诰","三台","八座","恩光","天贵","化禄","化权","化科","化忌"];
   const optionsList2 = ["命宫", "父母", "福德", "田宅", "官禄", "交友", "迁移", "疾厄", "财帛", "子女", "夫妻", "兄弟", "子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
   
   function createSelectBox(optionsList) {
@@ -171,8 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'reverse':
             groupDiv.className = 'reverse-box-group';
             break;
-        case 'lightBlue':
-            groupDiv.className = 'light-blue-box-group';
+        case 'same':
+            groupDiv.className = 'same-box-group';
             break;
         default:
             groupDiv.className = 'select-box-group';
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             textBetween = createTextElement('不在')
             textEnd = createTextElement('里面')
             break;
-        case 'lightBlue':
+        case 'same':
             textBetween = createTextElement('　和')
             textEnd = createTextElement('同宫')
             break;
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const selectBox1 = createSelectBox(optionsList1);
-    const selectBox2 = createSelectBox(groupType === 'lightBlue' ? optionsList1 : optionsList2);
+    const selectBox2 = createSelectBox(groupType === 'same' ? optionsList1 : optionsList2);
     // 创建减号按钮，可能会根据组的数量显示或隐藏
     const removeButton = createButton('-', 'remove-btn', function() {
         groupDiv.remove();
@@ -234,10 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   function updateButtonsVisibility() {
-    const allGroups = document.querySelectorAll('.select-box-group, .reverse-box-group, .light-blue-box-group');
+    const allGroups = document.querySelectorAll('.select-box-group, .reverse-box-group, .same-box-group');
     const normalGroups = document.querySelectorAll('.select-box-group');
     const reverseGroups = document.querySelectorAll('.reverse-box-group');
-    const lightBlueGroups = document.querySelectorAll('.light-blue-box-group');
+    const sameGroups = document.querySelectorAll('.same-box-group');
     
     // 移除现有的加号和查询按钮
     document.querySelectorAll('.add-btn, .query-btn').forEach(btn => btn.remove());
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 为各类型的最后一个组添加加号按钮
     addAddButtonToGroup(normalGroups[normalGroups.length - 1], 'normal');
     addAddButtonToGroup(reverseGroups[reverseGroups.length - 1], 'reverse');
-    addAddButtonToGroup(lightBlueGroups[lightBlueGroups.length - 1], 'lightBlue');
+    addAddButtonToGroup(sameGroups[sameGroups.length - 1], 'same');
 
     // 添加查询按钮到所有组的最后一个
     if (allGroups.length > 0) {
@@ -281,11 +281,11 @@ document.addEventListener('DOMContentLoaded', () => {
 function buildExpression() {
     let expression = '';
     // 使用querySelectorAll获取所有选择框组
-    const groups = document.querySelectorAll('.select-box-group, .reverse-box-group, .light-blue-box-group');
+    const groups = document.querySelectorAll('.select-box-group, .reverse-box-group, .same-box-group');
 
     groups.forEach((group, index) => {
         const isReverse = group.classList.contains('reverse-box-group');
-        const isLightBlue = group.classList.contains('light-blue-box-group');
+        const issame = group.classList.contains('same-box-group');
         const select1 = group.querySelector('.select-box:first-child');
         const select2 = group.querySelector('.select-box:nth-child(3)'); // 注意这里可能需要调整以匹配实际结构
         const option1 = select1.value;
@@ -293,12 +293,30 @@ function buildExpression() {
 
         if (index !== 0) expression += ' && ';
 
+        if (option1 < 62) {
+          listC1 = `pan.xing[${option1}]`;
+        }else{
+          console.log(666);
+          listC1 = `pan.hua[${option1-62}]`;
+          
+        }
+        if(issame){
+          if (option2 < 62) {
+          listC2 = `pan.xing[${option2}]`;
+        }else{
+          console.log(888);
+          listC2 = `pan.hua[${option2-62}]`;
+          
+        }
+        }
+        
+
         if (isReverse) {
-            expression += `pan.xing[${option1}]!=(pan.minggong+${option2})%12`;
-        } else if (isLightBlue) {
-            expression += `pan.xing[${option1}]==pan.xing[${option2}]`;
+            expression += `${listC1}!=(pan.minggong+${option2})%12`;
+        } else if (issame) {
+            expression += `${listC1}==${listC2}`;
         } else {
-            expression += `pan.xing[${option1}]==(pan.minggong+${option2})%12`;
+            expression += `${listC1}==(pan.minggong+${option2})%12`;
         }
     });
 
@@ -309,7 +327,7 @@ function buildExpression() {
 
     selectBoxesContainer.appendChild(createSelectBoxGroup("normal"));
     selectBoxesContainer.appendChild(createSelectBoxGroup("reverse"));
-    selectBoxesContainer.appendChild(createSelectBoxGroup("lightBlue"));
+    selectBoxesContainer.appendChild(createSelectBoxGroup("same"));
   updateButtonsVisibility(); // 初始调用来确保按钮的正确显示状态
 });
         

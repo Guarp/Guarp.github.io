@@ -49,6 +49,16 @@
             line-height: 100%;
             
         }
+        .hua4 {
+            background-color: #ff0000;
+            border-radius: 4px;
+            position: absolute;
+            padding: 1px;
+            margin: 2px;
+            top: 40px;
+            left: 0;
+            
+        }
         .shengong-info {
             font-size: small;
             color: #ff0000;
@@ -249,11 +259,14 @@ function autoColor(star) {
 function creatAllStarInBox(){
     const order=["大","甲","乙","丙","丁","戊"];
     for(let j=0;j<order.length;j++){//绘制顺序, 从大到小
-        for(let i=0;i<116;i++){
+        for(let i=0;i<62;i++){
             if(xing[1][i]==order[j]){
                 addInBox(xing[0][i],pan.xing[i],"lefttop1",autoColor(xing[0][i]));
             }
         }
+    }
+    for(let i=0;i<4;i++){
+        addInBox(hua[i],pan.hua[i],"hua4","white");
     }
     
 }
