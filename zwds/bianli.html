@@ -13,7 +13,7 @@
         .select-box-group {
           background-color: rgb(255, 250, 250);
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          width: 365px;
+          width: 375px;
           height: 40px;
           border-radius: 5px;
   display: flex;
@@ -26,7 +26,7 @@
   background-color: rgb(51, 51, 50);
   color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          width: 365px;
+          width: 375px;
           height: 40px;
           border-radius: 5px;
   display: flex;
@@ -34,6 +34,20 @@
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+.light-blue-box-group {
+  background-color: rgb(173, 216, 230); /* 淡蓝色 */
+  color: black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 375px;
+  height: 40px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
 
 .select-box {
   margin-right: 10px;
@@ -151,14 +165,35 @@ document.addEventListener('DOMContentLoaded', () => {
         return button;
     }
 
-    function createSelectBoxGroup(isReverse = false, allowRemove = true) {
+    function createSelectBoxGroup(groupType = 'normal', allowRemove = true) {
     const groupDiv = document.createElement('div');
-    groupDiv.className = isReverse ? 'reverse-box-group' : 'select-box-group';
-    groupDiv.dataset.isReverse = isReverse; // 标记是否为反选组
+    switch (groupType) {
+        case 'reverse':
+            groupDiv.className = 'reverse-box-group';
+            break;
+        case 'lightBlue':
+            groupDiv.className = 'light-blue-box-group';
+            break;
+        default:
+            groupDiv.className = 'select-box-group';
+    }
+
+    switch (groupType) {
+        case 'reverse':
+            textBetween = createTextElement('不在')
+            textEnd = createTextElement('里面')
+            break;
+        case 'lightBlue':
+            textBetween = createTextElement('　和')
+            textEnd = createTextElement('同宫')
+            break;
+        default:
+            textBetween = createTextElement('　在')
+            textEnd = createTextElement('里面')
+    }
 
     const selectBox1 = createSelectBox(optionsList1);
-    const selectBox2 = createSelectBox(optionsList2);
-
+    const selectBox2 = createSelectBox(groupType === 'lightBlue' ? optionsList1 : optionsList2);
     // 创建减号按钮，可能会根据组的数量显示或隐藏
     const removeButton = createButton('-', 'remove-btn', function() {
         groupDiv.remove();
@@ -169,9 +204,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     groupDiv.appendChild(selectBox1);
-    groupDiv.appendChild(createTextElement(isReverse ? ' 不在 ' : ' 　在 '));
+    groupDiv.appendChild(textBetween);
     groupDiv.appendChild(selectBox2);
-    groupDiv.appendChild(createTextElement(' 中 '));
+    groupDiv.appendChild(textEnd);
     groupDiv.appendChild(removeButton);
 
     return groupDiv;
@@ -199,72 +234,72 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   function updateButtonsVisibility() {
-    const allGroups = document.querySelectorAll('.select-box-group, .reverse-box-group');
+    const allGroups = document.querySelectorAll('.select-box-group, .reverse-box-group, .light-blue-box-group');
     const normalGroups = document.querySelectorAll('.select-box-group');
     const reverseGroups = document.querySelectorAll('.reverse-box-group');
+    const lightBlueGroups = document.querySelectorAll('.light-blue-box-group');
     
     // 移除现有的加号和查询按钮
     document.querySelectorAll('.add-btn, .query-btn').forEach(btn => btn.remove());
 
-    // 为最后一个普通组和最后一个反选组添加加号按钮
-    [normalGroups[normalGroups.length - 1], reverseGroups[reverseGroups.length - 1]].forEach(lastGroup => {
-        if (lastGroup) { // 检查是否存在
-            const isReverse = lastGroup.dataset.isReverse === 'true';
+    // 函数：为最后一个组添加加号按钮
+    const addAddButtonToGroup = (group, groupType) => {
+        if (group) { // 检查是否存在
             const addButton = createButton('+', 'add-btn', () => {
-                selectBoxesContainer.appendChild(createSelectBoxGroup(isReverse));
+                selectBoxesContainer.appendChild(createSelectBoxGroup(groupType));
                 updateButtonsVisibility();
             });
-            lastGroup.appendChild(addButton);
+            group.appendChild(addButton);
         }
-    });
+    };
 
-    // 添加查询按钮到最后一个组
+    // 为各类型的最后一个组添加加号按钮
+    addAddButtonToGroup(normalGroups[normalGroups.length - 1], 'normal');
+    addAddButtonToGroup(reverseGroups[reverseGroups.length - 1], 'reverse');
+    addAddButtonToGroup(lightBlueGroups[lightBlueGroups.length - 1], 'lightBlue');
+
+    // 添加查询按钮到所有组的最后一个
     if (allGroups.length > 0) {
         const queryButton = createButton('查询', 'query-btn', buildExpression);
         allGroups[allGroups.length - 1].appendChild(queryButton);
     }
 
     // 更新减号按钮的可见性
-    allGroups.forEach(group => {
+    allGroups.forEach((group, index) => {
         const removeButton = group.querySelector('.remove-btn');
-        if (allGroups.length > 1) { // 保证至少有一个普通组和一个反选组
-            removeButton.style.visibility = '';
+        if (allGroups.length > 1) {
+            removeButton.style.visibility = 'visible';
         } else {
             removeButton.style.visibility = 'hidden';
         }
     });
 }
+
   
   
   
-  function buildExpression() {
+function buildExpression() {
     let expression = '';
-    const groups = document.querySelectorAll('.select-box-group, .reverse-box-group');
+    // 使用querySelectorAll获取所有选择框组
+    const groups = document.querySelectorAll('.select-box-group, .reverse-box-group, .light-blue-box-group');
 
     groups.forEach((group, index) => {
         const isReverse = group.classList.contains('reverse-box-group');
+        const isLightBlue = group.classList.contains('light-blue-box-group');
         const select1 = group.querySelector('.select-box:first-child');
-        const select2 = group.querySelector('.select-box:nth-child(3)');
+        const select2 = group.querySelector('.select-box:nth-child(3)'); // 注意这里可能需要调整以匹配实际结构
         const option1 = select1.value;
         const option2 = select2.value;
-        
-        if (index !== 0) {
-            expression += ' && ';
-        }
-        if(option2 < 11) {
-          if (isReverse) {
+
+        if (index !== 0) expression += ' && ';
+
+        if (isReverse) {
             expression += `pan.xing[${option1}]!=(pan.minggong+${option2})%12`;
+        } else if (isLightBlue) {
+            expression += `pan.xing[${option1}]==pan.xing[${option2}]`;
         } else {
             expression += `pan.xing[${option1}]==(pan.minggong+${option2})%12`;
         }
-        }else{
-          if (isReverse) {
-            expression += `pan.xing[${option1}]!=${option2}-12`;
-        } else {
-            expression += `pan.xing[${option1}]==${option2}-12`;
-        }
-        }
-        
     });
 
     globalExpression = expression;
@@ -272,8 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
     test();
 }
 
-selectBoxesContainer.appendChild(createSelectBoxGroup(false)); // Normal group
-    selectBoxesContainer.appendChild(createSelectBoxGroup(true)); // Reverse group
+    selectBoxesContainer.appendChild(createSelectBoxGroup("normal"));
+    selectBoxesContainer.appendChild(createSelectBoxGroup("reverse"));
+    selectBoxesContainer.appendChild(createSelectBoxGroup("lightBlue"));
   updateButtonsVisibility(); // 初始调用来确保按钮的正确显示状态
 });
         
@@ -329,7 +365,7 @@ function exportToExcel() {
         let hour = textContent.split(' ')[1].replace('时', ''); // 获取时间部分并移除"时"，例如 "0"
         let [year, month, day] = dateTime.split('-').map(num => parseInt(num, 10)); // 分解日期并转换为数字
 
-        data.push([year, month, day, hour]); // 添加到数据数组中
+        data.push([year, month, day, hour]); // 添加到数据数组里面
     }
 
     // 创建工作表
