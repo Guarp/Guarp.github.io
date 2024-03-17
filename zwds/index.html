@@ -59,6 +59,26 @@
             left: 0;
             
         }
+        .tw_shen {
+            border-radius: 4px;
+            position: absolute;
+            bottom: 45px;
+            left: 0;
+            writing-mode:vertical-lr;
+        }
+        .rightbottom {
+            position: absolute;
+            right: 3px;
+            bottom: 0;
+            max-width: 35px;
+        }
+        .daxian {
+            position: absolute;
+            right: 0;
+            bottom: 25px;
+            left: 0;
+            text-align: center; /* 水平居中 */
+        }
         .shengong-info {
             font-size: small;
             color: #ff0000;
@@ -74,10 +94,12 @@
         .bottom-info {
             font-size: larger;
             color: red;
-            position: absolute; /* 绝对定位 */
-            right: 39%;
+            position: absolute;
+            right: 0;
+            left: 0;
             bottom:0;
             margin: 1px;
+            text-align: center;
         }
         input {
             width: 100%;
@@ -241,15 +263,17 @@ function autoColor(star) {
         case "大":
             return "red";
         case "甲":
-            return "black";
-        case "乙":
             return "purple";
+        case "乙":
+            return "#0044ff";
         case "丙":
-            return "cornflowerblue";
+            return "rgb(86, 156, 214)";
         case "丁":
             return "darkgray";
         case "戊":
             return "mistyrose";
+        case "忌":
+            return "black"
         default:
             return;
         
@@ -257,18 +281,32 @@ function autoColor(star) {
 }
 
 function creatAllStarInBox(){
-    const order=["大","甲","乙","丙","丁","戊"];
+    const order=["大","甲","忌","乙","丙","丁","戊","*"];
     for(let j=0;j<order.length;j++){//绘制顺序, 从大到小
-        for(let i=0;i<62;i++){
+        for(let i=0;i<64;i++){
             if(xing[1][i]==order[j]){
                 addInBox(xing[0][i],pan.xing[i],"lefttop1",autoColor(xing[0][i]));
             }
         }
+        for(let i=64;i<76;i++){
+            if(xing[1][i]==order[j]){
+                addInBox(xing[0][i],pan.xing[i],"tw_shen","gray");
+            }
+        }
+        
+    }
+    for(let i=76;i<88;i++){
+        addInBox(xing[0][i],pan.xing[i],"rightbottom","gray");
+    }
+    for(let i=88;i<100;i++){
+        addInBox(xing[0][i],pan.xing[i],"rightbottom","black");
     }
     for(let i=0;i<4;i++){
         addInBox(hua[i],pan.hua[i],"hua4","white");
     }
-    
+    for(let i=0;i<12;i++){
+        addInBox(`${pan.daxian[i]}~${pan.daxian[i]+9}`,pan.minggong+i,"daxian","black");
+    }
 }
 
 // window.addEventListener('resize', adjustLineHeight);
