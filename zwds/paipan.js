@@ -144,16 +144,13 @@ ws_b=['甲','丙','戊','庚','壬'];
             let pan={};
             pan.wholeYearMg=[];
             
-            pan.yysex=(inputYear-1)%2;
-            if(pan.yysex==0){pan.yysex=-1;}
-            if(pan.yysex==-1){pan.yysex=0;}
-            if(inputSex==-1){
-                pan.sex=0;}else{
-                    pan.sex=1;
-                }
-            pan.clock=pan.yysex*pan.sex;
-
             let nongli=calendar.solar2lunar(inputYear, inputMonth, inputDay);//调用nlgl.js的函数拿到object
+            
+            pan.yysex=((nongli.lYear-1)%2)==0?-1:1;
+            pan.sex=inputSex==1?1:0;
+            pan.clock=pan.yysex*(pan.sex==1?1:-1);
+            pan.clock=pan.clock==1?1:-1;
+  
             pan.yearst_tg=jybd.indexOf(nongli.gzYear[0]);//从jybd数组里找，字符转成数字
             pan.yearst_dz=zcym.indexOf(nongli.gzYear[1]);//在zcym里找转
             //年柱↑
@@ -242,7 +239,7 @@ ws_b=['甲','丙','戊','庚','壬'];
                     break;
             }
             pan.xing[54]=(pan.time_dz+11)%12;
-            pan.xing[55]=(((pan.time_dz-11)%12)+12)%12;
+            pan.xing[55]=11-pan.time_dz;
             pan.xing[56]=(pan.time_dz+6)%12;
             pan.xing[57]=(pan.time_dz+2)%12;
 
@@ -259,22 +256,28 @@ ws_b=['甲','丙','戊','庚','壬'];
             pan.xing[62]=(pan.minggong+5)%12
             pan.xing[63]=(pan.minggong+7)%12
 
+
             for(let i=0;i<12;i++){
-                pan.xing[64+i]=tw_shen[pan.wuxing_ju*2+pan.clock][i]
+                pan.xing[64+i]=tw_shen[pan.wuxing_ju*2+(pan.clock==1?1:0)][i]
             }
             
             for(let i=0;i<12;i++){
-                pan.xing[76+i]=(((pan.xing[14]+i*((pan.clock)*2-1))%12)+12)%12;
+                pan.xing[76+i]=(((pan.xing[14]+i*(pan.clock==1?1:-1))%12)+12)%12;
             }
             
             pan.daxian=new Array(12);
             for(let i=0;i<12;i++){
-                pan.daxian[i]=(((2+pan.wuxing_ju+i*10*((pan.clock)*2-1))%120)+120)%120;
+                pan.daxian[i]=(((2+pan.wuxing_ju+i*10*pan.clock)%120)+120)%120;
             }
             
             for(let i=0;i<12;i++){
                 pan.xing[88+i]=(pan.yearst_dz+i)%12;
             }
+
+            // for(let i=0,j=[8,0,4,11,3,7,2,6,10,5,9,1];i<12;i++){
+            //     pan.xing[100+i]=((j.indexOf(pan.yearst_dz))%3*3+i)%12;
+            //     console.log();
+            // }
 
             return pan;
             
