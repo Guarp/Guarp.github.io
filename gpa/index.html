@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(-45deg, #edc8a0, #deadc0, #78bbd4, #80d6c2);
+    background-size: 400% 400%;
+    animation: BGam 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+}
+        .title {
+            background-color: rgba(0, 0, 0, 0.051) ;
+            position: absolute;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 75px;
+            color: rgb(255, 255, 255);
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 2px 2px 2px rgba(0,0,0,0.039) inset,
+            5px 5px 6px rgba(0,0,0,0.057)inset,
+            10px 9px 12px rgba(0,0,0,0.07)inset;
+        }
+        @keyframes BGam {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+        .base {
+            font-size: 40px;
+            color: black;
+            background-color: rgb(241, 246, 225);
+            border-radius: 10px;
+            margin: 5px;
+            padding-left: 5px;
+            padding-right: 5px;
+            box-shadow:2px 2px 2px rgba(0,0,0,0.039),
+            5px 5px 6px rgba(0,0,0,0.037),
+            10px 9px 12px rgba(0,0,0,0.07),
+            18px 16px 22px rgba(0,0,0,0.053),
+            33px 31px 41px rgba(0,0,0,0.101);
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            outline: none;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        .g-c {
+            font-size: 17px;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: left;
+            height: auto;
+            width: auto;
+        }
+        .group {
+            color: black;
+            background-color: rgb(255, 250, 250);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            height: 40px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            padding-inline: 10px;
+            animation: opacityEnerge 0.2s ease-out 1;
+        }
+        @keyframes opacityEnerge {
+            0% {
+              opacity: 0;
+            }
+            100% {
+              opacity: 1;
+            }
+              
+        }
+        @keyframes heightEnerge {
+            0% {
+              height: 0;
+            }
+            100% {
+              height: 1;
+            }
+              
+        }
+        .btn {
+            background-color:darkblue;
+            color: aqua;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background-color:rgb(130, 130, 221);
+            color: yellow;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .generate {
+            background-color: forestgreen;
+            color: aliceblue;
+            width: 60px;
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+        .generate:hover {
+            background-color: rgb(27, 169, 27);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .isap {
+            text-align: center;
+            margin-left: 10px;
+            font-size: small;
+        }
+        .bottom-text {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: whitesmoke;
+            bottom: 0px;
+            position: absolute;
+        }
+        .qua-btn {
+            height: 20px;
+            width: 20px;
+            background-color: whitesmoke;
+            border: 0;
+            border-radius: 50%;
+            bottom: 1px;
+            right: -25px;
+            position: absolute;
+            font-weight: bolder;
+            color: #78bbd4;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .qua-btn:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .message-window {
+            display: none;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.3);
+            position: absolute;
+            top: 30%;
+            height: 40%;
+            width: 70%;
+            align-items: center;
+            text-align: center;
+            border-radius: 30px;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.039),
+                5px 5px 6px rgba(0, 0, 0, 0.057),
+                10px 9px 12px rgba(0, 0, 0, 0.07),
+                18px 16px 22px rgba(0, 0, 0, 0.083),
+                33px 31px 41px rgba(0, 0, 0, 0.101);
+            backdrop-filter: blur(2px);
+            opacity: 1;
+            animation: heightEnerge 0.5s cubic-bezier(0, 0, 0.38, 0.99) 1;
+        }
+        .message-text {
+            position: relative;
+            color: rgb(0, 0, 0);
+            font-weight: bolder;
+            font-size: 50px;
+            top: 35%;
+        }
+        .message-btn {
+            top: 60%;
+            background-color: rgb(139, 139, 139);
+            color: aliceblue;
+            width: 60px;
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+        }
+        .message-btn:hover {
+            background-color: rgb(195, 195, 195);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="message-window" id="msg-box">
+        <div class="message-text" id="msg-txt">66666</div>
+        <button class="message-btn" onclick="msgclose()">关闭</button>
+    </div>
+    <div class="title">GPA计算器</div>
+    
+    <div class="title" style="top: 150px; margin-top: 0;">
+        <div id="groups-container" class="g-c"></div>
+        <button id="generate" class="generate">计算</button>
+    </div>
+    <div class="bottom-text">计算结果仅供参考, 请以实际分数为准
+        <!-- <button class="qua-btn">?</button> -->
+    </div>
+    <script>
+        document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+  });
+        const c=[
+            [4, 4, 3.7, 3.3, 3, 2.7, 2.3, 2, 1.7, 1.3, 1, 0.7, 0],
+            [4.5, 4.5, 4.2, 3.8, 3.5, 3.2, 2.8, 2.5, 2.2, 1.8, 1.5, 1.2, 0],
+            [4.8, 4.8, 4.5, 4.1, 3.8, 3.5, 3.1, 2.8, 2.5, 1.8, 1.8, 1.8, 0]
+            
+        ];
+        const grade=["A+","A","A-","B+","B","B-","C+","C","C-","D+","D","D-","F"];
+
+
+//初始化
+document.addEventListener('DOMContentLoaded', () => {
+    loadGroupsFromLocalStorage();
+  document.getElementById('generate').addEventListener('click', () => {
+    generateResult();
+    saveResultToLocalStorage();
+  });
+});
+
+function msgclose() {
+    const mw = document.getElementById("msg-box");
+    mw.style.display = "none";
+}
+
+
+function addGroup(selectIndex = 0, choiceValue = 0) {
+  const container = document.getElementById('groups-container');
+
+  const group = document.createElement('div');
+  group.className = 'group';
+
+
+  const select = document.createElement('select');
+  grade.forEach((opinion, index) => {
+    const option = document.createElement('option');
+    option.value = index;
+    option.textContent = opinion;
+    select.appendChild(option);
+  });
+  group.appendChild(select);
+
+
+  const radioR = document.createElement('input');
+  radioR.type = 'radio';
+  radioR.name = `choice-${container.children.length}`;
+  radioR.value = '0';
+  radioR.checked = true;
+  group.appendChild(radioR);
+  group.appendChild(document.createTextNode('Regular'));
+
+  const radioH = document.createElement('input');
+  radioH.type = 'radio';
+  radioH.name = `choice-${container.children.length}`;
+  radioH.value = '1';
+  group.appendChild(radioH);
+  group.appendChild(document.createTextNode('Honor'));
+
+  const radioA = document.createElement('input');
+  radioA.type = 'radio';
+  radioA.name = `choice-${container.children.length}`;
+  radioA.value = '2';
+  group.appendChild(radioA);
+  group.appendChild(document.createTextNode('AP'));
+
+  select.value = selectIndex;
+  if (choiceValue === 0) {
+    radioR.checked = true;
+  } else if (choiceValue === 1) {
+    radioH.checked = true;
+  } else {
+    radioA.checked = true;
+  }
+
+  const addButton = document.createElement('button');
+  addButton.textContent = '+';
+  addButton.className = 'btn';
+  addButton.addEventListener('click', () => {
+    addGroup();
+    updateMinusButtons();
+  });
+  group.appendChild(addButton);
+
+  const removeButton = document.createElement('button');
+  removeButton.textContent = '-';
+  removeButton.className = 'btn';
+  removeButton.style.display = 'none'; //隐藏
+  removeButton.addEventListener('click', () => {
+    group.remove();
+    updateMinusButtons();
+  });
+  group.appendChild(removeButton);
+
+  container.appendChild(group);
+  updateMinusButtons();
+}
+
+function updateMinusButtons() {
+  const groups = document.querySelectorAll('.group');
+  groups.forEach(group => {
+    const removeButton = group.querySelector('button:last-child');
+    if (groups.length > 1) {
+      removeButton.style.display = '';
+    } else {
+      removeButton.style.display = 'none';
+    }
+  });
+}
+
+function generateResult() {
+  const result = Array.from(document.querySelectorAll('.group')).map(group => {
+    const selectIndex = group.querySelector('select').value;
+    const choice = group.querySelector('input[type="radio"]:checked').value;
+    return [parseInt(selectIndex, 10), parseInt(choice, 10)];
+  });
+
+  
+
+  return result;
+}
+
+function saveResultToLocalStorage() {
+  const result = generateResult();
+  console.log(result);
+  start(result);
+  localStorage.setItem('groupsData', JSON.stringify(result));
+}
+
+function loadGroupsFromLocalStorage() {
+  const groupsData = JSON.parse(localStorage.getItem('groupsData'));
+  if (groupsData && groupsData.length > 0) {
+    //清空
+    document.getElementById('groups-container').innerHTML = '';
+    //根据数据生成
+    groupsData.forEach(data => {
+      const [selectIndex, choiceValue] = data;
+      addGroup(selectIndex, choiceValue);
+    });
+  } else {
+    //默认添加
+    addGroup();
+  }
+}
+
+
+function start(l) {
+    let gpa=0;
+    for(let i=0;i<l.length;i++){gpa+=c[l[i][1]][l[i][0]];}
+    gpa/=l.length;
+    gpa = gpa.toString().length>4?gpa.toFixed(2):gpa;
+    const mw = document.getElementById("msg-box");
+    const mt = document.getElementById("msg-txt");
+    mw.style.display = "block";
+    mt.innerText = `GPA计算结果为: ${gpa}`;
+}
+
+    </script>
+</body>
+</html>
