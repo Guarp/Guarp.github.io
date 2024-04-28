@@ -5,8 +5,10 @@
     <title>666</title>
     <script src="nlgl.js"></script>
     <script src="paipan.js"></script>
-    
     <style>
+        body {
+            margin: 0; /*原来页面自带一个margin, 666*/
+        }
         .container {
             display: flex;
             height: 25vh; 
@@ -100,6 +102,16 @@
             bottom:0;
             margin: 1px;
             text-align: center;
+        }
+        .xingyao-info {
+            color: gray;
+            position: absolute;
+            top: 40px;
+            left: 0;
+            font-size: large;
+            writing-mode:vertical-lr;
+            max-height: 1px;
+            line-height: 100%;
         }
         input {
             width: 100%;
@@ -285,6 +297,11 @@ function creatAllStarInBox(){
         for(let i=0;i<64;i++){
             if(xing[1][i]==order[j]){
                 addInBox(xing[0][i],pan.xing[i],"lefttop1",autoColor(xing[0][i]));
+                if(pan.xingyao[i]>-1){
+                    addInBox(xy[pan.xingyao[i]],pan.xing[i],"xingyao-info");
+                }else{
+                    addInBox("一",pan.xing[i],"xingyao-info","white");
+                }
             }
         }
         for(let i=64;i<76;i++){
@@ -354,6 +371,7 @@ function parseDateAndStart() {
         Minput.value=currentDate.getMonth()+1;
         Dinput.value=currentDate.getDate();
         Tinput.value=currentDate.getHours()+1;
+        document.getElementById('f').checked=true;
   }
 }
 

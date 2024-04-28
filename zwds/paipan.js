@@ -41,7 +41,7 @@ const ziweixing=[
     [4, 11, 11, 7, 6]
 ];
 
-yeargan_zhuxing=[
+const yeargan_zhuxing=[
     [2, 3, 1, 1, 7, 7, 9, 5, 8, 9], 
     [3, 4, 2, 0, 8, 4, 8, 6, 6, 7], 
     [5, 6, 4, 11, 9, 5, 0, 0, 4, 5], 
@@ -53,7 +53,7 @@ yeargan_zhuxing=[
     [11, 0, 10, 3, 5, 10, 6, 9, 2, 3], 
     [0, 1, 11, 3, 5, 6, 5, 11, 0, 1]
 ]
-yearzhi_zhuxing=[
+const yearzhi_zhuxing=[
     [2, 1, 6, 6, 4, 10, 3, 9, 2, 10, 8, 5, 4, 9, 9, 5], 
     [11, 2, 5, 7, 5, 9, 2, 8, 2, 10, 9, 1, 1, 6, 10, 6], 
     [8, 3, 4, 8, 6, 8, 1, 7, 5, 1, 10, 9, 10, 3, 11, 7], 
@@ -67,7 +67,7 @@ yearzhi_zhuxing=[
     [8, 11, 8, 4, 2, 0, 5, 11, 11, 7, 0, 1, 10, 3, 7, 3], 
     [5, 0, 7, 5, 3, 11, 4, 10, 2, 10, 1, 9, 7, 0, 8, 4]
 ]
-monthgan_zhuxing=[
+const monthgan_zhuxing=[
     [4, 10, 9, 1, 8, 5, 10, 2], 
     [5, 9, 10, 2, 8, 8, 5, 0], 
     [6, 8, 11, 3, 10, 2, 4, 10], 
@@ -82,7 +82,7 @@ monthgan_zhuxing=[
     [3, 11, 8, 0, 6, 11, 2, 4]
 ]
 
-monthzhi_zhuxing=[
+const monthzhi_zhuxing=[
     [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11], 
     [4, 5, 6, 7, 8, 9, 10, 11, 0, 1, 2, 3], 
     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0], 
@@ -99,7 +99,7 @@ monthzhi_zhuxing=[
     [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1]
 ]
 
-hua_list = [
+const hua_list = [
     [5,13,3,2],
     [1,11,0,7],
     [4,1,50,5],
@@ -112,7 +112,7 @@ hua_list = [
     [13,9,7,8]
 ]
 
-tw_shen = [
+const tw_shen = [
     [8, 7, 6, 5, 4, 3, 2, 1, 0, 11, 10, 9], 
     [8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7], 
     [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0], 
@@ -125,40 +125,98 @@ tw_shen = [
     [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 0, 1]
 ]
 
-xing = [
+const xy_list = [
+    [4,0,1,1,2,1,0,0,1,1,2,1],
+    [0,6,2,1,3,4,0,6,2,1,3,4],
+    [6,5,1,0,1,1,1,2,2,4,5,6],
+    [1,0,2,3,0,4,1,0,2,3,0,4],
+    [1,5,3,4,4,0,6,5,1,4,4,0],
+    [4,3,0,4,3,6,4,3,0,4,3,6],
+    [0,0,0,2,0,2,1,0,2,1,0,2],
+    [0,0,1,6,6,6,5,5,3,1,1,0],
+    [1,0,4,3,0,6,1,0,4,3,0,6],
+    [1,5,0,0,6,1,1,5,0,0,6,1],
+    [0,0,0,6,2,2,0,2,0,6,2,2],
+    [0,1,0,0,0,6,0,1,6,2,0,6],
+    [1,0,0,1,0,4,1,0,0,1,0,4],
+    [0,1,2,6,1,4,0,1,2,6,1,4],
+    [0,"*",0,0,"*",0,0,"*",0,0,"*",0],
+    [6,0,"*",6,0,"*",6,0,"*",6,0,"*"],
+    ["*",0,6,"*",0,6,"*",0,6,"*",0,6],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [2,0,6,3,2,0,6,3,2,0,6,3],
+    [2,0,4,1,2,0,6,1,2,0,6,1],
+    [6,2,0,3,6,2,0,3,6,2,0,3],
+    [6,2,0,3,6,2,0,3,6,2,0,3]
+]
+
+const xing = [
     ["紫微","天机","太阳","武曲","天同","廉贞","天府","太阴","贪狼","巨门","天相","天梁","七杀","破军","禄存","擎羊","陀罗","天魁","天钺","天官","天福","天厨","截路","空亡","天马","天空","天哭","天虚","龙池","凤阁","红鸾","天喜","孤辰","寡宿","蜚廉","破碎","华盖","咸池","天德","月德","天才","天寿","左辅","右弼","天刑","天姚","解神","天巫","天月","阴煞","文昌","文曲","火星","铃星","地劫","地空","台辅","封诰","三台","八座","恩光","天贵","天伤","天使","长生","沐浴","冠带","临官","帝旺","衰","病","死","墓","绝","胎","养","博士","力士","青龙","小耗","将军","奏书","飞廉","喜神","病符","大耗","伏兵","宫符","岁建","晦气","丧门","贯索","官符","小耗","大耗","龙德","白虎","天德","吊客","病符","将星","攀鞍","岁驿","息神","华盖","劫煞","灾煞","天煞","指背","咸池","月煞","亡神"],
     ['大', '大', '大', '大', '大', '大', '大', '大', '大', '大', '大', '大', '大', '大', '甲', '忌', '忌', '甲', '甲', '乙', '乙', '乙', '丙', '丙', '甲', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '乙', '甲', '甲', '乙', '乙', '乙', '乙', '乙', '乙', '甲', '忌', '忌', '忌', '忌', '甲', '乙', '乙', '乙', '乙', '乙', '乙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '丙', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '*', '丁', '戊', '戊', '戊', '戊', '戊', '戊', '丁', '戊', '丁', '戊', '戊', '丁', '丁', '丁', '戊', '丁', '戊', '戊', '戊', '戊', '戊', '戊', '戊']
 ]
 
-hua = ["禄","权","科","忌"];
-yy=["阴","阳"];
-sx=["女","男"];
-jybd=["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
-zcym=['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
-wh_a=['戊','丁','丙','乙','甲','癸','壬','辛','庚','己'];
-wh_b=['甲','壬','庚','戊','丙'];
-ws_b=['甲','丙','戊','庚','壬'];
+const hua = ["禄","权","科","忌"];
+const yy=["阴","阳"];
+const sx=["女","男"];
+const jybd=["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
+const zcym=['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+const wh_a=['戊','丁','丙','乙','甲','癸','壬','辛','庚','己'];
+const wh_b=['甲','壬','庚','戊','丙'];
+const ws_b=['甲','丙','戊','庚','壬'];
+const xy=['庙','旺','得','利','平','不','陷'];
 
         function paipan(inputYear,inputMonth,inputDay,inputTime,inputSex) {
 
             let pan={};
             pan.wholeYearMg=[];
             
-            let nongli=calendar.solar2lunar(inputYear, inputMonth, inputDay);//调用nlgl.js的函数拿到object
+            pan.nongli=calendar.solar2lunar(inputYear, inputMonth, inputDay);//调用nlgl.js的函数拿到object
             
-            pan.yysex=((nongli.lYear-1)%2)==0?-1:1;
+            pan.yysex=((pan.nongli.lYear-1)%2)==0?-1:1;
             pan.sex=inputSex==1?1:0;
             pan.clock=pan.yysex*(pan.sex==1?1:-1);
             pan.clock=pan.clock==1?1:-1;
   
-            pan.yearst_tg=jybd.indexOf(nongli.gzYear[0]);//从jybd数组里找，字符转成数字
-            pan.yearst_dz=zcym.indexOf(nongli.gzYear[1]);//在zcym里找转
+            pan.yearst_tg=jybd.indexOf(pan.nongli.gzYear[0]);//从jybd数组里找，字符转成数字
+            pan.yearst_dz=zcym.indexOf(pan.nongli.gzYear[1]);//在zcym里找转
             //年柱↑
-            pan.monst_tg=jybd.indexOf(wh_b[wh_a.indexOf(nongli.gzYear[0])%5]);//wha数组的格式是五个为一行，所以%5取余
+            pan.monst_tg=jybd.indexOf(wh_b[wh_a.indexOf(pan.nongli.gzYear[0])%5]);//wha数组的格式是五个为一行，所以%5取余
             pan.monst_dz=2;//一月地支默认为寅
             pan.fstmon_tg=pan.monst_tg;//保存一月天干
             
-            for(let i=2;i<nongli.lMonth+1;i++){
+            for(let i=2;i<pan.nongli.lMonth+1;i++){
                 pan.monst_tg=(pan.monst_tg+1)%10;
                 pan.monst_dz=(pan.monst_dz+1)%12;
             }
@@ -185,13 +243,13 @@ ws_b=['甲','丙','戊','庚','壬'];
             }
             //时柱↑
 
-            pan.minggong=(11-(pan.time_dz+9)%12+nongli.lMonth-1)%12;
-            pan.shengong=((pan.time_dz+2)%12+nongli.lMonth-1)%12;
+            pan.minggong=(11-(pan.time_dz+9)%12+pan.nongli.lMonth-1)%12;
+            pan.shengong=((pan.time_dz+2)%12+pan.nongli.lMonth-1)%12;
             //命宫身宫↑
             pan.wuxing_ju=wuxingju[Math.floor(pan.minggong/2)][pan.yearst_tg%5];//五行局算法
 
             pan.xing=new Array(116);
-            pan.xing[0]=ziweixing[nongli.lDay-1][pan.wuxing_ju];
+            pan.xing[0]=ziweixing[pan.nongli.lDay-1][pan.wuxing_ju];
             //紫微星↑
             for(let i=0,j=[11,9,8,7,4];i<5;i++){
                 pan.xing[i+1]=(pan.xing[0]+j[i])%12;
@@ -214,7 +272,7 @@ ws_b=['甲','丙','戊','庚','壬'];
             pan.xing[41]=(pan.shengong+pan.yearst_dz)%12;
             //年支系诸星上↑
             for(let i=0;i<8;i++){
-                pan.xing[42+i]=monthgan_zhuxing[nongli.lMonth-1][i];
+                pan.xing[42+i]=monthgan_zhuxing[pan.nongli.lMonth-1][i];
             }
             //月干系诸星上↑
             pan.xing[50]=monthzhi_zhuxing[0][pan.time_dz];
@@ -243,10 +301,10 @@ ws_b=['甲','丙','戊','庚','壬'];
             pan.xing[56]=(pan.time_dz+6)%12;
             pan.xing[57]=(pan.time_dz+2)%12;
 
-            pan.xing[58]=(pan.xing[42]+nongli.lDay-1)%12;
-            pan.xing[59]=(((pan.xing[43]-(nongli.lDay-1))%12)+12)%12;
-            pan.xing[60]=(pan.xing[50]+nongli.lDay-2)%12;
-            pan.xing[61]=(pan.xing[51]+nongli.lDay-2)%12;
+            pan.xing[58]=(pan.xing[42]+pan.nongli.lDay-1)%12;
+            pan.xing[59]=(((pan.xing[43]-(pan.nongli.lDay-1))%12)+12)%12;
+            pan.xing[60]=(pan.xing[50]+pan.nongli.lDay-2)%12;
+            pan.xing[61]=(pan.xing[51]+pan.nongli.lDay-2)%12;
 
             pan.hua=new Array(4);
             for(let i=0;i<4;i++){
@@ -278,6 +336,15 @@ ws_b=['甲','丙','戊','庚','壬'];
             //     pan.xing[100+i]=((j.indexOf(pan.yearst_dz))%3*3+i)%12;
             //     console.log();
             // }
+
+            pan.xingyao=new Array(116);
+            for(let i=0;i<=16;i++){
+                pan.xingyao[i]=xy_list[i][pan.xing[i]];
+            }
+            for(let i=0;i<=3;i++){
+                console.log(pan.xing[i]);
+                pan.xingyao[50+i]=xy_list[50+i][pan.xing[50+i]];
+            }
 
             return pan;
             

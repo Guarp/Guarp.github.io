@@ -161,7 +161,7 @@
 
     </style>
     <script>
-      let sex = -1;
+      let sex = 1;
         document.addEventListener('DOMContentLoaded', function() {
             
                 const sexRadios = document.querySelectorAll('input[name="sex"]');
@@ -177,9 +177,9 @@
 </head>
 <body>
   <div class="sex-cs">
-    <label style="padding: 10px;"><input type="radio" name="sex" value="-1" checked>都要(2倍时间)</label>
+    <label style="padding: 10px;"><input type="radio" name="sex" value="-1">都要(2倍时间)</label>
   <label style="padding: 10px;"><input type="radio" name="sex" value="0">女</label>
-  <label style="padding: 10px;"><input type="radio" name="sex" value="1">男</label>
+  <label style="padding: 10px;"><input type="radio" name="sex" value="1" checked>男</label>
   </div>
     开始日期：<input type="date" id="startDate" value="2023-01-01">
     <a href="./index.html" style="margin-left: 20px;font-size: larger; background-color:dodgerblue;padding: 10px;color:brown;text-decoration:none;">正算</a>
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
   for(let i=0;i<12;i++){
     daxian_o.push(`第${i+1}个十年`)
   }
-  const optionsList2 = ["命宫",...gongwei,...zcym,...daxian_o];
+  const optionsList2 = ["命宫",...gongwei,...zcym,...daxian_o,...xy];
 
 
   function createSelectBox(optionsList) {
@@ -371,9 +371,12 @@ function buildExpression() {
           exp_ed = `pan.minggong+${option2}`;
         }else if(option2 < 24){
           exp_ed = option2%12;
-        }else {
+        }else if(option2 < 36){
           // exp_ed = `((pan.minggong+(s==0?1*${option2%24}:-1*${option2%24})+(pan.clock==1?-1:1)*${option2%24*10})%12+12)%12`
           exp_ed = `((pan.minggong+pan.clock*(${option2%24}+pan.daxian.indexOf(pan.wuxing_ju+2)))%12+12)%12`
+        }else{
+          listC1 = `pan.xingyao[${option1}]`;
+          exp_ed = option2%36;
         }
         
         if (isReverse) {
@@ -405,7 +408,6 @@ function test() {
     logContainer.innerHTML = ""; // 清空之前的日志
     sexForLoop = sex==-1?2:1;
 
-  console.log((sexForLoop+(sex==-1?0:sex)));
 
     for (let date = new Date(startDate); date <= endDate; date.setHours(date.getHours() + 1)) {
       for(let s=(sex==-1?0:sex)*1;s<sexForLoop*1+(sex==-1?0:sex)*1;s++){
