@@ -387,6 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
               listC2 = `pan.hua[${option2-(optionsList1.length-4)}]`;
             }
             }
+            console.log(option2)
             if(option2 < 12) {
               exp_ed = `pan.minggong+${option2}`;
             } else if(option2 < 24){
@@ -394,7 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if(option2 < 36){
               exp_ed = `((pan.minggong+pan.clock*(${option2%24}+pan.daxian.indexOf(pan.wuxing_ju+2)))%12+12)%12`
             } else {
-              listC1 = `pan.xingyao[${option1}]`;
               exp_ed = option2%36;
             }
             
