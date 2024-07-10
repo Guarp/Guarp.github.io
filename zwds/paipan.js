@@ -234,12 +234,12 @@ const xy=['庙','旺','得','利','平','不','陷'];
             pan.day_dz=(pan.day_dz+11)%11;
             //日柱↑
             pan.time_tg=jybd.indexOf(ws_b[pan.day_tg%5]);
-            pan.timeed_tg=Math.floor(inputTime/2)%12;
-            pan.time_dz=0;
+            pan.timeed_tg=Math.floor(inputTime/2)%12;            
+            pan.time_dz=Math.floor((+inputTime+1)/2)%12;
+            
 
             for(let i=0;i<pan.timeed_tg;i++){
                 pan.time_tg=(pan.time_tg+1)%10;
-                pan.time_dz=(pan.time_dz+1)%12;
             }
             //时柱↑
 
@@ -342,7 +342,6 @@ const xy=['庙','旺','得','利','平','不','陷'];
                 pan.xingyao[i]=xy_list[i][pan.xing[i]];
             }
             for(let i=0;i<=3;i++){
-                console.log(pan.xing[i]);
                 pan.xingyao[50+i]=xy_list[50+i][pan.xing[50+i]];
             }
 

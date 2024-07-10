@@ -144,8 +144,9 @@
             <input type="text" id="yearInput" placeholder="输入年: 如2024"><br>
             <input type="text" id="monthInput" placeholder="输入月: 如6或06"><br>
             <input type="text" id="dayInput" placeholder="输入日: 如18或30"><br>
-            <input type="text" id="timeInput" placeholder="输入时: 用24小时制"><br>
+            <input type="text" id="timeInput" placeholder="输入时: 用24小时制，舍去分钟"><br>
             <button onclick="processAndDisplayYear()">go</button>
+            <button onclick="clearInput()">clear</button>
         </div>
         <div class="box" style="border: 0px;">
         </div>
@@ -207,6 +208,12 @@
             mapMonthGZToBoxes();
         }
             
+function clearInput(){
+    document.getElementById('yearInput').value = "";
+    document.getElementById('monthInput').value = "";
+    document.getElementById('dayInput').value = "";
+    document.getElementById('timeInput').value = "";
+}
 
         
 
@@ -370,7 +377,7 @@ function parseDateAndStart() {
     Yinput.value=currentDate.getFullYear()*1;
         Minput.value=currentDate.getMonth()+1;
         Dinput.value=currentDate.getDate();
-        Tinput.value=currentDate.getHours()+1;
+        Tinput.value=currentDate.getHours();
         document.getElementById('f').checked=true;
   }
 }
