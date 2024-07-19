@@ -429,20 +429,28 @@ function start() {
     sexForLoop = sex == -1 ? 2 : 1;
 
     for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) { // 按天循环
-        for (let hour = 1; hour < 24; hour += 2) { // 只遍历单数小时
-            for (let s = (sex == -1 ? 0 : sex) * 1; s < sexForLoop * 1 + (sex == -1 ? 0 : sex) * 1; s++) {
-                let currentDate = new Date(date);
-                currentDate.setHours(hour);
-                pan = paipan(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate(), currentDate.getHours(), s);
+    for (let hour of [0, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]) { // 遍历0, 1, 3, ..., 19, 21
+        for (let s = (sex == -1 ? 0 : sex) * 1; s < sexForLoop * 1 + (sex == -1 ? 0 : sex) * 1; s++) {
+            let currentDate = new Date(date);
+            currentDate.setHours(hour);
+            pan = paipan(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate(), currentDate.getHours(), s);
 
-                if (eval(globalExpression)) {
-                    let dateStr = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()} ${zcym[Math.floor((currentDate.getHours() + 1) / 2) % 12]}时(${currentDate.getHours()}~${(currentDate.getHours() + 2) % 24}) ${sx[s]}`;
-                    matchingTimes.push({ dateStr, currentDate, sex: s });
-                    c++;
+            if (eval(globalExpression)) {
+                let dateStr;
+                if (currentDate.getHours() === 0) {
+                    let previousDay = new Date(currentDate);
+                    previousDay.setDate(currentDate.getDate() - 1);
+                    dateStr = `${previousDay.getFullYear()}-${previousDay.getMonth() + 1}-${previousDay.getDate()} 子时(23~1) ${sx[s]}`;
+                } else {
+                    dateStr = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()} ${zcym[Math.floor((currentDate.getHours() + 1) / 2) % 12]}时(${currentDate.getHours()}~${(currentDate.getHours() + 2) % 24}) ${sx[s]}`;
                 }
+                matchingTimes.push({ dateStr, currentDate, sex: s });
+                c++;
             }
         }
     }
+}
+
 
     document.getElementById('count').textContent = `一共${c}个小时`;
 

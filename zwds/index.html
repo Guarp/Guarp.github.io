@@ -52,13 +52,11 @@
             
         }
         .hua4 {
-            border-radius: 4px;
+            border-radius: 4px; 
             position: absolute;
-            padding: 1px;
-            margin: 2px;
             top: 40%;
             left: 0;
-            
+            font-size: large;
         }
         .tw_shen {
             border-radius: 4px;
@@ -147,7 +145,8 @@
             <button onclick="processAndDisplayYear()">go</button>
             <button onclick="clearInput()">clear</button>
         </div>
-        <div class="box" style="border: 0px;">
+        <div class="box" style="border: 0px;text-align: center;">
+            可计算日期范围: 1900-1-1~2099-12-31
         </div>
         <div class="box" data-index="8"></div>
     </div>
@@ -219,18 +218,48 @@ function clearInput(){
 
 //↓启动计算
         function processAndDisplayYear() {
-            function isPureNumber(str) {
-                const regex = /^\d+$/;
-                return regex.test(str);
-            }
             let userInputyear = document.getElementById('yearInput').value;
             let userInputmonth = document.getElementById('monthInput').value;
             let userInputday = document.getElementById('dayInput').value;
             let userInputtime = document.getElementById('timeInput').value;
-            if(isPureNumber(userInputyear+userInputmonth+userInputday+userInputtime)){
-                start(userInputyear,userInputmonth,userInputday,userInputtime,sex)
+
+            function getMaxDaysInMonth(Month, year) {
+                const date = new Date(year, Month, 0);
+                return date.getDate();
+            }
+            function getNextDay(year, month, day) {
+                let dateString = `${year}-${month}-${day}`;
+                let date = new Date(dateString);
+
+                date.setDate(date.getDate() + 1);
+
+                let nextYear = date.getFullYear();
+                let nextMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+                let nextDay = date.getDate().toString().padStart(2, '0');
+
+                return {
+                    y:nextYear,
+                    m:nextMonth,
+                    d:nextDay,
+                };
+            }
+
+            if(/^\d+$/.test(userInputyear+userInputmonth+userInputday+userInputtime)){
+                if((1900<=userInputyear&&userInputyear<2100)&&
+                (0<userInputmonth&&userInputmonth<=12)&&
+                (0<userInputday&&userInputday<getMaxDaysInMonth(userInputmonth,userInputyear))&&
+                (0<userInputtime&&userInputtime<=24)){
+                    if(userInputtime>22){
+                        const nd = getNextDay(userInputyear,userInputmonth,userInputday);
+                        start(nd.y,nd.m,nd.d,0,sex);
+                        return 0;
+                    }
+                    start(userInputyear,userInputmonth,userInputday,userInputtime,sex);
+                }else{
+                    alert("请输入合法日期");
+                }
             }else{
-                alert("不合规输入!");
+                alert("请输入数字");
             }
             // adjustLineHeight();
         }
