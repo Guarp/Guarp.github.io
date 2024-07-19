@@ -196,7 +196,10 @@ const wh_a=['戊','丁','丙','乙','甲','癸','壬','辛','庚','己'];
 const wh_b=['甲','壬','庚','戊','丙'];
 const ws_b=['甲','丙','戊','庚','壬'];
 const xy=['庙','旺','得','利','平','不','陷'];
+    function sizhu(inputYear,inputMonth,inputDay,inputTime) {
+        let tgdz={};
 
+    }
         function paipan(inputYear,inputMonth,inputDay,inputTime,inputSex) {
 
             let pan={};
@@ -209,39 +212,14 @@ const xy=['庙','旺','得','利','平','不','陷'];
             pan.clock=pan.yysex*(pan.sex==1?1:-1);
             pan.clock=pan.clock==1?1:-1;
   
-            pan.yearst_tg=jybd.indexOf(pan.nongli.gzYear[0]);//从jybd数组里找，字符转成数字
-            pan.yearst_dz=zcym.indexOf(pan.nongli.gzYear[1]);//在zcym里找转
-            //年柱↑
-            pan.monst_tg=jybd.indexOf(wh_b[wh_a.indexOf(pan.nongli.gzYear[0])%5]);//wha数组的格式是五个为一行，所以%5取余
-            pan.monst_dz=2;//一月地支默认为寅
-            pan.fstmon_tg=pan.monst_tg;//保存一月天干
-            
-            for(let i=2;i<pan.nongli.lMonth+1;i++){
-                pan.monst_tg=(pan.monst_tg+1)%10;
-                pan.monst_dz=(pan.monst_dz+1)%12;
-            }
-            let j=pan.fstmon_tg;
-            pan.wholeYearMg.push(j);
-            for(let i=0;i<11;i++){
-                j=(j+1)%10;
-                pan.wholeYearMg.push(j);
-            }
-            //月柱↑
-            pan.day_tg=((inputYear-1911-10)*5+Math.floor((inputYear-1911-10)/4)+daysBetweenDates(inputYear, inputMonth, inputDay))+1%60;
-            pan.day_dz=pan.day_tg%12-1;
-            pan.day_tg=pan.day_tg%10-1;
-            pan.day_tg=(pan.day_tg+9)%9;
-            pan.day_dz=(pan.day_dz+11)%11;
-            //日柱↑
-            pan.time_tg=jybd.indexOf(ws_b[pan.day_tg%5]);
-            pan.timeed_tg=Math.floor(inputTime/2)%12;            
+            pan.yearst_tg=jybd.indexOf(pan.nongli.gzYear[0]);
+            pan.yearst_dz=zcym.indexOf(pan.nongli.gzYear[1]);
+            pan.monst_tg=jybd.indexOf(pan.nongli.gzMonth[0]);
+            pan.monst_dz=zcym.indexOf(pan.nongli.gzMonth[1]);
+            pan.day_tg=jybd.indexOf(pan.nongli.gzDay[0]);
+            pan.day_dz=zcym.indexOf(pan.nongli.gzDay[1]);    
             pan.time_dz=Math.floor((+inputTime+1)/2)%12;
-            
-
-            for(let i=0;i<pan.timeed_tg;i++){
-                pan.time_tg=(pan.time_tg+1)%10;
-            }
-            //时柱↑
+            pan.time_tg=([(pan.day_tg % 5) * 2, 2, 4, 6, 8][pan.day_tg % 5] + pan.time_dz) % 10;
 
             pan.minggong=(11-(pan.time_dz+9)%12+pan.nongli.lMonth-1)%12;
             pan.shengong=((pan.time_dz+2)%12+pan.nongli.lMonth-1)%12;

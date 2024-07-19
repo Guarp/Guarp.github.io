@@ -52,7 +52,6 @@
             
         }
         .hua4 {
-            background-color: #ff0000;
             border-radius: 4px;
             position: absolute;
             padding: 1px;
@@ -253,9 +252,8 @@ function clearElementContent(element) {
         }
     }
 }
-function addInBox(text, position, className, Color) {  
-//最方便的一集
-    const textBox = document.querySelector(`.box[data-index="${(position+10)%12}"]`);
+function addInBox(text, position, className, Color, extraStyle = '') {  
+    const textBox = document.querySelector(`.box[data-index="${(position + 10) % 12}"]`);
     
     if (textBox) {
         const targetElement = textBox.querySelector(`.${className}`);
@@ -267,15 +265,18 @@ function addInBox(text, position, className, Color) {
             const span = document.createElement('span');
             span.textContent = text;
             span.style.color = Color;
+            span.style.cssText += extraStyle; // 添加额外样式
             targetElement2.appendChild(span);
-        }else{
+        } else {
             const span = document.createElement('span');
             span.textContent = text;
             span.style.color = Color;
+            span.style.cssText += extraStyle; // 添加额外样式
             targetElement.appendChild(span);
         }
     }
 }
+
 function autoColor(star) {
     switch (xing[1][xing[0].indexOf(star)]) {
         case "大":
@@ -307,7 +308,22 @@ function creatAllStarInBox(){
                 if(pan.xingyao[i]>-1){
                     addInBox(xy[pan.xingyao[i]],pan.xing[i],"xingyao-info");
                 }else{
-                    addInBox("一",pan.xing[i],"xingyao-info","white");
+                    addInBox("一",pan.xing[i],"xingyao-info","white","opacity:0");
+                }
+                if(hua_list[pan.yearst_tg].indexOf(i)>=0){
+                    addInBox(hua[hua_list[pan.yearst_tg].indexOf(i)],
+                    pan.xing[i],
+                    "hua4",
+                    "white",
+                    "background-color: #ff0000;border-radius: 4px;padding: 1px;"
+                );
+                }else{
+                    addInBox("一",
+                    pan.xing[i],
+                    "hua4",
+                    "white",
+                    "opacity: 0;"
+                );
                 }
             }
         }
@@ -328,9 +344,9 @@ function creatAllStarInBox(){
         addInBox(xing[0][i],pan.xing[i],"rightbottom","black");
     }
     
-    for(let i=0;i<4;i++){
-        addInBox(hua[i],pan.hua[i],"hua4","white");
-    }
+    // for(let i=0;i<4;i++){
+    //     addInBox(hua[i],pan.hua[i],"hua4","white");
+    // }
     for(let i=0;i<12;i++){
         addInBox(`${pan.daxian[i]}~${pan.daxian[i]+9}`,pan.minggong+i,"daxian","black");
     }
