@@ -2,546 +2,661 @@
 <html lang="cn">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>888</title>
+    <title>查询条件配置</title>
     <script src="nlgl.js"></script>
     <script src="paipan.js"></script>
     <script src="xlsx.full.min.js"></script>
     <style>
         body {
-        background-color: rgb(255, 246, 220);
-      }
-        .select-box-group {
-          background-color: rgb(255, 250, 250);
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          width: 460px;
-          height: 40px;
-          border-radius: 5px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
+            background-color: rgb(255, 246, 220);
+            display: flex;
+            justify-content: space-between;
+        }
 
-.reverse-box-group {
-  background-color: rgb(51, 51, 50);
-  color: white;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          width: 460px;
-          height: 40px;
-          border-radius: 5px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
+        .main-content {
+            flex-grow: 1;
+        }
 
-.same-box-group {
-  background-color: rgb(173, 216, 230); /* 淡蓝色 */
-  color: black;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 460px;
-  height: 40px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
+        .button-group {
+            border: 1px solid #000;
+            border-radius: 5px;
+            width: 460px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            justify-content: space-around;
+        }
 
-.fangzhen-box-group {
-  background-color: rgb(203, 72, 24);
-  color: rgb(255, 255, 255);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 555px;
-  height: 40px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
+        .create-btn {
+            width: 70px;
+            height: 30px;
+        }
 
-.reverse-fangzhen-box-group {
-  background-color: rgb(52, 183, 231);
-  color: rgb(0, 0, 0);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 555px;
-  height: 40px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
+        .inside-group,
+        .outside-group,
+        .same-group {
+            color: black;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 460px;
+            height: 40px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            justify-content: space-between;
+            padding: 0 10px;
+        }
 
-.select-box {
-  margin-right: 10px;
-  margin-left: 10px;
-  padding: 5px;
-}
+        .inside-group {
+            background-color: rgb(255, 250, 250);
+        }
 
-.add-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.remove-btn {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.query-btn {
-    background-color: forestgreen;
-    color: aliceblue;
-  width: 60px;
-  height: 30px;
-  border-radius: 5px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.more-btn {
-    background-color: rgb(34, 243, 170);
-    color: rgb(0, 0, 0);
-  width: 100px;
-  height: 30px;
-  border-radius: 5px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 10px;
-}
-.date-div {
-  margin: 10px;
-}
-.date-btn {
-  left:230px;
-  margin-left: 10px;
-  background-color: rgb(255, 255, 255);
-  color: rgb(0, 0, 0);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border: none;
-  transition: all 0.2s;
-  position: absolute;
-}
-.date-btn:hover {
-  padding-right: 20px;
-  background-color: rgb(255, 163, 49);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  color: rgb(255, 255, 255);
-}
-.date-btn:active {
-  padding-right: 5px;
-  background-color: rgb(49, 118, 255);
-  color: rgb(255, 255, 255);
-}
-#exc-btn {
-  background-color:mediumseagreen;
-  color: aqua;
-  font-weight: bolder;
-  border: 0;
-  margin-top: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  border-radius: 5px;
-  transition: all 0.2s;
-}
-#exc-btn:hover {
-  background-color: seagreen;
-}
-.sex-cs {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  background-color: rgb(0, 255, 234);
-  position: absolute;
-  left: 353px;
-  border: 1px solid #000;
-  border-radius: 5px;
-}
+        .outside-group {
+            background-color: rgb(51, 51, 50);
+            color: white;
+        }
 
+        .same-group {
+            background-color: rgb(173, 216, 230);
+        }
+
+        .select-box {
+            margin-right: 10px;
+            padding: 5px;
+        }
+
+        .remove-btn,
+        .query-btn,
+        .save-btn {
+            width: 60px;
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .query-btn {
+            background-color: forestgreen;
+            color: aliceblue;
+        }
+
+        .save-btn {
+            background-color: dodgerblue;
+            color: white;
+        }
+
+        .date-div {
+            margin: 10px;
+        }
+
+        .date-btn {
+            left: 230px;
+            margin-left: 10px;
+            background-color: rgb(255, 255, 255);
+            color: rgb(0, 0, 0);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: none;
+            transition: all 0.2s;
+            position: absolute;
+        }
+
+        .date-btn:hover {
+            padding-right: 20px;
+            background-color: rgb(255, 163, 49);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            color: rgb(255, 255, 255);
+        }
+
+        .date-btn:active {
+            padding-right: 5px;
+            background-color: rgb(49, 118, 255);
+            color: rgb(255, 255, 255);
+        }
+
+        #exc-btn {
+            background-color: mediumseagreen;
+            top: 9px;
+            left: 215px;
+            height: 30px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: aliceblue;
+            width: 120px;
+            border-radius: 5px;
+            transition: all 0.2s;
+            position: absolute;
+        }
+
+        #exc-btn:disabled {
+            background-color: rgb(139, 139, 139);
+            cursor: no-drop;
+        }
+
+        #exc-btn:hover {
+            background-color: seagreen;
+        }
+
+        #exc-btn:disabled:hover {
+            background-color: rgb(139, 139, 139);
+        }
+
+        .sex-cs {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: rgb(0, 255, 234);
+            position: absolute;
+            left: 353px;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+
+        .history {
+            width: 300px;
+            height: 100%;
+            overflow-y: auto;
+            border: 1px solid #000;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .history-item {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .history-item button {
+            margin-top: 5px;
+            margin-right: 5px;
+        }
     </style>
-    <script>
-      let sex = 1;
-        document.addEventListener('DOMContentLoaded', function() {
-            
-                const sexRadios = document.querySelectorAll('input[name="sex"]');
-
-                // 为每个单选按钮添加点击事件监听器
-                sexRadios.forEach(radio => {
-                   radio.addEventListener('click', function() {
-                       sex = this.value; // 更新sex变量的值
-                    });
-                });
-        });
-    </script>
 </head>
 <body>
-  <div class="sex-cs">
-    <label style="padding: 10px;"><input type="radio" name="sex" value="-1">都要(2倍时间)</label>
-  <label style="padding: 10px;"><input type="radio" name="sex" value="0">女</label>
-  <label style="padding: 10px;"><input type="radio" name="sex" value="1" checked>男</label>
-  </div>
-    开始日期：<input type="date" id="startDate" value="2023-01-01">
-    <a href="./index.html" style="margin-left: 20px;font-size: larger; background-color:dodgerblue;padding: 10px;color:brown;text-decoration:none;">正算</a>
-    <a id="res" style="margin-left: 5px;font-size: larger; background-color:rgb(28, 14, 100);padding: 10px;color:rgb(255, 255, 255);text-decoration:none;">重置</a>
-    
-    
-    <br>
-    结束日期：<input type="date" id="endDate" value="2024-12-31">
-    <button id="exc-btn" onclick="exportToExcel()" style="display: none;">导出到XLSX</button>
-    <div id="selectBoxesContainer"></div>
-
-<div id="count"></div>
-<div id="log"></div>
-
+    <div class="main-content">
+        <div class="sex-cs">
+            <label style="padding: 10px;"><input type="radio" name="sex" value="-1">都要(2倍时间)</label>
+            <label style="padding: 10px;"><input type="radio" name="sex" value="0">女</label>
+            <label style="padding: 10px;"><input type="radio" name="sex" value="1" checked>男</label>
+        </div>
+        开始日期：<input type="date" id="startDate">
+        <button id="exc-btn" onclick="exportToExcel()" style="float: left;" disabled>导出到XLSX</button>
+        <br>
+        结束日期：<input type="date" id="endDate">
+        <div class="button-group">
+            <div style="background-color: rgb(255, 246, 220); text-align: center; position: absolute; top:62px;">创建条件</div>
+            <button class="create-btn" id="inside-btn">在</button>
+            <button class="create-btn" id="outside-btn">不在</button>
+            <button class="create-btn" id="same-btn">相同</button>
+        </div>
+        <div id="selectBoxesContainer"></div>
+        <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 10px;">
+            <button id="query-btn" class="query-btn" style="display: none;" onclick="buildExpression()">查询</button>
+            <button id="save-btn" class="save-btn" style="display: none;" onclick="saveHistory()">保存</button>
+        </div>
+        <div id="count" style="padding-top: 5px; "></div>
+        <div id="log"></div>
+    </div>
+    <div class="history" id="history">保存的预设框为空</div>
     <script>
-      let globalExpression = "";
-let matchingTimes = []; // 用于存储所有符合条件的时间
-const maxDisplayCount = 500; // 每次最多显示500条
-let displayedCount = 0; // 已显示的条目计数
+        let sex = 1;
+        let globalExpression = "";
+        let matchingTimes = [];
+        const maxDisplayCount = 500;
+        let displayedCount = 0;
 
-document.addEventListener('DOMContentLoaded', () => {
-    const selectBoxesContainer = document.getElementById('selectBoxesContainer');
-    
-    const optionsList1 = [...xing[0].slice(0,79),"低等级小耗",...xing[0].slice(80,85),"低等级大耗",...xing[0].slice(86,100),...hua];
-    daxian_o = [];
-    for(let i=0;i<12;i++){
-        daxian_o.push(`第${i+1}个十年`)
-    }
-    const optionsList2 = ["命宫",...gongwei,...zcym,...daxian_o,...xy];
-
-    function createSelectBox(optionsList) {
-        const selectBox = document.createElement('select');
-        selectBox.className = 'select-box';
-        optionsList.forEach((option, index) => {
-            const optionElement = document.createElement('option');
-            optionElement.value = index;
-            optionElement.text = option;
-            selectBox.appendChild(optionElement);
-        });
-        return selectBox;
-    }
-
-    function createButton(text, className, onClick) {
-        const button = document.createElement('button');
-        button.textContent = text;
-        button.className = className;
-        button.addEventListener('click', onClick);
-        return button;
-    }
-
-    function createSelectBoxGroup(groupType = 'normal', allowRemove = true) {
-        const groupDiv = document.createElement('div');
-        switch (groupType) {
-            case 'reverse':
-                groupDiv.className = 'reverse-box-group';
-                break;
-            case 'same':
-                groupDiv.className = 'same-box-group';
-                break;
-            default:
-                groupDiv.className = 'select-box-group';
+        // Options lists
+        const optionsList1 = [...xing[0].slice(0, 79), "低等级小耗", ...xing[0].slice(80, 85), "低等级大耗", ...xing[0].slice(86, 100), ...hua];
+        const daxian_o = [];
+        for (let i = 0; i < 12; i++) {
+            daxian_o.push(`第${i + 1}个十年`);
         }
+        const optionsList2 = ["命宫", ...gongwei, ...zcym, ...daxian_o, ...xy];
 
-        switch (groupType) {
-            case 'reverse':
-                textBetween = createTextElement('不在')
-                textEnd = createTextElement('里面')
-                break;
-            case 'same':
-                textBetween = createTextElement('　和')
-                textEnd = createTextElement('同宫')
-                break;
-            default:
-                textBetween = createTextElement('　在')
-                textEnd = createTextElement('里面')
-        }
+        document.addEventListener('DOMContentLoaded', function () {
+            const sexRadios = document.querySelectorAll('input[name="sex"]');
 
-        const selectBox1 = createSelectBox(optionsList1);
-        const selectBox2 = createSelectBox(groupType === 'same' ? optionsList1 : optionsList2);
-        // 创建减号按钮，可能会根据组的数量显示或隐藏
-        const removeButton = document.createElement('button');
-        removeButton.textContent = '-';
-        removeButton.className = 'remove-btn';
-        removeButton.addEventListener('click', function() {
-            groupDiv.remove();
-            updateButtonsVisibility();
-        });
-        if (!allowRemove) {
-            removeButton.style.visibility = 'hidden'; // 对于第一个组，隐藏删除按钮
-        }
-
-        groupDiv.appendChild(selectBox1);
-        groupDiv.appendChild(textBetween);
-        groupDiv.appendChild(selectBox2);
-        groupDiv.appendChild(textEnd);
-        groupDiv.appendChild(removeButton);
-
-        return groupDiv;
-    }
-
-    function addGroup(isReverse = false) {
-        const newGroup = createSelectBoxGroup(isReverse);
-        selectBoxesContainer.appendChild(newGroup);
-        updateButtonsVisibility();
-    }
-
-    function fillSelectBox(selectBox, optionsList) {
-        optionsList.forEach((option, index) => {
-            const optionElement = document.createElement('option');
-            optionElement.value = index; // 使用索引作为值以便构建表达式
-            optionElement.text = option;
-            selectBox.appendChild(optionElement);
-        });
-    }
-    
-    function createTextElement(text) {
-        const textElement = document.createElement('span');
-        textElement.textContent = text;
-        return textElement;
-    }
-    
-    function updateButtonsVisibility() {
-        const allGroups = document.querySelectorAll('.select-box-group, .reverse-box-group, .same-box-group');
-        const normalGroups = document.querySelectorAll('.select-box-group');
-        const reverseGroups = document.querySelectorAll('.reverse-box-group');
-        const sameGroups = document.querySelectorAll('.same-box-group');
-        
-        // 移除现有的加号和查询按钮
-        document.querySelectorAll('.add-btn, .query-btn').forEach(btn => btn.remove());
-
-        // 函数：为最后一个组添加加号按钮
-        const addAddButtonToGroup = (group, groupType) => {
-            if (group) { // 检查是否存在
-                const addButton = document.createElement('button');
-                addButton.textContent = '+';
-                addButton.className = 'add-btn';
-                addButton.addEventListener('click', () => {
-                    selectBoxesContainer.appendChild(createSelectBoxGroup(groupType));
-                    updateButtonsVisibility();
+            // 为每个单选按钮添加点击事件监听器
+            sexRadios.forEach(radio => {
+                radio.addEventListener('click', function () {
+                    sex = this.value; // 更新sex变量的值
                 });
-                group.appendChild(addButton);
-            }
-        };
+            });
 
-        // 为各类型的最后一个组添加加号按钮
-        addAddButtonToGroup(normalGroups[normalGroups.length - 1], 'normal');
-        addAddButtonToGroup(reverseGroups[reverseGroups.length - 1], 'reverse');
-        addAddButtonToGroup(sameGroups[sameGroups.length - 1], 'same');
+            document.getElementById('inside-btn').addEventListener('click', () => createSelectBoxGroup('inside'));
+            document.getElementById('outside-btn').addEventListener('click', () => createSelectBoxGroup('outside'));
+            document.getElementById('same-btn').addEventListener('click', () => createSelectBoxGroup('same'));
 
-        // 添加查询按钮到所有组的最后一个
-        if (allGroups.length > 0) {
-            const queryButton = document.createElement('button');
-            queryButton.textContent = '查询';
-            queryButton.className = 'query-btn';
-            queryButton.addEventListener('click', buildExpression);
-            allGroups[allGroups.length - 1].appendChild(queryButton);
+            // 从 localStorage 加载存储的开始和结束日期
+            const storedStartDate = localStorage.getItem('888startDate') || "2023-01-01";
+            const storedEndDate = localStorage.getItem('888endDate') || "2024-01-01";
+            document.getElementById('startDate').value = storedStartDate;
+            document.getElementById('endDate').value = storedEndDate;
+
+            // 加载历史记录
+            loadHistory();
+
+            updateQueryButtonVisibility();
+        });
+
+        function createSelectBox(optionsList) {
+            const selectBox = document.createElement('select');
+            selectBox.className = 'select-box';
+            optionsList.forEach((option, index) => {
+                const optionElement = document.createElement('option');
+                optionElement.value = index;
+                optionElement.text = option;
+                selectBox.appendChild(optionElement);
+            });
+            return selectBox;
         }
 
-        // 更新减号按钮的可见性
-        allGroups.forEach((group, index) => {
-            const removeButton = group.querySelector('.remove-btn');
-            if (allGroups.length > 1) {
-                removeButton.style.visibility = 'visible';
+        function createSelectBoxGroup(type) {
+            const selectBoxesContainer = document.getElementById('selectBoxesContainer');
+            const groupDiv = document.createElement('div');
+            groupDiv.className = `${type}-group`;
+
+            const selectBox1 = createSelectBox(optionsList1);
+            const selectBox2 = createSelectBox(type === 'same' ? optionsList1 : optionsList2);
+
+            const textBetween = document.createElement('span');
+            const textEnd = document.createElement('span');
+            switch (type) {
+                case 'inside':
+                    textBetween.textContent = ' 在 ';
+                    textEnd.textContent = ' 里面 ';
+                    break;
+                case 'outside':
+                    textBetween.textContent = ' 不在 ';
+                    textEnd.textContent = ' 里面 ';
+                    break;
+                case 'same':
+                    textBetween.textContent = ' 和 ';
+                    textEnd.textContent = ' 同宫 ';
+                    break;
+            }
+
+            const removeButton = document.createElement('button');
+            removeButton.textContent = '-';
+            removeButton.className = 'remove-btn';
+            removeButton.addEventListener('click', () => {
+                groupDiv.remove();
+                updateQueryButtonVisibility();
+            });
+
+            groupDiv.appendChild(selectBox1);
+            groupDiv.appendChild(textBetween);
+            groupDiv.appendChild(selectBox2);
+            groupDiv.appendChild(textEnd);
+            groupDiv.appendChild(removeButton);
+
+            selectBoxesContainer.appendChild(groupDiv);
+            updateQueryButtonVisibility();
+        }
+
+        function updateQueryButtonVisibility() {
+            const queryButton = document.getElementById('query-btn');
+            const saveButton = document.getElementById('save-btn');
+            const selectBoxesContainer = document.getElementById('selectBoxesContainer');
+            if (selectBoxesContainer.children.length > 0) {
+                queryButton.style.display = 'block';
+                saveButton.style.display = 'block';
             } else {
-                removeButton.style.visibility = 'hidden';
+                queryButton.style.display = 'none';
+                saveButton.style.display = 'none';
             }
-        });
-    }
-    
-    function buildExpression() {
-        let expression = '';
-        // 使用querySelectorAll获取所有选择框组
-        const groups = document.querySelectorAll('.select-box-group, .reverse-box-group, .same-box-group');
+        }
 
-        groups.forEach((group, index) => {
-            const isReverse = group.classList.contains('reverse-box-group');
-            const issame = group.classList.contains('same-box-group');
-            const select1 = group.querySelector('.select-box:first-child');
-            const select2 = group.querySelector('.select-box:nth-child(3)'); // 注意这里可能需要调整以匹配实际结构
-            const option1 = select1.value;
-            const option2 = select2.value;
-
-            if (index !== 0) expression += ' && ';
-
-            if (option1 < optionsList1.length-4) {
-              listC1 = `pan.xing[${option1}]`;
-            } else {
-              listC1 = `pan.hua[${option1-(optionsList1.length-4)}]`;
+        function formatNumber(num) {
+            let numStr = num.toString();
+            let decimalIndex = numStr.indexOf('.');
+            if (decimalIndex === -1 || numStr.length - decimalIndex - 1 < 2) {
+                return num;
             }
-            if(issame){
-              if (option2 < optionsList1.length-4) {
-              listC2 = `pan.xing[${option2}]`;
-            } else {
-              listC2 = `pan.hua[${option2-(optionsList1.length-4)}]`;
+            let decimalPart = numStr.slice(decimalIndex + 1);
+            let leadingZeros = decimalPart.match(/^0*/)[0].length;
+            if (leadingZeros > 0) {
+                return parseFloat(num.toFixed(leadingZeros + 1));
             }
-            }
-            console.log(option2)
-            if(option2 < 12) {
-              exp_ed = `pan.minggong+${option2}`;
-            } else if(option2 < 24){
-              exp_ed = option2%12;
-            } else if(option2 < 36){
-              exp_ed = `((pan.minggong+pan.clock*(${option2%24}+pan.daxian.indexOf(pan.wuxing_ju+2)))%12+12)%12`
-            } else {
-              exp_ed = option2%36;
-            }
-            
-            if (isReverse) {
-                expression += `${listC1}!=${exp_ed}`;
-            } else if (issame) {
-                expression += `${listC1}==${listC2}`;
-            } else {
-                expression += `${listC1}==${exp_ed}`;
-            }
-        });
+            return parseFloat(num.toFixed(2));
+        }
 
-        globalExpression = expression;
-        console.log(expression);
-        start();
-    }
+        function buildExpression() {
+            let expression = '';
+            const groups = document.querySelectorAll('.inside-group, .outside-group, .same-group');
 
-    selectBoxesContainer.appendChild(createSelectBoxGroup("normal"));
-    selectBoxesContainer.appendChild(createSelectBoxGroup("reverse"));
-    selectBoxesContainer.appendChild(createSelectBoxGroup("same"));
-    updateButtonsVisibility(); // 初始调用来确保按钮的正确显示状态
-});
+            groups.forEach((group, index) => {
+                const isReverse = group.classList.contains('outside-group');
+                const issame = group.classList.contains('same-group');
+                const select1 = group.querySelector('.select-box:first-child');
+                const select2 = group.querySelector('.select-box:nth-child(3)');
+                const option1 = select1.value;
+                const option2 = select2.value;
 
-function start() {
-    const startDate = new Date(document.getElementById('startDate').value);
-    const endDate = new Date(document.getElementById('endDate').value);
-    let c = 0;
-    matchingTimes = []; // 清空之前的匹配结果
-    displayedCount = 0; // 重置显示计数
-    let logContainer = document.getElementById('log');
-    logContainer.innerHTML = ""; // 清空之前的日志
-    sexForLoop = sex == -1 ? 2 : 1;
+                if (index !== 0) expression += ' && ';
 
-    for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) { // 按天循环
-    for (let hour of [0, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]) { // 遍历0, 1, 3, ..., 19, 21
-        for (let s = (sex == -1 ? 0 : sex) * 1; s < sexForLoop * 1 + (sex == -1 ? 0 : sex) * 1; s++) {
-            let currentDate = new Date(date);
-            currentDate.setHours(hour);
-            pan = paipan(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate(), currentDate.getHours(), s);
-
-            if (eval(globalExpression)) {
-                let dateStr;
-                if (currentDate.getHours() === 0) {
-                    let previousDay = new Date(currentDate);
-                    previousDay.setDate(currentDate.getDate() - 1);
-                    dateStr = `${previousDay.getFullYear()}-${previousDay.getMonth() + 1}-${previousDay.getDate()} 子时(23~1) ${sx[s]}`;
+                if (option1 < optionsList1.length - 4) {
+                    listC1 = `pan.xing[${option1}]`;
                 } else {
-                    dateStr = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()} ${zcym[Math.floor((currentDate.getHours() + 1) / 2) % 12]}时(${currentDate.getHours()}~${(currentDate.getHours() + 2) % 24}) ${sx[s]}`;
+                    listC1 = `pan.hua[${option1 - (optionsList1.length - 4)}]`;
                 }
-                matchingTimes.push({ dateStr, currentDate, sex: s });
-                c++;
+                if (issame) {
+                    if (option2 < optionsList1.length - 4) {
+                        listC2 = `pan.xing[${option2}]`;
+                    } else {
+                        listC2 = `pan.hua[${option2 - (optionsList1.length - 4)}]`;
+                    }
+                }
+                if (option2 < 12) {
+                    exp_ed = `pan.minggong+${option2}`;
+                } else if (option2 < 24) {
+                    exp_ed = option2 % 12;
+                } else if (option2 < 36) {
+                    exp_ed = `((pan.minggong+pan.clock*(${option2 % 24}+pan.daxian.indexOf(pan.wuxing_ju+2)))%12+12)%12`;
+                } else {
+                    exp_ed = option2 % 36;
+                }
+
+                if (isReverse) {
+                    expression += `${listC1}!=${exp_ed}`;
+                } else if (issame) {
+                    expression += `${listC1}==${listC2}`;
+                } else {
+                    expression += `${listC1}==${exp_ed}`;
+                }
+            });
+
+            globalExpression = expression;
+            console.log(expression);
+            start();
+        }
+
+        function start() {
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            localStorage.setItem('888startDate', startDate.toISOString().slice(0, 10));
+            localStorage.setItem('888endDate', endDate.toISOString().slice(0, 10));
+            let c = 0, t = 0;
+            matchingTimes = [];
+            displayedCount = 0;
+            let logContainer = document.getElementById('log');
+            logContainer.innerHTML = "";
+            sexForLoop = sex == -1 ? 2 : 1;
+
+            for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+                for (let hour of [0, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21]) {
+                    for (let s = (sex == -1 ? 0 : sex) * 1; s < sexForLoop * 1 + (sex == -1 ? 0 : sex) * 1; s++) {
+                        let currentDate = new Date(date);
+                        currentDate.setHours(hour);
+                        pan = paipan(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate(), currentDate.getHours(), s);
+
+                        if (eval(globalExpression)) {
+                            let dateStr;
+                            if (currentDate.getHours() === 0) {
+                                let previousDay = new Date(currentDate);
+                                previousDay.setDate(currentDate.getDate() - 1);
+                                dateStr = `${previousDay.getFullYear()}-${previousDay.getMonth() + 1}-${previousDay.getDate()} 子时(23~1) ${sx[s]}`;
+                            } else {
+                                dateStr = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${currentDate.getDate()} ${zcym[Math.floor((currentDate.getHours() + 1) / 2) % 12]}时(${currentDate.getHours()}~${(currentDate.getHours() + 2) % 24}) ${sx[s]}`;
+                            }
+                            matchingTimes.push({ dateStr, currentDate, sex: s });
+                            c++;
+                        }
+                        t++;
+                    }
+                }
+            }
+
+            document.getElementById('count').textContent = `占比: ${c} / ${t} (${formatNumber((c / t) * 100)}%)`;
+
+            if (c > 0) {
+                displayResults();
+                document.getElementById('exc-btn').disabled = false;
+            } else {
+                document.getElementById('exc-btn').disabled = true;
+                const loadMoreButton = document.getElementById('loadMoreButton');
+                if (loadMoreButton) loadMoreButton.remove();
             }
         }
-    }
-}
 
+        function displayResults() {
+            const logContainer = document.getElementById('log');
+            let fragment = document.createDocumentFragment();
+            const start = displayedCount;
+            const end = Math.min(displayedCount + maxDisplayCount, matchingTimes.length);
 
-    document.getElementById('count').textContent = `一共${c}个小时`;
+            for (let i = start; i < end; i++) {
+                const { dateStr, currentDate, sex } = matchingTimes[i];
+                let logEntry = document.createElement('div');
+                logEntry.className = 'date-div';
+                let dateButton = document.createElement('button');
+                dateButton.className = 'date-btn';
+                let queryDate = `${currentDate.getFullYear()}${String(currentDate.getMonth() + 1).padStart(2, '0')}${String(currentDate.getDate()).padStart(2, '0')}${String(currentDate.getHours()).padStart(2, '0')}${sex}`;
+                dateButton.textContent = '查看';
+                dateButton.addEventListener('click', function () {
+                    window.open(`./index.html?date=${queryDate}`);
+                });
 
-    if (c > 0) {
-        displayResults();
-        document.getElementById('exc-btn').style.display = "block";
-    } else {
-        document.getElementById('exc-btn').style.display = "none";
-    }
-}
+                logEntry.innerHTML = dateStr;
+                logEntry.appendChild(dateButton);
+                fragment.appendChild(logEntry);
+            }
 
-function displayResults() {
-    const logContainer = document.getElementById('log');
-    let fragment = document.createDocumentFragment();
-    const start = displayedCount;
-    const end = Math.min(displayedCount + maxDisplayCount, matchingTimes.length);
+            logContainer.appendChild(fragment);
+            displayedCount = end;
+            if (displayedCount < matchingTimes.length) {
+                let loadMoreButton = document.getElementById('loadMoreButton');
+                if (!loadMoreButton) {
+                    loadMoreButton = document.createElement('button');
+                    loadMoreButton.textContent = '加载更多';
+                    loadMoreButton.className = 'more-btn';
+                    loadMoreButton.id = 'loadMoreButton';
+                    loadMoreButton.addEventListener('click', displayResults);
+                    logContainer.appendChild(loadMoreButton);
+                } else {
+                    logContainer.appendChild(loadMoreButton);
+                }
+            } else {
+                let loadMoreButton = document.getElementById('loadMoreButton');
+                if (loadMoreButton) loadMoreButton.remove();
+            }
 
-    for (let i = start; i < end; i++) {
-        const { dateStr, currentDate, sex } = matchingTimes[i];
-        let logEntry = document.createElement('div');
-        logEntry.className = 'date-div';
-        let dateButton = document.createElement('button');
-        dateButton.className = 'date-btn';
-        let queryDate = `${currentDate.getFullYear()}${String(currentDate.getMonth() + 1).padStart(2, '0')}${String(currentDate.getDate()).padStart(2, '0')}${String(currentDate.getHours()).padStart(2, '0')}${sex}`;
-        dateButton.textContent = '查看';
-        dateButton.addEventListener('click', function() {
-            window.open(`./index.html?date=${queryDate}`);
-        });
-
-        logEntry.innerHTML = dateStr;
-        logEntry.appendChild(dateButton);
-        fragment.appendChild(logEntry);
-    }
-
-    logContainer.appendChild(fragment);
-    displayedCount = end;
-
-    if (displayedCount < matchingTimes.length) {
-        let loadMoreButton = document.getElementById('loadMoreButton');
-        if (!loadMoreButton) {
-            loadMoreButton = document.createElement('button');
-            loadMoreButton.textContent = '加载更多';
-            loadMoreButton.className = 'more-btn';
-            loadMoreButton.id = 'loadMoreButton';
-            loadMoreButton.addEventListener('click', displayResults);
-            document.body.appendChild(loadMoreButton);
+            if (displayedCount > 5000) {
+                for (let i = 0; i < maxDisplayCount; i++) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+                displayedCount -= maxDisplayCount;
+            }
         }
-        // 每次加载更多后，将按钮移到最后
-        document.body.appendChild(loadMoreButton);
-    } else {
-        let loadMoreButton = document.getElementById('loadMoreButton');
-        if (loadMoreButton) loadMoreButton.remove();
-    }
 
-    if (displayedCount > 5000) {
-        for (let i = 0; i < maxDisplayCount; i++) {
-            logContainer.removeChild(logContainer.firstChild);
+        function exportToExcel() {
+            let data = [['年', '月', '日', '时', '性别']];
+
+            matchingTimes.forEach(({ dateStr, currentDate, sex }) => {
+                let dateTime = dateStr.split(' ')[0];
+                let hour = dateStr.split(' ')[1].replace('时', '');
+                let [year, month, day] = dateTime.split('-').map(num => parseInt(num, 10));
+
+                data.push([year, month, day, hour, sex === 0 ? '女' : '男']);
+            });
+
+            let ws = XLSX.utils.aoa_to_sheet(data);
+            let wb = XLSX.utils.book_new();
+            let currentDate = new Date();
+            XLSX.utils.book_append_sheet(wb, ws, "Log");
+
+            XLSX.writeFile(wb, `${String(currentDate.getFullYear())}-${String(currentDate.getMonth() + 1)}-${String(currentDate.getDate())}_${String(currentDate.getHours())}-${String(currentDate.getMinutes())}-${String(currentDate.getSeconds())}.xlsx`);
         }
-        displayedCount -= maxDisplayCount;
-    }
-}
 
-function exportToExcel() {
-    let data = [['年', '月', '日', '时', '性别']]; // Excel文件的标题行，分为年、月、日、时、性别
+        function saveHistory() {
+            const conditionGroups = Array.from(document.querySelectorAll('.inside-group, .outside-group, .same-group')).map(group => {
+                const select1 = group.querySelector('.select-box:first-child').value;
+                const select2 = group.querySelector('.select-box:nth-child(3)').value;
+                const type = group.className.split('-')[0];
+                return { type, select1, select2 };
+            });
 
-    matchingTimes.forEach(({ dateStr, currentDate, sex }) => {
-        let dateTime = dateStr.split(' ')[0]; // 获取日期部分，例如 "2023-1-1"
-        let hour = dateStr.split(' ')[1].replace('时', ''); // 获取时间部分并移除"时"，例如 "0"
-        let [year, month, day] = dateTime.split('-').map(num => parseInt(num, 10)); // 分解日期并转换为数字
+            let history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
 
-        data.push([year, month, day, hour, sex === 0 ? '女' : '男']); // 添加到数据数组里面
-    });
+            // Check if the same condition already exists
+            const exists = history.some(item => JSON.stringify(item.conditions) === JSON.stringify(conditionGroups));
+            if (exists) {
+                alert("相同的条件已经存在。");
+                return;
+            }
 
-    // 创建工作表
-    let ws = XLSX.utils.aoa_to_sheet(data);
-    
-    // 创建工作簿并添加工作表
-    let wb = XLSX.utils.book_new();
-    let currentDate = new Date();
-    XLSX.utils.book_append_sheet(wb, ws, "Log");
+            if (history.length >= 10) {
+                history.pop();
+            }
 
-    // 导出工作簿
-    XLSX.writeFile(wb, `${String(currentDate.getFullYear())}-${String(currentDate.getMonth() + 1)}-${String(currentDate.getDate())}_${String(currentDate.getHours())}-${String(currentDate.getMinutes())}-${String(currentDate.getSeconds())}.xlsx`);
-}
+            const historyName = getUniqueDefaultName(history);
 
-document.getElementById('res').addEventListener('click', function() {
-    if (confirm("确定要重置吗？")) {
-        location.reload();
-    }
-});
+            history.unshift({
+                name: historyName,
+                conditions: conditionGroups
+            });
 
+            localStorage.setItem('888queryHistory', JSON.stringify(history));
+            displayHistory();
+        }
+
+        function getUniqueDefaultName(history) {
+            let index = 1;
+            let defaultName;
+            do {
+                defaultName = `未命名预设${index}`;
+                index++;
+            } while (history.some(item => item.name === defaultName));
+            return defaultName;
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+            displayHistory();
+        }
+
+        function displayHistory() {
+            const historyContainer = document.getElementById('history');
+            historyContainer.innerHTML = '';
+
+            let history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+
+            if (history.length === 0) {
+                historyContainer.innerHTML = '保存的预设框为空';
+                return;
+            }
+
+            history.forEach((historyItem, index) => {
+                const historyElement = document.createElement('div');
+                historyElement.className = 'history-item';
+
+                const conditionsText = historyItem.conditions.map(condition => {
+                    const typeMap = {
+                        'inside': '在',
+                        'outside': '不在',
+                        'same': '同'
+                    };
+
+                    const typeText = typeMap[condition.type];
+                    const select1Text = optionsList1[condition.select1];
+                    const select2Text = condition.type == "same" ? optionsList1[condition.select2] : optionsList2[condition.select2];
+                    return `${select1Text} ${typeText} ${select2Text}`;
+                }).join(', ');
+
+                historyElement.innerHTML = `
+                    <div>名称: ${historyItem.name}</div>
+                    <div>条件: ${conditionsText}</div>
+                    <button onclick="loadHistoryItem(${index})">加载</button>
+                    <button onclick="appendHistoryItem(${index})">附加</button>
+                    <button onclick="renameHistoryItem(${index})">重命名</button>
+                    <button onclick="confirmAction('overwriteHistoryItem', ${index}, '覆盖')">覆盖</button>
+                    <button onclick="confirmAction('deleteHistoryItem', ${index}, '删除')">删除</button>
+                `;
+
+                historyContainer.appendChild(historyElement);
+            });
+        }
+
+        function confirmAction(action, index, type) {
+            const history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+            const confirmMsg = `确定要${type}[${history[index].name}]吗？`;
+            if (confirm(confirmMsg)) {
+                window[action](index);
+            }
+        }
+
+        function loadHistoryItem(index) {
+            const history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+            const historyItem = history[index];
+
+            document.getElementById('selectBoxesContainer').innerHTML = '';
+
+            historyItem.conditions.forEach(condition => {
+                createSelectBoxGroup(condition.type);
+                const lastGroup = document.querySelector(`.${condition.type}-group:last-child`);
+                lastGroup.querySelector('.select-box:first-child').value = condition.select1;
+                lastGroup.querySelector('.select-box:nth-child(3)').value = condition.select2;
+            });
+
+            updateQueryButtonVisibility();
+        }
+
+        function deleteHistoryItem(index) {
+            let history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+            history.splice(index, 1);
+            localStorage.setItem('888queryHistory', JSON.stringify(history));
+            displayHistory();
+        }
+
+        function renameHistoryItem(index) {
+            let history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+            const newName = prompt("请为此条件重新命名:", history[index].name) || history[index].name;
+            history[index].name = newName;
+            localStorage.setItem('888queryHistory', JSON.stringify(history));
+            displayHistory();
+        }
+
+        function overwriteHistoryItem(index) {
+            const conditionGroups = Array.from(document.querySelectorAll('.inside-group, .outside-group, .same-group')).map(group => {
+                const select1 = group.querySelector('.select-box:first-child').value;
+                const select2 = group.querySelector('.select-box:nth-child(3)').value;
+                const type = group.className.split('-')[0];
+                return { type, select1, select2 };
+            });
+
+            if (conditionGroups.length === 0) {
+                alert("当前条件为空，无法覆盖。");
+                return;
+            }
+
+            let history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+            history[index].conditions = conditionGroups;
+            localStorage.setItem('888queryHistory', JSON.stringify(history));
+            displayHistory();
+        }
+
+        function appendHistoryItem(index) {
+            const history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+            const historyItem = history[index];
+
+            historyItem.conditions.forEach(condition => {
+                createSelectBoxGroup(condition.type);
+                const lastGroup = document.querySelector(`.${condition.type}-group:last-child`);
+                lastGroup.querySelector('.select-box:first-child').value = condition.select1;
+                lastGroup.querySelector('.select-box:nth-child(3)').value = condition.select2;
+            });
+
+            updateQueryButtonVisibility();
+        }
     </script>
-
-</body></html>
+</body>
+</html>
