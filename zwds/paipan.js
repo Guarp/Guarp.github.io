@@ -196,10 +196,6 @@ const wh_a=['戊','丁','丙','乙','甲','癸','壬','辛','庚','己'];
 const wh_b=['甲','壬','庚','戊','丙'];
 const ws_b=['甲','丙','戊','庚','壬'];
 const xy=['庙','旺','得','利','平','不','陷'];
-    function sizhu(inputYear,inputMonth,inputDay,inputTime) {
-        let tgdz={};
-
-    }
         function paipan(inputYear,inputMonth,inputDay,inputTime,inputSex) {
 
             let pan={};
@@ -216,6 +212,12 @@ const xy=['庙','旺','得','利','平','不','陷'];
             pan.yearst_dz=zcym.indexOf(pan.nongli.gzYear[1]);
             pan.monst_tg=jybd.indexOf(pan.nongli.gzMonth[0]);
             pan.monst_dz=zcym.indexOf(pan.nongli.gzMonth[1]);
+            let j=jybd.indexOf(wh_b[wh_a.indexOf(pan.nongli.gzYear[0])%5]);
+            pan.wholeYearMg.push(j);
+            for(let i=0;i<11;i++){
+                j=(j+1)%10;
+                pan.wholeYearMg.push(j);
+            }
             pan.day_tg=jybd.indexOf(pan.nongli.gzDay[0]);
             pan.day_dz=zcym.indexOf(pan.nongli.gzDay[1]);    
             pan.time_dz=Math.floor((+inputTime+1)/2)%12;
