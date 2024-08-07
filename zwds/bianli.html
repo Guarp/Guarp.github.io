@@ -206,7 +206,11 @@
         <div id="count" style="padding-top: 5px; "></div>
         <div id="log"></div>
     </div>
-    <div class="history" id="history">保存的预设框为空</div>
+    <button class="query-btn" style="background-color: white;color: #000;border: 1px solid rgb(0, 0, 0);" onclick="importHistory()">导入</button>
+    <div class="history" id="history">
+        
+        保存的预设框为空
+    </div>
     <script>
         let sex = 1;
         let globalExpression = "";
@@ -580,6 +584,7 @@
                     <button onclick="renameHistoryItem(${index})">重命名</button>
                     <button onclick="confirmAction('overwriteHistoryItem', ${index}, '覆盖')">覆盖</button>
                     <button onclick="confirmAction('deleteHistoryItem', ${index}, '删除')">删除</button>
+                    <button onclick="exportHistoryItem(${index})">导出</button>
                 `;
 
                 historyContainer.appendChild(historyElement);
@@ -657,6 +662,57 @@
 
             updateQueryButtonVisibility();
         }
+
+        // Export history item to Base64 and copy to clipboard
+        function exportHistoryItem(index) {
+    const history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+    const historyItem = history[index];
+
+    const historyJSON = JSON.stringify(historyItem);
+
+    // Use TextEncoder to handle UTF-8 encoding
+    const encoder = new TextEncoder();
+    const encodedData = encoder.encode(historyJSON);
+    const base64 = btoa(String.fromCharCode(...encodedData));
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(base64)
+        .then(() => {
+            alert("导出成功，已复制到剪切板");
+        })
+        .catch(() => {
+            alert("自动复制失败");
+        });
+}
+
+// Import history item from Base64
+function importHistory() {
+    const base64 = prompt("粘贴导出内容:");
+    if (!base64) return;
+
+    try {
+        const binaryString = atob(base64);
+
+        // Use TextDecoder to decode UTF-8 data
+        const encodedData = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+        const decoder = new TextDecoder();
+        const historyJSON = decoder.decode(encodedData);
+
+        const historyItem = JSON.parse(historyJSON);
+
+        if (!historyItem || !historyItem.name || !historyItem.conditions) {
+            throw new Error("内容有误，请正确粘贴导出内容");
+        }
+
+        let history = JSON.parse(localStorage.getItem('888queryHistory')) || [];
+        history.unshift(historyItem);
+        localStorage.setItem('888queryHistory', JSON.stringify(history));
+        displayHistory();
+    } catch (error) {
+        alert("内容有误，请正确粘贴导出内容");
+    }
+}
+
     </script>
 </body>
 </html>
