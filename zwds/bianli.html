@@ -242,7 +242,6 @@
             document.getElementById('startDate').value = storedStartDate;
             document.getElementById('endDate').value = storedEndDate;
 
-            // 加载历史记录
             loadHistory();
 
             updateQueryButtonVisibility();
@@ -357,7 +356,7 @@
                     }
                 }
                 if (option2 < 12) {
-                    exp_ed = `pan.minggong+${option2}`;
+                    exp_ed = `(pan.minggong+${option2})%12`;
                 } else if (option2 < 24) {
                     exp_ed = option2 % 12;
                 } else if (option2 < 36) {
@@ -398,6 +397,7 @@
                         let currentDate = new Date(date);
                         currentDate.setHours(hour);
                         pan = paipan(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate(), currentDate.getHours(), s);
+
 
                         if (eval(globalExpression)) {
                             let dateStr;
