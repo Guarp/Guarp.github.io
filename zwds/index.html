@@ -150,8 +150,9 @@
             <label style="background-color: cornflowerblue; border-radius: 5px;"><input id="m" type="radio" name="sex" value="1"></label>
             <label style="background-color: palevioletred; border-radius: 5px;"><input id="f" type="radio" name="sex" value="-1"></label>
 
-            
-            <p class="info-input-text">年: </p>
+            <input type="date" id="dateInput"/>
+            <input type="time" id="timeInput"/>
+            <!-- <p class="info-input-text">年: </p>
             <input class="info-input" type="text" id="yearInput" placeholder="输入北京时间年: 如2024"><br>
             <p class="info-input-text">月: </p>
             <input class="info-input" type="text" id="monthInput" placeholder="输入北京时间月: 如6或06"><br>
@@ -160,21 +161,16 @@
             <p class="info-input-text">时: </p>
             <input class="info-input" type="text" id="hourInput" placeholder="输入北京时间时: 用24小时制"><br>
             <p class="info-input-text">分: </p>
-            <input class="info-input" type="text" id="minuteInput" placeholder="输入北京时间分: "><br>
+            <input class="info-input" type="text" id="minuteInput" placeholder="输入北京时间分: "><br> -->
             <p class="info-input-text">°E: </p>
-            <input class="info-input" type="text" id="longInput" placeholder="输入经度: 不填默认为时区经度"><br>
-            <p class="info-input-text">参考: </p>
-            <select style="margin-left: 43px;" id="timereference">
-                <option value="120">北京时间 120°E</option>
-                <option value="121.5">文墨天机 121.5°E</option>
-            </select>
+            <input class="info-input" type="text" id="longInput" placeholder="输入经度: 不填默认为120°E"><br> 
             <button onclick="processAndDisplayYear()">go</button>
             <button onclick="clearInput()">clear</button>
             <input type="checkbox" id="sun" name="options" value="sun" style="position:absolute;display: none;" checked>
                 <label for="sun" style="font-size: small;" class="zone" id="suntxt">以真太阳时计算</label>
         </div>
         <div class="box" style="border: 0px;text-align: center;">
-            <p style="text-align: center;margin: 0;">可计算日期范围<br>1900-1-1<br>↓<br>2099-12-31</p>
+            <p style="text-align: center;margin: 0;">可计算日期范围<br>1900-1-1<br>↓<br>2099-12-31<br>★<br>以北京时间(UTC+8)<br>120°E为参考</p>
         </div>
         <div class="box" data-index="8"></div>
     </div>
@@ -186,18 +182,22 @@
     </div>
     <script>
 
-        let Yinput=document.getElementById("yearInput");
-        let Minput=document.getElementById("monthInput");
-        let Dinput=document.getElementById("dayInput");
-        let Hinput=document.getElementById("hourInput");
-        let Ninput=document.getElementById("minuteInput");
+        
+
+        // let Yinput=document.getElementById("yearInput");
+        // let Minput=document.getElementById("monthInput");
+        // let Dinput=document.getElementById("dayInput");
+        // let Hinput=document.getElementById("hourInput");
+        // let Ninput=document.getElementById("minuteInput");
+        let DateInput = document.getElementById("dateInput");
+        let TimeInput = document.getElementById("timeInput");
         let currentDate=new Date();
         
         const monthGZspans = document.querySelectorAll('.monthganzhi');
         
 
 //↓性别选项↓
-        let sex = -1;
+        let sex;
         document.addEventListener('DOMContentLoaded', function() {
             
                 const sexRadios = document.querySelectorAll('input[name="sex"]');
@@ -214,9 +214,6 @@
         const boxes = document.querySelectorAll('.box');
         function start(y, m, d, h, n, s) {
             console.log(y, m, d, h, n, s)
-            const SelectedIndex = document.getElementById('timereference').value;
-            // 保存
-            localStorage.setItem('666timereference', document.getElementById('timereference').selectedIndex);
             localStorage.setItem('666long', document.getElementById('longInput').value);
 
             const IsSolar = document.getElementById("sun").checked;
@@ -227,13 +224,14 @@
                 hour: h,
                 minute: n
             };
-            const standardMeridian = document.getElementById("timereference").value;
+            const standardMeridian = 120;
             let localLongitude = document.getElementById("longInput").value
-            if(!localLongitude){
-                document.getElementById("longInput").value = standardMeridian;
-            }
+            
             document.getElementById("SolarDisplay").textContent = '';
             if(IsSolar){
+                if(!localLongitude){
+                document.getElementById("longInput").value = standardMeridian;
+            } 
                 time = calculateTrueSolarTime(`${y}-${m}-${d}`,`${h}:${n}`,document.getElementById("longInput").value, standardMeridian);
                 SolarDisplay = `真太阳时:
                             ${time.year}年${time.month}月${time.day}日
@@ -247,7 +245,7 @@
                         return 0;
                     }
             
-            pan = IsSolar ? paipan(time.year, time.month, time.day, time.hour, s) : paipan(y, m, d, n, s);
+            pan = IsSolar ? paipan(time.year, time.month, time.day, time.hour, s) : paipan(y, m, d, h, s);
             document.querySelectorAll('.box').forEach(clearElementContent);
             createOriginalDZ();
   
@@ -272,11 +270,13 @@
 
             
 function clearInput(){
-    document.getElementById('yearInput').value = "";
-    document.getElementById('monthInput').value = "";
-    document.getElementById('dayInput').value = "";
-    document.getElementById('hourInput').value = "";
-    document.getElementById('minuteInput').value = "";
+    // document.getElementById('yearInput').value = "";
+    // document.getElementById('monthInput').value = "";
+    // document.getElementById('dayInput').value = "";
+    // document.getElementById('hourInput').value = "";
+    // document.getElementById('minuteInput').value = "";
+    document.getElementById('dateInput').value = "";
+    document.getElementById('timeInput').value = "";
 }
 
         
@@ -284,11 +284,18 @@ function clearInput(){
 
 //↓启动计算
         function processAndDisplayYear() {
-            let userInputyear = document.getElementById('yearInput').value;
-            let userInputmonth = document.getElementById('monthInput').value;
-            let userInputday = document.getElementById('dayInput').value;
-            let userInputhour = document.getElementById('hourInput').value;
-            let userInputminute = document.getElementById('minuteInput').value;
+            // let userInputyear = document.getElementById('yearInput').value;
+            // let userInputmonth = document.getElementById('monthInput').value;
+            // let userInputday = document.getElementById('dayInput').value;
+            // let userInputhour = document.getElementById('hourInput').value;
+            // let userInputminute = document.getElementById('minuteInput').value;
+            let userInputdate = document.getElementById("dateInput").value.split('-');
+            let userInputtime = document.getElementById("timeInput").value.split(':');
+            let userInputyear = userInputdate[0];
+            let userInputmonth = userInputdate[1];
+            let userInputday = userInputdate[2];
+            let userInputhour = userInputtime[0];
+            let userInputminute = userInputtime[1];
 
             function getMaxDaysInMonth(Month, year) {
                 const date = new Date(year, Month, 0);
@@ -512,34 +519,56 @@ function parseDateAndStart() {
   
   // 获取'date'参数
   const date = params.get('date');
+  const psex = params.get('sex');
   let checkboxf = document.getElementById('f');
   let checkboxm = document.getElementById('m');
+  if (!psex) {
+    sex = -1;
+  }else{
+    sex = psex;
+  }
   if (date) {
       // 拆分'date'参数获取年、月、日、时
       const year = date.substring(0, 4);
       const month = date.substring(4, 6);
       const day = date.substring(6, 8);
       const hour = date.substring(8, 10);
-      const sex = date.substring(10, 11);
-      Yinput.value=parseInt(year);
-        Minput.value=parseInt(month);
-        Dinput.value=parseInt(day);
-        Hinput.value=parseInt(hour);
-        Ninput.value=0;
-        document.getElementById(sex==1?'m':'f').checked=true;
-      start(year, month, day, hour, "0", sex==1?1:-1);
+    //   Yinput.value=parseInt(year);
+    //     Minput.value=parseInt(month);
+    //     Dinput.value=parseInt(day);
+    //     Hinput.value=parseInt(hour);
+    //     Ninput.value=0;
+    DateInput.value = `${year}-${month}-${day}`;
+    TimeInput.value = `${hour}:00`;
+        document.getElementById(psex==1?'m':'f').checked=true;
+        const longIP = localStorage.getItem("666long"); 
+    if(longIP){
+        document.getElementById('longInput').value = longIP;
+    }
+      start(year, month, day, hour, "0", psex==1?1:-1);
   }else{
-    Yinput.value=currentDate.getFullYear()*1;
-        Minput.value=currentDate.getMonth()+1;
-        Dinput.value=currentDate.getDate();
-        Hinput.value=currentDate.getHours();
-        Ninput.value=currentDate.getMinutes();
+    // Yinput.value=currentDate.getFullYear()*1;
+    //     Minput.value=currentDate.getMonth()+1;
+    //     Dinput.value=currentDate.getDate();
+    //     Hinput.value=currentDate.getHours();
+    //     Ninput.value=currentDate.getMinutes();
+    // DateInput.value = `${currentDate.getFullYear().toString.padStart(2, '0')}-${(currentDate.getMonth()+1).toString.padStart(2, '0')}-${(currentDate.getDate()).toString.padStart(2, '0')}`;
+    
+    var Cyear = currentDate.getFullYear();
+    var Cmonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需要加1
+    var Cday = String(currentDate.getDate()).padStart(2, '0');
+    var CcurrentDate = `${Cyear}-${Cmonth}-${Cday}`;
+    var Chours = String(currentDate.getHours()).padStart(2, '0');
+    var Cminutes = String(currentDate.getMinutes()).padStart(2, '0');
+    var CcurrentTime = `${Chours}:${Cminutes}`;
+    document.getElementById('dateInput').value = CcurrentDate;
+    document.getElementById('timeInput').value = CcurrentTime;
+
         document.getElementById('f').checked=true;
   }
 }
 function CheckboxChange(){
     const txt = document.getElementById("suntxt");
-    const ref = document.getElementById("timereference");
     const log = document.getElementById("longInput");
     if(txt.style.color != "gray"){
         txt.style.color = "gray";
@@ -547,17 +576,12 @@ function CheckboxChange(){
         txt.style.color = "black";
     }
     txt.classList.toggle('Decoration');
-    ref.disabled = !ref.disabled;
     log.disabled = !log.disabled;
 }
 
 // 页面加载完成后执行
 window.onload = function() {
-    const reference = localStorage.getItem("666timereference"); 
     const longIP = localStorage.getItem("666long"); 
-    if(reference){
-        document.getElementById('timereference').selectedIndex = reference;
-    }
     if(longIP){
         document.getElementById('longInput').value = longIP;
     }
