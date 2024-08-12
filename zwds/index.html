@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>666</title>
     <script src="nlgl.js"></script>
+    <script src="tst.js"></script>
     <script src="paipan.js"></script>
     <style>
         body {
@@ -430,7 +431,7 @@ function creatAllStarInBox(){
                 addInBox(xing[0][i],pan.xing[i],"tw_shen","gray");
             }
         }
-        
+          
     }
     for(let i=76;i<88;i++){
         addInBox(xing[0][i],pan.xing[i],"rightbottom","gray");
@@ -448,69 +449,6 @@ function creatAllStarInBox(){
     for(let i=0;i<12;i++){
         addInBox(`${pan.daxian[i]}~${pan.daxian[i]+9}`,pan.minggong+i,"daxian","black");
     }
-}
-
-function calculateTrueSolarTime(date, localTime, localLongitude, standardMeridian) {
-    // 解析输入的日期和时间
-    const [year, month, day] = date.split('-').map(Number);
-    const [hour, minute] = localTime.split(':').map(Number);
-
-    // 计算时间偏移：每15度经度差异对应1小时时间差
-    const longitudeDifference = localLongitude - standardMeridian;
-    const timeOffset = (longitudeDifference / 15) * 60; // 偏移量以分钟为单位
-
-    // 将输入的时间转化为分钟数以便计算
-    let totalMinutes = hour * 60 + minute;
-
-    // 加上偏移量以获得真太阳时的分钟数
-    totalMinutes += timeOffset;
-
-    // 处理跨天情况
-    let newDay = day;
-    let newMonth = month;
-    let newYear = year;
-
-    if (totalMinutes < 0) {
-        // 前一天
-        totalMinutes += 1440; // 24小时 * 60分钟
-        newDay -= 1;
-    } else if (totalMinutes >= 1440) {
-        // 后一天
-        totalMinutes -= 1440;
-        newDay += 1;
-    }
-
-    // 计算新的小时和分钟
-    const newHour = Math.floor(totalMinutes / 60);
-    const newMinute = Math.round(totalMinutes % 60);
-
-    // 处理跨月情况
-    const daysInMonth = new Date(year, month, 0).getDate();
-    if (newDay > daysInMonth) {
-        newDay = 1;
-        newMonth += 1;
-    } else if (newDay < 1) {
-        newMonth -= 1;
-        const previousMonthDays = new Date(year, newMonth, 0).getDate();
-        newDay = previousMonthDays;
-    }
-
-    // 处理跨年情况
-    if (newMonth > 12) {
-        newMonth = 1;
-        newYear += 1;
-    } else if (newMonth < 1) {
-        newMonth = 12;
-        newYear -= 1;
-    }
-
-    return {
-        year: newYear,
-        month: newMonth,
-        day: newDay,
-        hour: newHour,
-        minute: newMinute
-    };
 }
 
 function parseDateAndStart() {
