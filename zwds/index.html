@@ -228,10 +228,11 @@
             const standardMeridian = 120;
             let localLongitude = document.getElementById("longInput").value
             
-            document.getElementById("SolarDisplay").textContent = '';
+            document.getElementById("SolarDisplay").textContent = '北京时间 (UTC+8)';
             if(IsSolar){
                 if(!localLongitude){
                 document.getElementById("longInput").value = standardMeridian;
+                
             } 
                 time = calculateTrueSolarTime(`${y}-${m}-${d}`,`${h}:${n}`,document.getElementById("longInput").value, standardMeridian);
                 SolarDisplay = `真太阳时:
@@ -452,14 +453,32 @@ function creatAllStarInBox(){
 }
 
 function parseDateAndStart() {
+    const longIP = localStorage.getItem("666long"); 
+    if(longIP){
+        document.getElementById('longInput').value = longIP;
+    }
   // 解析当前URL
   const params = new URLSearchParams(window.location.search);
   
   // 获取'date'参数
   const date = params.get('date');
   const psex = params.get('sex');
+  const plong = params.get('long');
+  const psolar = params.get('solar');
   let checkboxf = document.getElementById('f');
   let checkboxm = document.getElementById('m');
+  if (plong){
+    document.getElementById("longInput").value = plong;
+  }
+  console.log(plong)
+  if (psolar == 'false'){
+    const txt = document.getElementById("suntxt");
+    const log = document.getElementById("longInput");
+    document.getElementById("sun").checked = false;
+    txt.style.color = "gray";
+    txt.classList.toggle('Decoration');
+    log.disabled = !log.disabled;
+  }
   if (!psex) {
     sex = -1;
   }else{
@@ -508,22 +527,15 @@ function parseDateAndStart() {
 function CheckboxChange(){
     const txt = document.getElementById("suntxt");
     const log = document.getElementById("longInput");
-    if(txt.style.color != "gray"){
-        txt.style.color = "gray";
-    }else{
+    if(document.getElementById("sun").checked){
         txt.style.color = "black";
+    }else{
+        txt.style.color = "gray";
     }
     txt.classList.toggle('Decoration');
     log.disabled = !log.disabled;
 }
 
-// 页面加载完成后执行
-window.onload = function() {
-    const longIP = localStorage.getItem("666long"); 
-    if(longIP){
-        document.getElementById('longInput').value = longIP;
-    }
-    };
 document.addEventListener('DOMContentLoaded', parseDateAndStart);
 sun.addEventListener('change', CheckboxChange);
     </script>
